@@ -12,23 +12,23 @@ type EditorialItem = {
 const ITEMS: EditorialItem[] = [
   {
     eyebrow: "The Campaign",
-    title: "Drop 01 — Casablanca rooftops",
+    title: "Drop 01 — Mediterranean light",
     href: "/products",
-    image: null,
+    image: "/hero/editorial-campaign.webp",
     gradient: "linear-gradient(140deg, #d8a47a 0%, #8c6b3a 60%, #4a3625 100%)",
   },
   {
     eyebrow: "The Material",
     title: "On heavyweight cotton and bronze foil",
     href: "/story",
-    image: null,
+    image: "/hero/editorial-material.webp",
     gradient: "linear-gradient(140deg, #ece4d2 0%, #c8b89a 100%)",
   },
   {
     eyebrow: "The Atelier",
     title: "Print-to-order, made when you order",
     href: "/story",
-    image: null,
+    image: "/hero/editorial-atelier.webp",
     gradient: "linear-gradient(140deg, #1e4a6b 0%, #2a2622 100%)",
   },
 ];

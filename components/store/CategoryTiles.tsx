@@ -1,3 +1,4 @@
+import Image from "next/image";
 import Link from "next/link";
 
 type Tile = {
@@ -15,28 +16,28 @@ const TILES: Tile[] = [
     label: "Streetwear",
     href: "/products?category=Streetwear",
     caption: "Tees, hoodies, sweats",
-    image: null,
+    image: "/hero/category-streetwear.webp",
     gradient: "linear-gradient(180deg, #f0e6d2 0%, #c8b89a 100%)",
   },
   {
     label: "Jewelry",
     href: "/products?category=Jewelry",
     caption: "Sterling silver, hand-finished",
-    image: null,
+    image: "/hero/category-jewelry.webp",
     gradient: "linear-gradient(180deg, #2a2622 0%, #5c4530 100%)",
   },
   {
     label: "Limited Drops",
     href: "/products?category=Limited%20Drops",
     caption: "Seasonal, numbered, made-to-order",
-    image: null,
+    image: "/hero/category-limited.webp",
     gradient: "linear-gradient(180deg, #d8a47a 0%, #8c4d2e 100%)",
   },
   {
     label: "The Atelier",
     href: "/story",
     caption: "How we work · The brand",
-    image: null,
+    image: "/hero/category-atelier.webp",
     gradient: "linear-gradient(180deg, #ddd1b9 0%, #6b6258 100%)",
   },
 ];
@@ -61,11 +62,21 @@ export default function CategoryTiles() {
               href={tile.href}
               className="group block relative aspect-[3/4] md:aspect-[5/6] overflow-hidden bg-[var(--color-bg-tinted)]"
             >
-              <div
-                aria-hidden
-                className="absolute inset-0 transition-transform duration-[1100ms] ease-[var(--ease)] group-hover:scale-105"
-                style={{ background: tile.gradient }}
-              />
+              {tile.image ? (
+                <Image
+                  src={tile.image}
+                  alt={tile.label}
+                  fill
+                  sizes="(min-width: 768px) 50vw, 100vw"
+                  className="object-cover transition-transform duration-[1100ms] ease-[var(--ease)] group-hover:scale-105"
+                />
+              ) : (
+                <div
+                  aria-hidden
+                  className="absolute inset-0 transition-transform duration-[1100ms] ease-[var(--ease)] group-hover:scale-105"
+                  style={{ background: tile.gradient }}
+                />
+              )}
               <div
                 aria-hidden
                 className="absolute inset-0"

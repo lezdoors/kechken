@@ -7,7 +7,7 @@ export const STATIC_PRODUCTS: Product[] = [
     slug: "wordmark-cotton-tee",
     price: 8500,
     images: [
-      "/products/drop-01/wordmark-tee-01.svg",
+      "/products/drop-01/wordmark-tee-01.webp",
       "/products/drop-01/wordmark-tee-02.svg",
     ],
     category: "Streetwear",
@@ -29,7 +29,7 @@ export const STATIC_PRODUCTS: Product[] = [
     slug: "heritage-hoodie",
     price: 16500,
     images: [
-      "/products/drop-01/heritage-hoodie-01.svg",
+      "/products/drop-01/heritage-hoodie-01.webp",
       "/products/drop-01/heritage-hoodie-02.svg",
     ],
     category: "Streetwear",

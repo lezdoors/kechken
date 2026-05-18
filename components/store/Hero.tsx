@@ -4,7 +4,7 @@ import Link from "next/link";
 // Swap point: when the Drop 01 hero WebP lands, set this to the public path.
 // While null, renders the warm editorial gradient placeholder.
 // See docs/brand/HF-PROMPTS-DROP-01.md prompt #1 for what to generate.
-const HERO_IMAGE: string | null = null;
+const HERO_IMAGE: string | null = "/hero/hero-drop-01.webp";
 
 export default function Hero() {
   const hasImage = HERO_IMAGE !== null;

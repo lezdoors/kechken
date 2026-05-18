@@ -1,7 +1,7 @@
 import Image from "next/image";
 import Link from "next/link";
 
-const JEWELRY_HERO: string | null = null;
+const JEWELRY_HERO: string | null = "/hero/jewelry-focus.webp";
 
 export default function JewelryFocus() {
   return (
