@@ -175,7 +175,7 @@ export default function Footer() {
       <div className="border-t border-[var(--color-rule)] py-10">
         <div className="max-w-[1280px] mx-auto px-6 md:px-10 flex flex-col md:flex-row items-center md:justify-between gap-6">
           <div className="text-[13px] tracking-[0.18em] uppercase text-[var(--color-ink)] font-medium">
-            Rooted in the Maghreb · Made for now
+            Rooted in the Maghreb · Print-to-order · Made for now
           </div>
           <div className="flex items-center gap-5">
             {SOCIAL.map((s) => (

@@ -25,7 +25,7 @@ function resolveCategoryFilter(raw: string): { in?: string[]; eq?: string } {
 export const metadata: Metadata = {
   title: "Drops",
   description:
-    "Hand-painted figurative graphics on heavyweight cotton. Each drop is a small run, made in the order it sells.",
+    "Hand-painted figurative graphics on heavyweight cotton. Print-to-order, shipped in 3–5 days. No overstock, no waste.",
 };
 
 async function getProducts(category?: string, q?: string): Promise<Product[]> {

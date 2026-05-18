@@ -102,7 +102,7 @@ export default function Hero() {
               hasImage ? "text-white/65" : "text-[var(--color-mineral)]"
             }`}
           >
-            Ships from US · POD-fulfilled · Worldwide delivery
+            Print-to-order · Ships in 3–5 days · No overstock
           </div>
         </div>
       </div>

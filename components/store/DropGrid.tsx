@@ -11,8 +11,8 @@ export default function DropGrid() {
       <div className="max-w-[1280px] mx-auto">
         <div className="flex items-end justify-between gap-6 mb-10 px-1">
           <div>
-            <div className="rb-eyebrow mb-3">Drop 01</div>
-            <h2 className="rb-h2">Three pieces. June 2026.</h2>
+            <div className="rb-eyebrow mb-3">Drop 01 · June 2026</div>
+            <h2 className="rb-h2">Three pieces. Printed when you order.</h2>
           </div>
           <Link href="/products" className="rb-more hidden md:inline-flex">
             All pieces
