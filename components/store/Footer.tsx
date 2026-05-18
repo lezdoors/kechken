@@ -3,39 +3,24 @@
 import Link from "next/link";
 import { useState } from "react";
 
-const COLS: { title: string; links: { label: string; href: string }[] }[] = [
-  {
-    title: "Nitra",
-    links: [
-      { label: "About", href: "/about" },
-      { label: "Drops", href: "/products" },
-      { label: "Press", href: "mailto:hello@nitra.com?subject=Press%20inquiry" },
-    ],
-  },
-  {
-    title: "Help",
-    links: [
-      { label: "Contact", href: "mailto:hello@nitra.com" },
-      { label: "Shipping", href: "/legal/shipping" },
-      { label: "Returns", href: "/legal/returns" },
-      { label: "Size & Care", href: "/legal/care" },
-    ],
-  },
-  {
-    title: "Trade",
-    links: [
-      { label: "Wholesale", href: "mailto:hello@nitra.com?subject=Wholesale" },
-      { label: "Collabs", href: "mailto:hello@nitra.com?subject=Collab" },
-    ],
-  },
-  {
-    title: "Legal",
-    links: [
-      { label: "Privacy Policy", href: "/legal/privacy" },
-      { label: "Terms of Sale", href: "/legal/terms" },
-      { label: "Returns Policy", href: "/legal/returns" },
-    ],
-  },
+const SHOP_LINKS = [
+  { label: "New Drop", href: "/products" },
+  { label: "Streetwear", href: "/products?category=Streetwear" },
+  { label: "Jewelry", href: "/products?category=Jewelry" },
+  { label: "Limited Drops", href: "/products?category=Limited%20Drops" },
+];
+
+const HOUSE_LINKS = [
+  { label: "The Story", href: "/story" },
+  { label: "The Atelier", href: "/story" },
+  { label: "Press", href: "mailto:hello@nitra.com?subject=Press" },
+];
+
+const HELP_LINKS = [
+  { label: "Shipping", href: "/legal/shipping" },
+  { label: "Returns", href: "/legal/returns" },
+  { label: "Size & Care", href: "/legal/care" },
+  { label: "Contact", href: "mailto:hello@nitra.com" },
 ];
 
 const SOCIAL = [
@@ -43,19 +28,10 @@ const SOCIAL = [
   { label: "TikTok", href: "https://www.tiktok.com/@nitra" },
 ];
 
-const REGIONS = [
-  { label: "Europe", items: ["France", "United Kingdom", "Germany", "Italy", "Spain"] },
-  { label: "Americas", items: ["United States", "Canada", "Brazil"] },
-  { label: "Middle East & Africa", items: ["Morocco", "United Arab Emirates", "Saudi Arabia"] },
-  { label: "Asia & Pacific", items: ["Japan", "Singapore", "Australia"] },
-];
-
 type NewsletterStatus = "idle" | "submitting" | "ok" | "error";
 
 export default function Footer() {
-  const [openCountry, setOpenCountry] = useState(false);
   const [email, setEmail] = useState("");
-  const [consent, setConsent] = useState(false);
   const [status, setStatus] = useState<NewsletterStatus>("idle");
   const [message, setMessage] = useState("");
 
@@ -68,7 +44,7 @@ export default function Footer() {
       const res = await fetch("/api/newsletter", {
         method: "POST",
         headers: { "Content-Type": "application/json" },
-        body: JSON.stringify({ email, consent }),
+        body: JSON.stringify({ email, consent: true }),
       });
       const data = await res.json().catch(() => ({}));
       if (!res.ok) {
@@ -77,9 +53,8 @@ export default function Footer() {
         return;
       }
       setStatus("ok");
-      setMessage("Thank you — a welcome note is on its way to your inbox.");
+      setMessage("Thank you. We'll be in touch.");
       setEmail("");
-      setConsent(false);
     } catch {
       setStatus("error");
       setMessage("Network error. Please try again.");
@@ -87,58 +62,43 @@ export default function Footer() {
   }
 
   return (
-    <footer className="bg-white border-t border-[var(--color-rule)]">
-      {/* Newsletter band */}
-      <div className="bg-[var(--color-bg-alt)] border-b border-[var(--color-rule)]">
-        <div className="max-w-[1280px] mx-auto px-6 md:px-10 py-12 md:py-16 grid grid-cols-1 md:grid-cols-[1.2fr_1fr] gap-8 items-center">
+    <footer className="bg-[var(--color-bg-dark)] text-white">
+      {/* Newsletter editorial band */}
+      <div className="border-b border-white/10">
+        <div className="max-w-[1280px] mx-auto px-6 md:px-12 py-16 md:py-24 grid grid-cols-1 md:grid-cols-[1.2fr_1fr] gap-10 md:gap-16 items-end">
           <div>
-            <div className="rb-eyebrow mb-3">Newsletter</div>
-            <h3 className="rb-h2 max-w-[28ch]">
-              Drops and dispatches. No noise.
+            <div className="ed-eyebrow text-white/55 mb-5">The List</div>
+            <h3 className="font-serif italic font-light text-[clamp(32px,4vw,52px)] leading-[1.04] text-white max-w-[18ch]">
+              Quiet correspondence. Drops, dispatches, nothing else.
             </h3>
           </div>
           <form
             onSubmit={handleSubscribe}
-            className="flex flex-col gap-3"
+            className="flex flex-col gap-3 md:pb-3"
             aria-live="polite"
           >
-            <div className="flex items-stretch border border-[var(--color-ink)]">
+            <div className="flex items-stretch border-b border-white">
               <input
                 type="email"
-                placeholder="Your email address"
+                placeholder="Your email"
                 value={email}
                 onChange={(e) => setEmail(e.target.value)}
                 required
                 disabled={status === "submitting"}
-                className="flex-1 px-4 py-3.5 text-[14px] bg-transparent outline-none placeholder:text-[var(--color-mineral)] disabled:opacity-50"
+                className="flex-1 py-3.5 text-[15px] bg-transparent outline-none placeholder:text-white/40 text-white disabled:opacity-50"
               />
               <button
                 type="submit"
                 disabled={status === "submitting"}
-                className="px-5 bg-[var(--color-ink)] text-white text-[11px] tracking-[0.12em] uppercase font-medium disabled:opacity-60"
+                className="ed-eyebrow text-white px-3 disabled:opacity-60"
               >
-                {status === "submitting" ? "Sending…" : "Subscribe"}
+                {status === "submitting" ? "Sending…" : "Join"}
               </button>
             </div>
-            <label className="flex items-start gap-2 text-[11px] leading-[1.5] text-[var(--color-muted)]">
-              <input
-                type="checkbox"
-                checked={consent}
-                onChange={(e) => setConsent(e.target.checked)}
-                className="mt-0.5"
-              />
-              <span>
-                I agree to receive newsletters from Nitra and accept the{" "}
-                <Link href="/legal/privacy" className="underline">
-                  privacy policy
-                </Link>
-                .
-              </span>
-            </label>
             {message && (
               <p
-                className={`text-[12px] mt-1 ${
-                  status === "ok" ? "text-[var(--color-cedar)]" : "text-[#a44]"
+                className={`text-[12px] ${
+                  status === "ok" ? "text-white/85" : "text-[#e88a78]"
                 }`}
               >
                 {message}
@@ -148,118 +108,71 @@ export default function Footer() {
         </div>
       </div>
 
-      {/* Multi-column links */}
-      <div className="max-w-[1280px] mx-auto px-6 md:px-10 pt-14 pb-10 grid grid-cols-2 md:grid-cols-4 gap-10">
-        {COLS.map((c) => (
-          <div key={c.title}>
-            <h5 className="text-[12px] tracking-[0.1em] uppercase font-medium text-[var(--color-ink)] mb-4">
-              {c.title}
-            </h5>
-            <ul className="space-y-2.5">
-              {c.links.map((l) => (
-                <li key={l.label}>
-                  <Link
-                    href={l.href}
-                    className="text-[13px] text-[var(--color-ink-soft)] hover:text-[var(--color-ink)] transition-colors"
-                  >
-                    {l.label}
-                  </Link>
-                </li>
-              ))}
-            </ul>
-          </div>
-        ))}
-      </div>
-
-      {/* Brand statement strip */}
-      <div className="border-t border-[var(--color-rule)] py-10">
-        <div className="max-w-[1280px] mx-auto px-6 md:px-10 flex flex-col md:flex-row items-center md:justify-between gap-6">
-          <div className="text-[13px] tracking-[0.18em] uppercase text-[var(--color-ink)] font-medium">
-            Rooted in the Maghreb · Print-to-order · Made for now
-          </div>
-          <div className="flex items-center gap-5">
-            {SOCIAL.map((s) => (
-              <Link
-                key={s.label}
-                href={s.href}
-                aria-label={s.label}
-                className="text-[11px] tracking-[0.06em] uppercase text-[var(--color-ink-soft)] hover:text-[var(--color-ink)] transition-colors"
-              >
-                {s.label}
-              </Link>
+      {/* Link columns */}
+      <div className="max-w-[1280px] mx-auto px-6 md:px-12 pt-16 pb-12 grid grid-cols-2 md:grid-cols-4 gap-10 md:gap-12">
+        <div>
+          <div className="ed-eyebrow text-white/55 mb-5">Shop</div>
+          <ul className="space-y-3">
+            {SHOP_LINKS.map((l) => (
+              <li key={l.label}>
+                <Link href={l.href} className="text-[13px] text-white/75 hover:text-white transition-colors">
+                  {l.label}
+                </Link>
+              </li>
             ))}
-          </div>
+          </ul>
+        </div>
+        <div>
+          <div className="ed-eyebrow text-white/55 mb-5">House</div>
+          <ul className="space-y-3">
+            {HOUSE_LINKS.map((l) => (
+              <li key={l.label}>
+                <Link href={l.href} className="text-[13px] text-white/75 hover:text-white transition-colors">
+                  {l.label}
+                </Link>
+              </li>
+            ))}
+          </ul>
+        </div>
+        <div>
+          <div className="ed-eyebrow text-white/55 mb-5">Help</div>
+          <ul className="space-y-3">
+            {HELP_LINKS.map((l) => (
+              <li key={l.label}>
+                <Link href={l.href} className="text-[13px] text-white/75 hover:text-white transition-colors">
+                  {l.label}
+                </Link>
+              </li>
+            ))}
+          </ul>
+        </div>
+        <div>
+          <div className="ed-eyebrow text-white/55 mb-5">Follow</div>
+          <ul className="space-y-3">
+            {SOCIAL.map((s) => (
+              <li key={s.label}>
+                <Link href={s.href} className="text-[13px] text-white/75 hover:text-white transition-colors">
+                  {s.label}
+                </Link>
+              </li>
+            ))}
+          </ul>
         </div>
       </div>
 
-      {/* Bottom utility row */}
-      <div className="border-t border-[var(--color-rule)] bg-[var(--color-bg-alt)]">
-        <div className="max-w-[1280px] mx-auto px-6 md:px-10 py-5 flex flex-col md:flex-row md:items-center md:justify-between gap-4 text-[11px] text-[var(--color-muted)]">
-          <div className="flex flex-wrap items-center gap-x-5 gap-y-2">
-            <Link href="/about" className="hover:text-[var(--color-ink)]">Contact</Link>
-            <Link href="/about" className="hover:text-[var(--color-ink)]">Store locator</Link>
-            <Link href="/about" className="hover:text-[var(--color-ink)]">Privacy</Link>
-            <Link href="/about" className="hover:text-[var(--color-ink)]">Cookie preferences</Link>
-            <Link href="/about" className="hover:text-[var(--color-ink)]">Legal notices</Link>
-            <Link href="/about" className="hover:text-[var(--color-ink)]">Accessibility</Link>
+      {/* Bottom utility */}
+      <div className="border-t border-white/10">
+        <div className="max-w-[1280px] mx-auto px-6 md:px-12 py-6 flex flex-col md:flex-row md:items-center md:justify-between gap-3 text-[11px] text-white/55">
+          <div className="font-serif italic text-[14px] text-white/75">
+            nitra · modern moroccan identity
           </div>
-          <div className="flex items-center gap-5">
-            <button
-              onClick={() => setOpenCountry((v) => !v)}
-              className="inline-flex items-center gap-1.5 hover:text-[var(--color-ink)] transition-colors"
-            >
-              <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.5">
-                <circle cx="12" cy="12" r="9" />
-                <path d="M3 12h18M12 3a14 14 0 0 1 0 18M12 3a14 14 0 0 0 0 18" />
-              </svg>
-              United States · English
-            </button>
+          <div className="flex items-center gap-5 ed-meta">
+            <Link href="/legal/privacy" className="hover:text-white transition-colors">Privacy</Link>
+            <Link href="/legal/terms" className="hover:text-white transition-colors">Terms</Link>
             <span>© {new Date().getFullYear()} Nitra</span>
           </div>
         </div>
       </div>
-
-      {/* Country selector modal */}
-      {openCountry && (
-        <div
-          className="fixed inset-0 bg-black/50 z-50 flex items-center justify-center p-4"
-          onClick={() => setOpenCountry(false)}
-        >
-          <div
-            className="bg-white max-w-[860px] w-full max-h-[80vh] overflow-y-auto p-8 md:p-12"
-            onClick={(e) => e.stopPropagation()}
-          >
-            <div className="flex items-start justify-between mb-8">
-              <h3 className="rb-h2">Choose your country</h3>
-              <button
-                onClick={() => setOpenCountry(false)}
-                aria-label="Close"
-                className="text-[var(--color-muted)] hover:text-[var(--color-ink)]"
-              >
-                <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.5">
-                  <path d="M18 6 6 18M6 6l12 12" />
-                </svg>
-              </button>
-            </div>
-            <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-8">
-              {REGIONS.map((r) => (
-                <div key={r.label}>
-                  <div className="rb-meta mb-3">{r.label}</div>
-                  <ul className="space-y-2">
-                    {r.items.map((c) => (
-                      <li key={c}>
-                        <button className="text-[13px] text-[var(--color-ink-soft)] hover:text-[var(--color-ink)] transition-colors">
-                          {c}
-                        </button>
-                      </li>
-                    ))}
-                  </ul>
-                </div>
-              ))}
-            </div>
-          </div>
-        </div>
-      )}
     </footer>
   );
 }

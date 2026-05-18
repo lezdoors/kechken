@@ -2,7 +2,7 @@ import Image from "next/image";
 import Link from "next/link";
 
 // Swap point: when the Drop 01 hero WebP lands, set this to the public path.
-// While null, renders the warm-light gradient placeholder.
+// While null, renders the warm editorial gradient placeholder.
 // See docs/brand/HF-PROMPTS-DROP-01.md prompt #1 for what to generate.
 const HERO_IMAGE: string | null = null;
 
@@ -10,7 +10,7 @@ export default function Hero() {
   const hasImage = HERO_IMAGE !== null;
 
   return (
-    <section className="relative min-h-[88vh] flex items-center overflow-hidden bg-[var(--color-bg)]">
+    <section className="relative h-[100vh] min-h-[640px] flex items-end overflow-hidden bg-[var(--color-bg)]">
       {hasImage ? (
         <Image
           src={HERO_IMAGE as string}
@@ -21,88 +21,62 @@ export default function Hero() {
           className="object-cover -z-10"
         />
       ) : (
-        // Warm editorial gradient placeholder — references the Everline mood
-        // (golden-hour key from camera-right, deep amber shadow on the left).
-        // See docs/brand/PHOTOGRAPHY-REFERENCE.md.
+        // Editorial bone-warm gradient placeholder.
+        // References the Aigle daylight register × Jacquemus warmth.
         <div
           aria-hidden
           className="absolute inset-0 -z-10"
           style={{
             background:
-              "radial-gradient(ellipse at 78% 38%, #f0e4d2 0%, #ecd9bb 22%, #e3c89e 42%, #2a1e16 95%)",
+              "linear-gradient(180deg, #f0e6d2 0%, #e8dcc2 32%, #d9c8a3 60%, #b59874 88%, #5c4530 100%)",
           }}
         />
       )}
 
-      {/* Brass hairline at top */}
+      {/* Subtle vignette to lift text contrast over gradient */}
       <div
         aria-hidden
-        className="absolute top-0 left-1/2 -translate-x-1/2 w-px h-24 bg-[var(--color-brass)] opacity-60"
+        className="absolute inset-0 -z-[5]"
+        style={{
+          background:
+            "linear-gradient(180deg, transparent 50%, rgba(28,26,24,0.18) 100%)",
+        }}
       />
 
-      <div
-        className={`max-w-[1280px] w-full mx-auto px-6 md:px-12 py-32 md:py-44 ${
-          hasImage ? "text-white" : "text-[var(--color-ink)]"
-        }`}
-      >
-        <div className="max-w-[640px]">
+      <div className="relative w-full px-[clamp(20px,5vw,80px)] pb-[clamp(60px,8vw,120px)] pt-[clamp(120px,15vw,200px)]">
+        <div className="max-w-[1600px] mx-auto">
           <div
-            className={`rb-eyebrow mb-8 ${
-              hasImage ? "text-white/80" : ""
+            className={`ed-eyebrow mb-6 ${
+              hasImage ? "text-white/85" : "text-[var(--color-mineral)]"
             }`}
           >
             Drop 01 · June 2026
           </div>
 
           <h1
-            className={`font-sans font-light tracking-[-0.012em] leading-[1.02] text-[clamp(44px,7.5vw,96px)] ${
+            className={`ed-display text-[clamp(64px,11vw,160px)] max-w-[12ch] ${
               hasImage ? "text-white" : "text-[var(--color-ink)]"
             }`}
           >
-            Clothing rooted
-            <br />
-            in the Maghreb.
+            nitra.
           </h1>
 
           <p
-            className={`serif-body italic mt-9 max-w-[42ch] ${
-              hasImage ? "text-white/85" : "text-[var(--color-ink-soft)]"
+            className={`mt-8 max-w-[36ch] font-sans font-light text-[clamp(15px,1.2vw,18px)] tracking-[0.04em] uppercase ${
+              hasImage ? "text-white/80" : "text-[var(--color-ink-soft)]"
             }`}
+            style={{ letterSpacing: "0.06em" }}
           >
-            Hand-painted figurative graphics on heavyweight cotton. A clothing
-            label born of Moroccan visual tradition — made for now, made for
-            the world.
+            Modern Moroccan Identity
           </p>
 
           <div className="mt-12 flex flex-col sm:flex-row items-start gap-5">
             <Link
               href="#drop"
-              className={
-                hasImage
-                  ? "inline-flex items-center justify-center font-sans text-[12px] font-medium tracking-[0.1em] uppercase px-7 py-3.5 bg-white text-[var(--color-ink)] hover:bg-[var(--color-bg-alt)] transition"
-                  : "rb-cta"
-              }
+              className={hasImage ? "ed-cta-light" : "ed-cta"}
             >
-              See Drop 01
+              Shop the Drop
             </Link>
-            <Link
-              href="mailto:hello@nitra.com?subject=Nitra%20list"
-              className={
-                hasImage
-                  ? "inline-flex items-center justify-center font-sans text-[12px] font-medium tracking-[0.1em] uppercase px-7 py-3.5 bg-transparent text-white border border-white hover:bg-white hover:text-[var(--color-ink)] transition"
-                  : "rb-cta-outline"
-              }
-            >
-              Join the list
-            </Link>
-          </div>
-
-          <div
-            className={`rb-meta mt-16 ${
-              hasImage ? "text-white/65" : "text-[var(--color-mineral)]"
-            }`}
-          >
-            Print-to-order · Ships in 3–5 days · No overstock
           </div>
         </div>
       </div>

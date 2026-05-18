@@ -1,11 +1,23 @@
 import Hero from "@/components/store/Hero";
-import DropGrid from "@/components/store/DropGrid";
+import FeaturedDrop from "@/components/store/FeaturedDrop";
+import CategoryTiles from "@/components/store/CategoryTiles";
+import JewelryFocus from "@/components/store/JewelryFocus";
+import EditorialStrip from "@/components/store/EditorialStrip";
+import ProductPreview from "@/components/store/ProductPreview";
+import BrandStoryEditorial from "@/components/store/BrandStoryEditorial";
+import Fulfillment from "@/components/store/Fulfillment";
 
 export default async function Home() {
   return (
-    <main className="bg-white">
+    <main className="bg-[var(--color-bg)]">
       <Hero />
-      <DropGrid />
+      <FeaturedDrop />
+      <CategoryTiles />
+      <JewelryFocus />
+      <EditorialStrip />
+      <ProductPreview />
+      <BrandStoryEditorial />
+      <Fulfillment />
     </main>
   );
 }

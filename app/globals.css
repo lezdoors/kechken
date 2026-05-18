@@ -2,50 +2,51 @@
 
 @theme {
   /* ============================================================
-     ROCHE-BOBOIS-INSPIRED PALETTE (Nitra brand layer)
-     White, photography-driven, with brass as restrained accent.
+     NITRA · Modern Moroccan luxury fashion register
+     Lemaire restraint × Fear of God scale × Jacquemus warmth × Aigle clarity
      ============================================================ */
-  --color-bg: #ffffff;
-  --color-bg-alt: #f5f4f1;     /* warm off-white for alt sections */
-  --color-bg-tinted: #ecebe6;  /* tertiary; rare use */
-  --rb-card-bg: #ffffff;        /* product cutouts ship on pure white; matched card BG so the seam disappears */
-  --rb-card-bg-alt: #f4f3ef;    /* legacy pale-gray; kept for lifestyle/category tiles where the image covers edge-to-edge */
-  --rb-promo: #3aa8e8;         /* RB "Irresistible Days" blue */
-  --color-ink: #1a1a1a;        /* primary text & headlines */
-  --color-ink-soft: #3a3a3a;   /* body copy */
-  --color-muted: #6b6b6b;      /* secondary text, captions */
-  --color-mineral: #8a857c;    /* tertiary text, dates */
-  --color-rule: #e8e6e0;       /* hairline borders */
-  --color-rule-soft: #f0eee9;  /* internal grid dividers */
-  --color-brass: #b8923c;      /* restrained accent for "More" links */
-  --color-brass-hi: #8a6c2d;   /* accent hover */
-  --color-stamp: #d65a3a;      /* terracotta "promotional stamp" pop */
 
-  /* Legacy palette retained for admin/cart/older components */
-  --color-bone: #f1ebe0;
-  --color-bone-2: #e8dfd0;
-  --color-sand: #d9c7ac;
-  --color-linen: #c8b28f;
-  --color-clay: #a86a3d;
-  --color-cedar: #7a4826;
-  --color-bronze: #7c5a2c;
-  --color-umber: #3a2418;
-  --color-charcoal: #2a1e16;
-  --color-line: rgba(26,26,26,.14);
-  --color-line-soft: rgba(26,26,26,.06);
-  --color-line-bone: rgba(241,235,224,.18);
-  --color-chalk: #ffffff;
-  --color-pearl: #f7f5f0;
-  --color-stone: #e8e6e0;
-  --color-graphite: #3a3a3a;
-  --color-warm-white: #fdfcf9;
-  --color-accent: #b8923c;
-  --color-accent-light: #d9c7ac;
-  --color-shadow: rgba(26,26,26,0.04);
+  /* Surfaces — warmer than pure RB cream, leaning bone/ivory */
+  --color-bg: #f7f2e8;              /* bone, primary surface */
+  --color-bg-alt: #ece4d2;          /* sand, alt sections */
+  --color-bg-tinted: #ddd1b9;       /* limestone, tertiary */
+  --color-bg-dark: #1c1a18;         /* washed-black, jewelry section + footer accent */
+  --color-bg-dark-soft: #2a2622;    /* charcoal-warm, dark cards */
 
-  /* Fonts (Inter Tight drives nearly everything — RB-style sans) */
-  --font-display: "Inter Tight", "Helvetica Neue", Arial, sans-serif;
-  --font-serif: "Cormorant Garamond", Georgia, serif;
+  /* Ink hierarchy */
+  --color-ink: #1c1a18;             /* primary, washed-black, never pure black */
+  --color-ink-soft: #3a342e;        /* body copy */
+  --color-muted: #6b6258;           /* secondary text, captions */
+  --color-mineral: #8a8275;         /* tertiary text, eyebrows, dates */
+
+  /* Lines + dividers */
+  --color-rule: #d8cdb8;            /* hairline borders */
+  --color-rule-soft: #e6dcc7;       /* internal grid dividers */
+
+  /* Brand accents — used sparingly */
+  --color-bronze: #8c6b3a;          /* burnished bronze — primary accent */
+  --color-bronze-hi: #6a4f29;       /* bronze hover */
+  --color-terracotta: #b85a3a;      /* terracotta — sparing pops */
+  --color-mineral-blue: #1e4a6b;    /* deep Moroccan blue, occasional accent */
+  --color-mineral-green: #4a5c3a;   /* mineral green, occasional accent */
+
+  /* Legacy palette retained for admin/cart (don't bloom new use) */
+  --rb-card-bg: var(--color-bg);
+  --rb-card-bg-alt: var(--color-bg-alt);
+  --color-stamp: var(--color-terracotta);
+  --color-brass: var(--color-bronze);
+  --color-brass-hi: var(--color-bronze-hi);
+  --color-line: rgba(28,26,24,.14);
+  --color-line-soft: rgba(28,26,24,.06);
+  --color-warm-white: #fbf7ee;
+  --color-pearl: var(--color-bg-alt);
+  --color-stone: var(--color-rule);
+  --color-graphite: var(--color-ink-soft);
+  --color-shadow: rgba(28,26,24,0.04);
+
+  /* Fonts — Cormorant serif for editorial titles, Inter Tight for everything else */
+  --font-display: "Cormorant Garamond", "Times New Roman", Georgia, serif;
+  --font-serif: "Cormorant Garamond", "Times New Roman", Georgia, serif;
   --font-sans: "Inter Tight", "Helvetica Neue", Arial, sans-serif;
   --font-mono: "JetBrains Mono", ui-monospace, monospace;
 
@@ -76,227 +77,245 @@ a { color: inherit; text-decoration: none; }
 button { font: inherit; color: inherit; background: none; border: 0; cursor: pointer; padding: 0; }
 
 /* ============================================================
-   TYPOGRAPHY (RB-aligned: clean sans hierarchy)
+   TYPOGRAPHY · Lemaire/Jacquemus/Fear of God hierarchy
+   Refined serif for editorial · clean sans for UI/body
    ============================================================ */
 
-/* Editorial display — for hero, section heads */
-.rb-display {
-  font-family: var(--font-sans);
+/* Hero display — serif italic, oversized, restrained */
+.ed-display {
+  font-family: var(--font-serif);
   font-weight: 300;
+  font-style: italic;
   letter-spacing: -0.012em;
+  line-height: 0.98;
+  color: var(--color-ink);
+}
+
+/* Editorial section heading — serif, large but quieter than hero */
+.ed-h2 {
+  font-family: var(--font-serif);
+  font-weight: 400;
+  font-style: italic;
+  font-size: clamp(36px, 4.8vw, 64px);
+  letter-spacing: -0.005em;
   line-height: 1.04;
   color: var(--color-ink);
 }
 
-/* Section heading — sub-display */
-.rb-h2 {
+/* Sub-section heading — sans, oversized FoG-style uppercase */
+.ed-h3 {
   font-family: var(--font-sans);
   font-weight: 400;
-  font-size: clamp(22px, 2.2vw, 30px);
-  letter-spacing: -0.008em;
-  line-height: 1.18;
+  font-size: clamp(20px, 2vw, 28px);
+  letter-spacing: 0.02em;
+  line-height: 1.15;
+  text-transform: uppercase;
   color: var(--color-ink);
 }
 
 /* Card / product title */
-.rb-card-title {
+.ed-card-title {
   font-family: var(--font-sans);
   font-weight: 400;
-  font-size: 16px;
-  letter-spacing: 0;
+  font-size: 14px;
+  letter-spacing: 0.04em;
+  text-transform: uppercase;
   color: var(--color-ink);
 }
 
-/* Designer attribution under product */
-.rb-attribution {
-  font-family: var(--font-sans);
-  font-weight: 300;
-  font-style: italic;
-  font-size: 13px;
-  color: var(--color-muted);
-}
-
 /* Body */
-.rb-body {
+.ed-body {
   font-family: var(--font-sans);
   font-size: 14px;
-  line-height: 1.6;
+  line-height: 1.7;
   color: var(--color-ink-soft);
-  font-weight: 400;
+  font-weight: 300;
 }
 
-/* Eyebrow / category label */
-.rb-eyebrow {
+/* Editorial body — slightly larger, more breathing */
+.ed-body-lg {
+  font-family: var(--font-sans);
+  font-size: 16px;
+  line-height: 1.75;
+  color: var(--color-ink-soft);
+  font-weight: 300;
+}
+
+/* Eyebrow / section label */
+.ed-eyebrow {
   font-family: var(--font-sans);
   font-size: 11px;
-  letter-spacing: 0.18em;
+  letter-spacing: 0.22em;
   text-transform: uppercase;
   color: var(--color-mineral);
   font-weight: 500;
 }
 
 /* Date / meta */
-.rb-meta {
+.ed-meta {
   font-family: var(--font-sans);
   font-size: 11px;
-  letter-spacing: 0.04em;
+  letter-spacing: 0.08em;
   text-transform: uppercase;
   color: var(--color-mineral);
   font-weight: 400;
 }
 
 /* Price */
-.rb-price {
+.ed-price {
   font-family: var(--font-sans);
-  font-size: 14px;
-  font-weight: 500;
+  font-size: 13px;
+  font-weight: 400;
   color: var(--color-ink);
-  letter-spacing: 0.01em;
+  letter-spacing: 0.04em;
 }
 
-.rb-price-strike {
-  font-family: var(--font-sans);
-  font-size: 12px;
+/* Italic serif quote — for editorial passages */
+.ed-serif-quote {
+  font-family: var(--font-serif);
   font-weight: 400;
-  color: var(--color-muted);
-  text-decoration: line-through;
-  margin-right: 8px;
+  font-style: italic;
+  font-size: clamp(18px, 1.5vw, 22px);
+  line-height: 1.55;
+  color: var(--color-ink-soft);
 }
 
 /* ============================================================
-   LINKS & BUTTONS (RB pattern: "more" inline link + promo stamp)
+   CTAs · Restrained luxury — no flourishes
    ============================================================ */
-.rb-more {
+.ed-cta {
   display: inline-flex;
   align-items: center;
-  gap: 8px;
+  justify-content: center;
   font-family: var(--font-sans);
-  font-size: 12px;
+  font-size: 11px;
   font-weight: 500;
-  letter-spacing: 0.08em;
+  letter-spacing: 0.18em;
+  text-transform: uppercase;
+  padding: 16px 36px;
+  background: var(--color-ink);
+  color: var(--color-bg);
+  border: 1px solid var(--color-ink);
+  transition: background .25s var(--ease), color .25s var(--ease);
+}
+.ed-cta:hover { background: transparent; color: var(--color-ink); }
+
+.ed-cta-outline {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  font-family: var(--font-sans);
+  font-size: 11px;
+  font-weight: 500;
+  letter-spacing: 0.18em;
+  text-transform: uppercase;
+  padding: 16px 36px;
+  background: transparent;
+  color: var(--color-ink);
+  border: 1px solid var(--color-ink);
+  transition: background .25s var(--ease), color .25s var(--ease);
+}
+.ed-cta-outline:hover { background: var(--color-ink); color: var(--color-bg); }
+
+.ed-cta-light {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  font-family: var(--font-sans);
+  font-size: 11px;
+  font-weight: 500;
+  letter-spacing: 0.18em;
+  text-transform: uppercase;
+  padding: 16px 36px;
+  background: var(--color-bg);
+  color: var(--color-ink);
+  border: 1px solid var(--color-bg);
+  transition: opacity .25s var(--ease);
+}
+.ed-cta-light:hover { opacity: 0.85; }
+
+/* Inline editorial "more" link */
+.ed-more {
+  display: inline-flex;
+  align-items: center;
+  gap: 10px;
+  font-family: var(--font-sans);
+  font-size: 11px;
+  font-weight: 500;
+  letter-spacing: 0.18em;
   text-transform: uppercase;
   color: var(--color-ink);
   padding-bottom: 4px;
   border-bottom: 1px solid var(--color-ink);
-  transition: color .2s ease, border-color .2s ease;
+  transition: opacity .2s var(--ease);
 }
-.rb-more:hover { color: var(--color-brass-hi); border-color: var(--color-brass-hi); }
-
-.rb-cta {
-  display: inline-flex;
-  align-items: center;
-  justify-content: center;
-  font-family: var(--font-sans);
-  font-size: 12px;
-  font-weight: 500;
-  letter-spacing: 0.1em;
-  text-transform: uppercase;
-  padding: 14px 28px;
-  background: var(--color-ink);
-  color: #ffffff;
-  border: 1px solid var(--color-ink);
-  transition: background .2s ease, color .2s ease;
-}
-.rb-cta:hover { background: #ffffff; color: var(--color-ink); }
-
-.rb-cta-outline {
-  display: inline-flex;
-  align-items: center;
-  justify-content: center;
-  font-family: var(--font-sans);
-  font-size: 12px;
-  font-weight: 500;
-  letter-spacing: 0.1em;
-  text-transform: uppercase;
-  padding: 14px 28px;
-  background: transparent;
-  color: var(--color-ink);
-  border: 1px solid var(--color-ink);
-  transition: background .2s ease, color .2s ease;
-}
-.rb-cta-outline:hover { background: var(--color-ink); color: #ffffff; }
-
-/* Promotional stamp (RB's circular "Irresistible Days" mark) */
-.rb-stamp {
-  display: inline-flex;
-  align-items: center;
-  justify-content: center;
-  width: 76px;
-  height: 76px;
-  border-radius: 50%;
-  background: var(--color-stamp);
-  color: #ffffff;
-  font-family: var(--font-sans);
-  font-size: 10px;
-  font-weight: 600;
-  letter-spacing: 0.08em;
-  text-transform: uppercase;
-  text-align: center;
-  line-height: 1.15;
-  padding: 8px;
-}
+.ed-more:hover { opacity: 0.65; }
 
 /* ============================================================
-   LEGACY UTILITY CLASSES (preserved for non-rebuilt components)
+   SECTION SPACING · Fear of God / Roche Bobois rhythm
    ============================================================ */
-.eyebrow { font-family: var(--font-sans); font-size: 11px; letter-spacing: 0.18em; text-transform: uppercase; color: var(--color-mineral); font-weight: 500; }
-.display { font-family: var(--font-sans); font-weight: 300; letter-spacing: -0.012em; line-height: 1.04; }
-.disp { font-family: var(--font-sans); font-weight: 300; letter-spacing: -0.012em; line-height: 1.05; }
-.lede { font-family: var(--font-sans); font-weight: 400; font-size: clamp(15px, 1.2vw, 17px); line-height: 1.6; color: var(--color-ink-soft); }
-.body-text, .body-copy { font-family: var(--font-sans); font-size: 14px; line-height: 1.6; color: var(--color-ink-soft); font-weight: 400; }
-.serif-body { font-family: var(--font-serif); font-weight: 400; font-style: italic; font-size: clamp(17px, 1.4vw, 20px); line-height: 1.5; color: var(--color-ink-soft); }
-.meta { font-family: var(--font-sans); font-size: 11px; letter-spacing: 0.04em; text-transform: uppercase; color: var(--color-mineral); font-weight: 400; }
-.eye { font-family: var(--font-sans); font-size: 11px; letter-spacing: 0.18em; text-transform: uppercase; color: var(--color-mineral); font-weight: 500; }
-
-.link-underline {
-  font-family: var(--font-sans);
-  font-weight: 500;
-  font-size: 12px;
-  letter-spacing: 0.08em;
-  text-transform: uppercase;
-  border-bottom: 1px solid var(--color-ink);
-  padding-bottom: 3px;
-  color: var(--color-ink);
-  transition: border-color .2s ease, color .2s ease;
-}
-.link-underline:hover { border-color: var(--color-brass-hi); color: var(--color-brass-hi); }
-
-.btn-solid {
-  display: inline-block;
-  font-family: var(--font-sans);
-  font-size: 12px;
-  font-weight: 500;
-  letter-spacing: 0.1em;
-  text-transform: uppercase;
-  padding: 14px 28px;
-  background: var(--color-ink);
-  color: #ffffff;
-  border: 1px solid var(--color-ink);
-  cursor: pointer;
-  transition: background .2s ease, color .2s ease;
-}
-.btn-solid:hover { background: #ffffff; color: var(--color-ink); }
-
-.btn-outline {
-  display: inline-block;
-  font-family: var(--font-sans);
-  font-size: 12px;
-  font-weight: 500;
-  letter-spacing: 0.1em;
-  text-transform: uppercase;
-  padding: 14px 28px;
-  background: transparent;
-  color: var(--color-ink);
-  border: 1px solid var(--color-ink);
-  cursor: pointer;
-  transition: background .2s ease, color .2s ease;
-}
-.btn-outline:hover { background: var(--color-ink); color: #ffffff; }
+.ed-section { padding: clamp(80px, 9vw, 140px) clamp(20px, 4vw, 72px); }
+.ed-section-tight { padding: clamp(48px, 6vw, 90px) clamp(20px, 4vw, 72px); }
+.ed-section-wide { padding: clamp(80px, 9vw, 140px) clamp(8px, 2vw, 24px); }
 
 /* ============================================================
-   SCROLL REVEAL
+   CARD · Editorial product card, no badges no shouting
    ============================================================ */
-.reveal { opacity: 0; transform: translateY(20px); transition: opacity 1s var(--ease), transform 1s var(--ease); }
+.ed-card { background: transparent; }
+.ed-card-img-wrap { overflow: hidden; position: relative; aspect-ratio: 4/5; background: var(--color-bg-alt); }
+.ed-card-img { transition: transform 1.1s var(--ease); }
+.ed-card:hover .ed-card-img { transform: scale(1.04); }
+
+/* ============================================================
+   LEGACY (preserved for admin/cart pages still using .rb-*)
+   ============================================================ */
+.rb-section { padding: clamp(80px, 9vw, 140px) clamp(20px, 4vw, 72px); }
+.rb-section-tight { padding: clamp(48px, 6vw, 90px) clamp(20px, 4vw, 72px); }
+.rb-display { font-family: var(--font-serif); font-weight: 300; font-style: italic; letter-spacing: -0.012em; line-height: 1.04; color: var(--color-ink); }
+.rb-h2 { font-family: var(--font-sans); font-weight: 400; font-size: clamp(22px, 2.2vw, 30px); letter-spacing: -0.008em; line-height: 1.18; color: var(--color-ink); }
+.rb-card-title { font-family: var(--font-sans); font-weight: 400; font-size: 14px; letter-spacing: 0.04em; text-transform: uppercase; color: var(--color-ink); }
+.rb-body { font-family: var(--font-sans); font-size: 14px; line-height: 1.7; color: var(--color-ink-soft); font-weight: 300; }
+.rb-eyebrow { font-family: var(--font-sans); font-size: 11px; letter-spacing: 0.22em; text-transform: uppercase; color: var(--color-mineral); font-weight: 500; }
+.rb-meta { font-family: var(--font-sans); font-size: 11px; letter-spacing: 0.08em; text-transform: uppercase; color: var(--color-mineral); font-weight: 400; }
+.rb-price { font-family: var(--font-sans); font-size: 13px; font-weight: 400; color: var(--color-ink); letter-spacing: 0.04em; }
+.rb-more { display: inline-flex; align-items: center; gap: 10px; font-family: var(--font-sans); font-size: 11px; font-weight: 500; letter-spacing: 0.18em; text-transform: uppercase; color: var(--color-ink); padding-bottom: 4px; border-bottom: 1px solid var(--color-ink); transition: opacity .2s var(--ease); }
+.rb-more:hover { opacity: 0.65; }
+.rb-cta { display: inline-flex; align-items: center; justify-content: center; font-family: var(--font-sans); font-size: 11px; font-weight: 500; letter-spacing: 0.18em; text-transform: uppercase; padding: 16px 36px; background: var(--color-ink); color: var(--color-bg); border: 1px solid var(--color-ink); transition: background .25s var(--ease), color .25s var(--ease); }
+.rb-cta:hover { background: transparent; color: var(--color-ink); }
+.rb-cta-outline { display: inline-flex; align-items: center; justify-content: center; font-family: var(--font-sans); font-size: 11px; font-weight: 500; letter-spacing: 0.18em; text-transform: uppercase; padding: 16px 36px; background: transparent; color: var(--color-ink); border: 1px solid var(--color-ink); transition: background .25s var(--ease), color .25s var(--ease); }
+.rb-cta-outline:hover { background: var(--color-ink); color: var(--color-bg); }
+.rb-product-card { background: transparent; }
+.rb-card-img-wrap { overflow: hidden; position: relative; }
+.rb-card-img { transition: transform .9s var(--ease); }
+.rb-product-card:hover .rb-card-img { transform: scale(1.04); }
+.rb-scroll-x { scrollbar-width: none; -ms-overflow-style: none; }
+.rb-scroll-x::-webkit-scrollbar { display: none; }
+.rb-promo-wordmark { font-family: var(--font-sans); font-size: clamp(15px, 1.4vw, 19px); letter-spacing: 0.04em; font-weight: 700; font-style: italic; color: var(--color-bronze); text-transform: uppercase; display: inline-block; line-height: 1; }
+.rb-mega { position: absolute; top: 100%; left: 0; right: 0; background: var(--color-bg); border-top: 1px solid var(--color-rule); box-shadow: 0 12px 30px rgba(28,26,24,0.04); opacity: 0; pointer-events: none; transform: translateY(-6px); transition: opacity .2s ease, transform .2s ease; }
+.rb-mega.open { opacity: 1; pointer-events: auto; transform: translateY(0); }
+.rb-stamp { display: inline-flex; align-items: center; justify-content: center; width: 76px; height: 76px; border-radius: 50%; background: var(--color-terracotta); color: var(--color-bg); font-family: var(--font-sans); font-size: 10px; font-weight: 600; letter-spacing: 0.08em; text-transform: uppercase; text-align: center; line-height: 1.15; padding: 8px; }
+
+/* Other utility classes preserved */
+.eyebrow { font-family: var(--font-sans); font-size: 11px; letter-spacing: 0.22em; text-transform: uppercase; color: var(--color-mineral); font-weight: 500; }
+.display { font-family: var(--font-serif); font-weight: 300; font-style: italic; letter-spacing: -0.012em; line-height: 1.04; }
+.disp { font-family: var(--font-serif); font-weight: 300; font-style: italic; letter-spacing: -0.012em; line-height: 1.05; }
+.lede { font-family: var(--font-sans); font-weight: 300; font-size: clamp(15px, 1.2vw, 17px); line-height: 1.7; color: var(--color-ink-soft); }
+.body-text, .body-copy { font-family: var(--font-sans); font-size: 14px; line-height: 1.7; color: var(--color-ink-soft); font-weight: 300; }
+.serif-body { font-family: var(--font-serif); font-weight: 400; font-style: italic; font-size: clamp(17px, 1.4vw, 20px); line-height: 1.55; color: var(--color-ink-soft); }
+.meta { font-family: var(--font-sans); font-size: 11px; letter-spacing: 0.08em; text-transform: uppercase; color: var(--color-mineral); font-weight: 400; }
+.eye { font-family: var(--font-sans); font-size: 11px; letter-spacing: 0.22em; text-transform: uppercase; color: var(--color-mineral); font-weight: 500; }
+
+.link-underline { font-family: var(--font-sans); font-weight: 500; font-size: 11px; letter-spacing: 0.18em; text-transform: uppercase; border-bottom: 1px solid var(--color-ink); padding-bottom: 3px; color: var(--color-ink); transition: opacity .2s ease; }
+.link-underline:hover { opacity: 0.65; }
+.btn-solid { display: inline-block; font-family: var(--font-sans); font-size: 11px; font-weight: 500; letter-spacing: 0.18em; text-transform: uppercase; padding: 16px 36px; background: var(--color-ink); color: var(--color-bg); border: 1px solid var(--color-ink); cursor: pointer; transition: background .25s var(--ease), color .25s var(--ease); }
+.btn-solid:hover { background: transparent; color: var(--color-ink); }
+.btn-outline { display: inline-block; font-family: var(--font-sans); font-size: 11px; font-weight: 500; letter-spacing: 0.18em; text-transform: uppercase; padding: 16px 36px; background: transparent; color: var(--color-ink); border: 1px solid var(--color-ink); cursor: pointer; transition: background .25s var(--ease), color .25s var(--ease); }
+.btn-outline:hover { background: var(--color-ink); color: var(--color-bg); }
+
+/* ============================================================
+   SCROLL REVEAL · subtle fade-up only
+   ============================================================ */
+.reveal { opacity: 0; transform: translateY(20px); transition: opacity 1.1s var(--ease), transform 1.1s var(--ease); }
 .reveal.visible { opacity: 1; transform: translateY(0); }
 .reveal-delay-1 { transition-delay: 0.1s; }
 .reveal-delay-2 { transition-delay: 0.2s; }
@@ -307,69 +326,9 @@ button { font: inherit; color: inherit; background: none; border: 0; cursor: poi
 .kenburns { animation: kenburns 24s var(--ease-in-out) infinite alternate; }
 
 /* ============================================================
-   SECTION SPACING (RB rhythm — tighter than RH; not extreme)
-   ============================================================ */
-.rb-section { padding: clamp(64px, 7vw, 110px) clamp(20px, 4vw, 60px); }
-.rb-section-tight { padding: clamp(40px, 5vw, 70px) clamp(20px, 4vw, 60px); }
-.section-pad { padding: clamp(64px, 7vw, 110px) clamp(20px, 4vw, 60px); }
-.section-pad-sm { padding: clamp(40px, 5vw, 70px) clamp(20px, 4vw, 60px); }
-
-/* ============================================================
-   CARD HOVER (RB pattern: image lift + caption stays)
-   ============================================================ */
-.rb-card { background: var(--color-bg); }
-.rb-card-img-wrap { overflow: hidden; position: relative; }
-.rb-card-img { transition: transform .9s var(--ease); }
-.rb-card:hover .rb-card-img { transform: scale(1.04); }
-
-/* ============================================================
    CART DRAWER (unchanged)
    ============================================================ */
-.cart-scrim { position: fixed; inset: 0; background: rgba(26,26,26,0.3); z-index: 90; opacity: 0; pointer-events: none; transition: opacity .4s ease; }
+.cart-scrim { position: fixed; inset: 0; background: rgba(28,26,24,0.3); z-index: 90; opacity: 0; pointer-events: none; transition: opacity .4s ease; }
 .cart-scrim.open { opacity: 1; pointer-events: all; }
 .cart-drawer { position: fixed; top: 0; right: 0; width: min(420px, 90vw); height: 100dvh; background: var(--color-bg); z-index: 91; transform: translateX(100%); transition: transform .45s cubic-bezier(0.23, 1, 0.32, 1); display: flex; flex-direction: column; }
 .cart-drawer.open { transform: translateX(0); }
-
-/* ============================================================
-   CAROUSEL SCROLLBAR HIDING
-   ============================================================ */
-.rb-scroll-x { scrollbar-width: none; -ms-overflow-style: none; }
-.rb-scroll-x::-webkit-scrollbar { display: none; }
-
-/* ============================================================
-   RB PRODUCT CARD + PROMO WORDMARK
-   ============================================================ */
-.rb-product-card {
-  background: var(--rb-card-bg);
-}
-
-/* RB-style "Irresistible Days" wordmark — flat blue stencil-feel sans-serif */
-.rb-promo-wordmark {
-  font-family: var(--font-sans);
-  font-size: clamp(15px, 1.4vw, 19px);
-  letter-spacing: 0.04em;
-  font-weight: 700;
-  font-style: italic;
-  color: var(--rb-promo);
-  text-transform: uppercase;
-  display: inline-block;
-  line-height: 1;
-}
-
-/* ============================================================
-   MEGA-MENU
-   ============================================================ */
-.rb-mega {
-  position: absolute;
-  top: 100%;
-  left: 0;
-  right: 0;
-  background: #ffffff;
-  border-top: 1px solid var(--color-rule);
-  box-shadow: 0 12px 30px rgba(26,26,26,0.04);
-  opacity: 0;
-  pointer-events: none;
-  transform: translateY(-6px);
-  transition: opacity .2s ease, transform .2s ease;
-}
-.rb-mega.open { opacity: 1; pointer-events: auto; transform: translateY(0); }
