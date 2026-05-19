@@ -27,17 +27,17 @@ const TILES: Tile[] = [
     gradient: "linear-gradient(180deg, #2a2622 0%, #5c4530 100%)",
   },
   {
-    label: "Limited Drops",
-    href: "/products?category=Limited%20Drops",
-    caption: "Seasonal, numbered, made-to-order",
-    image: "/hero/category-limited.webp",
+    label: "Leather Goods",
+    href: "/products?category=Leather%20Goods",
+    caption: "Hand-stitched in Marrakech",
+    image: "/products/drop-01/leather-goods-tile.webp",
     gradient: "linear-gradient(180deg, #d8a47a 0%, #8c4d2e 100%)",
   },
   {
     label: "The Atelier",
     href: "/story",
     caption: "How we work · The brand",
-    image: "/hero/category-atelier.webp",
+    image: "/hero/category-atelier-v2.webp",
     gradient: "linear-gradient(180deg, #ddd1b9 0%, #6b6258 100%)",
   },
 ];

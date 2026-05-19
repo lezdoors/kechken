@@ -18,10 +18,10 @@ const ITEMS: EditorialItem[] = [
     gradient: "linear-gradient(140deg, #d8a47a 0%, #8c6b3a 60%, #4a3625 100%)",
   },
   {
-    eyebrow: "The Material",
-    title: "On heavyweight cotton and bronze foil",
+    eyebrow: "The Lookbook",
+    title: "Wearing the house, easy and slow",
     href: "/story",
-    image: "/hero/editorial-material.webp",
+    image: "/hero/hero-couple-v2.webp",
     gradient: "linear-gradient(140deg, #ece4d2 0%, #c8b89a 100%)",
   },
   {

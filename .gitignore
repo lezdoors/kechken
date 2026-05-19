@@ -40,3 +40,6 @@ yarn-error.log*
 *.tsbuildinfo
 next-env.d.ts
 .hero-masters/
+
+# image swap-chain backups (kept locally only)
+*.bak.webp
