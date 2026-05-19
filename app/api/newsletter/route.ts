@@ -3,11 +3,14 @@ import { createClient } from "@supabase/supabase-js";
 
 // Use service role for the insert so RLS bypass is clean (the anon-insert
 // policy works too, but service role gives us upsert + clearer error messages).
-const supabase = createClient(
-  process.env.NEXT_PUBLIC_SUPABASE_URL!,
-  process.env.SUPABASE_SERVICE_ROLE_KEY ||
-    process.env.NEXT_PUBLIC_SUPABASE_ANON_KEY!,
-);
+function getSupabase() {
+  const url = process.env.NEXT_PUBLIC_SUPABASE_URL;
+  const key =
+    process.env.SUPABASE_SERVICE_ROLE_KEY ||
+    process.env.NEXT_PUBLIC_SUPABASE_ANON_KEY;
+  if (!url || !key) return null;
+  return createClient(url, key);
+}
 
 const EMAIL_RE = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
 
@@ -37,6 +40,14 @@ export async function POST(request: NextRequest) {
     request.headers.get("x-real-ip") ||
     null;
   const userAgent = request.headers.get("user-agent") || null;
+
+  const supabase = getSupabase();
+  if (!supabase) {
+    return NextResponse.json(
+      { error: "Newsletter is not available right now." },
+      { status: 503 },
+    );
+  }
 
   // Upsert — re-subscription (after unsubscribe) clears the unsubscribed_at flag.
   const { error } = await supabase

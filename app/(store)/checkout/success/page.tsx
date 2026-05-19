@@ -4,10 +4,14 @@ import { formatPrice } from "@/lib/utils";
 import { ClearCart } from "@/components/store/ClearCart";
 import { createClient } from "@supabase/supabase-js";
 
-const supabase = createClient(
-  process.env.NEXT_PUBLIC_SUPABASE_URL!,
-  process.env.SUPABASE_SERVICE_ROLE_KEY || process.env.NEXT_PUBLIC_SUPABASE_ANON_KEY!,
-);
+function getSupabase() {
+  const url = process.env.NEXT_PUBLIC_SUPABASE_URL;
+  const key =
+    process.env.SUPABASE_SERVICE_ROLE_KEY ||
+    process.env.NEXT_PUBLIC_SUPABASE_ANON_KEY;
+  if (!url || !key) return null;
+  return createClient(url, key);
+}
 
 export default async function CheckoutSuccessPage({
   searchParams,
@@ -70,11 +74,16 @@ export default async function CheckoutSuccessPage({
   // Fetch the actual order from Supabase by either id (webhook stores PI id in
   // stripe_session_id field for both flows).
   const lookupId = sessionId || paymentIntentId;
-  const { data: orderRow } = await supabase
-    .from("orders")
-    .select("order_number, customer_email")
-    .eq("stripe_session_id", lookupId)
-    .maybeSingle();
+  const supabase = getSupabase();
+  const orderRow = supabase
+    ? (
+        await supabase
+          .from("orders")
+          .select("order_number, customer_email")
+          .eq("stripe_session_id", lookupId)
+          .maybeSingle()
+      ).data
+    : null;
 
   customerEmail = customerEmail || orderRow?.customer_email || "";
   const orderNumber = orderRow?.order_number;
