@@ -63,7 +63,15 @@ export async function destroySession() {
   cookieStore.delete(AUTH_COOKIE);
 }
 
-// Re-export supabase client for admin data queries
+// Re-export supabase client for admin data queries.
+// Throws if env vars are absent — admin pages are force-dynamic, so this
+// only fires at request time, not at build.
 export function getAdminSupabase() {
-  return getSupabase();
+  const client = getSupabase();
+  if (!client) {
+    throw new Error(
+      "Supabase env vars not set — admin features require NEXT_PUBLIC_SUPABASE_URL + service-role or anon key.",
+    );
+  }
+  return client;
 }
