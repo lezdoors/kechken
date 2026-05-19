@@ -79,20 +79,28 @@ export default function Navbar() {
           </nav>
         </div>
 
-        {/* Centered brand mark */}
+        {/* Centered brand monogram */}
         <Link
           href="/"
           aria-label="Kechken"
-          className="absolute left-1/2 top-1/2 -translate-x-1/2 -translate-y-1/2 select-none leading-none"
+          className={`absolute left-1/2 top-1/2 -translate-x-1/2 -translate-y-1/2 select-none flex items-center gap-3 transition-colors ${inkClass}`}
         >
           <Image
-            src="/brand/kechken-mark-center.png"
-            alt="Kechken"
-            width={600}
-            height={700}
+            src="/brand/kechken-monogram.png"
+            alt=""
+            width={254}
+            height={310}
             priority
-            className="h-[56px] md:h-[64px] w-auto"
+            className={`h-[44px] md:h-[48px] w-auto transition-[filter] duration-500 ${
+              scrolled ? "" : "invert"
+            }`}
           />
+          <span
+            className="hidden sm:inline font-serif tracking-[0.18em] text-[14px] md:text-[15px]"
+            style={{ fontFamily: "var(--font-serif, 'Cormorant Garamond', 'Times New Roman', serif)" }}
+          >
+            KECHKEN
+          </span>
         </Link>
 
         {/* Right: desktop nav (2) + icons */}
