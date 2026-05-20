@@ -1,11 +1,15 @@
 "use client";
 
+import { useEffect, useState } from "react";
 import Image from "next/image";
 import { useRouter } from "next/navigation";
 import { useCart } from "@/components/store/CartProvider";
 import { formatPrice } from "@/lib/utils";
 
 export default function CartDrawer() {
+  const [mounted, setMounted] = useState(false);
+  useEffect(() => setMounted(true), []);
+
   const { items, isOpen, closeCart, removeItem, updateQuantity } = useCart();
   const router = useRouter();
   const total = items.reduce(
@@ -17,6 +21,10 @@ export default function CartDrawer() {
     closeCart();
     router.push("/checkout/pay");
   };
+
+  // Skip SSR — keeps the drawer H3 + aside out of crawler heading hierarchy
+  // and screen-reader landmark order until the client mounts.
+  if (!mounted) return null;
 
   return (
     <>

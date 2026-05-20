@@ -1,10 +1,10 @@
-# Kechken Store
+# Maison Tanneurs
 
-Year-round clothing brand with a Moroccan visual register, US-anchored launch. Drop 01 ships against the WC2026 opener.
+Hand-stitched leather wearables from a small Marrakech atelier. Full-grain leather, solid brass hardware, contrast saddle-stitch. Ready to ship from Morocco via DHL or FedEx — 3–5 days worldwide.
 
-Working name: **Kechken**. Final brand name TBD — config-driven so it's swappable.
+Sister brand to **Maison Izem** (home & interior) and **Maison Chapuis** (ceramics, tagines, glassware), all under Akal Digital Services Ltd.
 
-Built on the Maison Izem Next.js commerce stack (Next 16 / React 19 / Tailwind 4 / Stripe Payment Element / Supabase / Resend).
+Domain: `maisontanneurs.com`
 
 ## Quick start
 
@@ -23,23 +23,34 @@ Site runs at http://localhost:3000.
 | Commerce | Stripe Payment Element (on-domain, no redirect) |
 | Data | Supabase (Postgres + Storage) |
 | Email | Resend (transactional) |
-| Fulfillment | Printful POD (to be wired in Phase 1) |
+| Fulfillment | Direct ship from the Marrakech atelier via DHL / FedEx business accounts |
 | Hosting | Vercel |
 
-## Brand identity layer
+## Brand identity
 
-Inherits from the Roche-Bobois-inspired palette in `app/globals.css`:
-- Cream/white base, ink primary, brass accent, terracotta stamp
-- Inter Tight (sans, primary), Cormorant Garamond (serif, accent), JetBrains Mono (utility)
+- Cream/bone base, ink primary, brass accent, leather cognac
+- Cormorant Garamond (serif), Inter Tight (sans), JetBrains Mono (utility)
 - Sparse type hierarchy, generous negative space
-- `.rb-*` utility classes for editorial sections
+- Restraint over ornament — Le Tanneur / Loewe / Lemaire register
+- Photography: warm chiaroscuro, full-grain leather + brass, Marrakech atelier context — no souks, no lanterns, no faces (hands only)
 
 ## Repo conventions
 
 - This is **Next.js 16** — read `node_modules/next/dist/docs/` before adding APIs (breaking changes from 14/15)
 - No invented copy; nothing ships with TBDs in production
-- Brand identity is config-driven — see `app/layout.tsx` metadata for the swap points
+- Brand identity is config-driven — see `app/layout.tsx` metadata + `app/icon.png` + `public/brand/maison-tanneurs.png`
+- Wordmark renderer: `/brand/wordmark` route (server-side ImageResponse, dynamic SVG)
 
-## Game plan
+## Drop 01
 
-Master plan at `~/morocco-brand/GAME-PLAN.md`. Phases: 0 (this week, decisions) → 1 (Drop 01 build) → 2 (WC tailwind) → 3 (post-WC) → 4+ (seasonal rhythm).
+Two leather SKUs at launch: Heritage Rucksack (€325) and Roll-Top Daypack (€245). Both full-grain cognac Moroccan leather, solid brass hardware, hand-stitched in Marrakech.
+
+## Family
+
+Maison Tanneurs sits alongside two sister brands under Akal Digital Services Ltd:
+
+- **Maison Izem** — Moroccan home + interior (poufs, lighting, rugs, furniture). [maisonizem.com](https://www.maisonizem.com)
+- **Maison Chapuis** — Ceramics, tagines, glassware, Berber textiles. [maison-chapuis.com](https://maison-chapuis.com)
+- **Maison Tanneurs** — Hand-stitched leather. *(this repo)*
+
+Each brand operates under its own forming entity with its own bank + Stripe acquirer per the Akal blast-radius isolation strategy.

@@ -23,7 +23,7 @@ const TILES: Tile[] = [
     label: "The Atelier",
     href: "/about",
     caption: "How we work · The brand",
-    image: "/hero/hero-kechken-atelier.webp",
+    image: "/hero/hero-atelier.webp",
     gradient: "linear-gradient(180deg, #ddd1b9 0%, #6b6258 100%)",
   },
 ];

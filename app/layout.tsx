@@ -49,12 +49,21 @@ export const metadata: Metadata = {
     title: "Maison Tanneurs — Hand-stitched leather from Marrakech",
     description:
       "Hand-stitched leather wearables, sourced direct from a Marrakech atelier. Full-grain leather, editorial silhouettes, shipped worldwide in 3–5 days.",
+    images: [
+      {
+        url: "/hero/hero-leather-campaign.webp",
+        width: 2400,
+        height: 1350,
+        alt: "Maison Tanneurs — cognac leather duffle in a Marrakech atelier",
+      },
+    ],
   },
   twitter: {
     card: "summary_large_image",
     title: "Maison Tanneurs",
     description:
       "Hand-stitched leather wearables, sourced direct from a Marrakech atelier. Full-grain leather, editorial silhouettes, shipped worldwide in 3–5 days.",
+    images: ["/hero/hero-leather-campaign.webp"],
   },
   alternates: {
     canonical: "/",

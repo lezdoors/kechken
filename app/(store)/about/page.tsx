@@ -14,7 +14,7 @@ export default function AboutPage() {
       {/* Hero */}
       <section className="relative h-[70vh] w-full overflow-hidden bg-[#0e0d0c]">
         <Image
-          src="/hero/hero-kechken-atelier.webp"
+          src="/hero/hero-atelier.webp"
           alt="Maison Tanneurs atelier — bags hanging from wooden beams in golden light"
           fill
           className="object-cover"
