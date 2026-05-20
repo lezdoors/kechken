@@ -1,75 +1,49 @@
 import type { Metadata } from "next";
+import Link from "next/link";
 
 export const metadata: Metadata = {
-  title: "Frequently Asked Questions",
-  description: "Common questions about ordering, shipping, and caring for Kechken objects.",
+  title: "FAQ — Kechken",
+  description:
+    "Common questions about ordering, shipping, sizing, and caring for Kechken apparel and accessories.",
 };
 
 const FAQ = [
   {
-    q: "How long will my order take to arrive?",
-    a: "It depends on the piece. In-stock smaller objects (poufs, sconces, smaller lighting, vessels, plates) ship within 5 business days and arrive in 5–7 days by air courier. Furniture and statement lighting are made to order: 8–16 weeks of crafting, then 4–10 weeks of sea-freight to the US (less for EU). Your order confirmation will give you the specific lead time.",
+    q: "What is Kechken?",
+    a: "Kechken is a modern Moroccan apparel label — streetwear, jewelry, and leather goods designed in-house and produced when you order. The visual register is rooted in the Maghreb (Atlas mountain silhouettes, zellige geometry, Berber typography) but the silhouettes are modern.",
   },
   {
-    q: "Why are pieces handcrafted to order?",
-    a: "We are a small atelier on Derb el Ferran in Marrakech, not a factory. Six maâlems work on what is needed when it is ordered. We do not hold large inventory because we do not want to: it forces us to either rush the work or store unsold pieces. Made to order keeps us honest, and keeps the catalogue current.",
+    q: "How is each piece produced?",
+    a: "We work with a vetted print-on-demand and fulfillment partner with warehouses in the US and EU. When you place an order, the piece is printed, cut, finished, and quality-checked by the warehouse closest to you — typically within 48 hours. We hold no advance inventory.",
   },
   {
-    q: "Will my piece look exactly like the photograph?",
-    a: "It will resemble it but differ in subtle, natural ways. Every piece is hand-cut, hand-stitched, hand-hammered, hand-inlaid. Pattern alignment, patina, grain, stitch placement — these vary piece to piece. That variation is what makes it not a factory object. Dimensions are accurate to ±2 cm.",
+    q: "How long does shipping take?",
+    a: "Three to five business days from when you order, in most cases. Tracking is included on every order. International shipping is available; transit times vary by country (see Shipping).",
   },
   {
-    q: "Are duties and taxes included?",
-    a: "No. The price you pay is for the object plus shipping. Import duties, VAT, and customs fees are your responsibility on arrival, collected by the carrier. For typical figures by country, see our Shipping page. We are happy to send an estimate before you order — just ask.",
+    q: "Do you offer free shipping?",
+    a: "Standard shipping is included in the listed price for orders over $80 USD shipped within the US and EU. Smaller orders carry a flat shipping fee shown at checkout.",
   },
   {
-    q: "What payment methods do you accept?",
-    a: "Visa, Mastercard, American Express, Apple Pay, and Google Pay. Payment is processed by Stripe at checkout. We never see or store your card information.",
+    q: "What sizes do you carry?",
+    a: "Tees and hoodies are cut oversized and run XS through 3XL. Jewelry is one-size with adjustable chain length. Leather bags are one-size; dimensions are listed on each product page.",
   },
   {
-    q: "Can I commission a custom piece?",
-    a: "Yes. We work with interior designers and direct clients on custom dimensions, alternative materials, and finish modifications. Write to hello@kechken.com with what you have in mind and we will respond with a feasibility note, lead time, and quote. Most custom commissions take 12–20 weeks.",
+    q: "Can I return something that doesn't fit?",
+    a: "Yes — within thirty days of delivery, unworn and unwashed, with original tags. Full policy on the Returns page.",
   },
   {
-    q: "Do you sell to the trade?",
-    a: "Yes. Designers, architects, and hospitality buyers receive a trade discount and dedicated lead-time support. Write to hello@kechken.com from your firm's email to open a trade account.",
-  },
-  {
-    q: "What if something arrives damaged?",
-    a: "Every piece is fully insured during transit. Send us photographs of the damage and the packaging within 72 hours of delivery. We file the claim with the carrier and replace, repair, or refund — your choice. Details on the Returns page.",
-  },
-  {
-    q: "Can I return a piece I no longer want?",
-    a: "In-stock smaller pieces (poufs, smaller lighting, vessels, plates, glassware) — yes, within 30 days. Made-to-order furniture and statement lighting — no, except for damage or material misdescription. Full details on the Returns page.",
-  },
-  {
-    q: "What bulb do I use in your pendants?",
-    a: "An E27 LED bulb at 7–9W warm white (2700K) is what we recommend. It gives the warmest light, produces the least heat, and lasts longest. Avoid bulbs over the listed wattage — the brass will heat and discolour locally.",
-  },
-  {
-    q: "How do I care for the brass / cedar / leather / silk?",
-    a: "Full care notes on our Care page. The short version: dust regularly with a soft cloth, avoid direct sunlight on flat surfaces, beeswax-and-linseed-oil polish on cedar twice a year, saddle soap on leather twice a year, sabra silk gets vacuumed only. Patina is intentional.",
-  },
-  {
-    q: "Do you ship to my country?",
-    a: "Almost certainly yes. We ship worldwide except sanctioned destinations and a small number of countries with prohibitive customs procedures. If you are unsure, write to us before ordering.",
-  },
-  {
-    q: "Can I visit the atelier?",
-    a: "Yes, by appointment. The atelier is on Derb el Ferran in Marrakech medina. Write ahead — the workshop runs at the pace of the work. Tea will be offered; the maâlems will work.",
-  },
-  {
-    q: "How do I contact you?",
-    a: "hello@kechken.com — we answer within one working day, usually faster. For trade inquiries, write from your firm's email.",
+    q: "Where can I get help with my order?",
+    a: "Email hello@kechken.com — we reply within one working day, usually faster.",
   },
 ];
 
-export default function FAQPage() {
+export default function FaqPage() {
   return (
-    <>
+    <article>
       <span className="eyebrow">Help</span>
-      <h1>Frequently Asked Questions</h1>
-      <p className="updated">Last updated: 12 May 2026</p>
+      <h1>Frequently asked.</h1>
+      <p className="updated">Last updated · 19 May 2026</p>
 
       {FAQ.map((item, i) => (
         <div key={i}>
@@ -77,6 +51,13 @@ export default function FAQPage() {
           <p>{item.a}</p>
         </div>
       ))}
-    </>
+
+      <h2>Still have a question?</h2>
+      <p>
+        Write to{" "}
+        <Link href="mailto:hello@kechken.com">hello@kechken.com</Link>. We
+        reply within one working day.
+      </p>
+    </article>
   );
 }

@@ -1,76 +1,87 @@
 import type { Metadata } from "next";
+import Link from "next/link";
 
 export const metadata: Metadata = {
-  title: "Shipping",
-  description: "How Kechken ships handcrafted pieces from Marrakech to the world.",
+  title: "Shipping — Kechken",
+  description:
+    "How Kechken ships apparel, jewelry, and leather goods worldwide. Three to five day delivery from US and EU warehouses.",
 };
 
 export default function ShippingPage() {
   return (
-    <>
-      <span className="eyebrow">Logistics</span>
-      <h1>Shipping</h1>
-      <p className="updated">Last updated: 12 May 2026</p>
+    <article>
+      <span className="eyebrow">Shipping</span>
+      <h1>How it gets to you.</h1>
+      <p className="updated">Last updated · 19 May 2026</p>
 
       <p>
-        Every piece in our catalogue ships from Marrakech, Morocco. We handle export documentation, customs forms, and crate-building. The carrier and method depend on the size of the piece and your address.
+        Every Kechken piece is made to order. When you place an order, the
+        piece is printed, cut, finished, and quality-checked by our fulfillment
+        partner&apos;s warehouse closest to your delivery address — typically
+        within 48 hours. The warehouse then hands it off to the courier.
       </p>
 
-      <h2>Methods</h2>
-      <h3>Smaller pieces — pendants, sconces, vessels, plates, poufs, cushions, beldi-cup sets</h3>
-      <p>
-        Shipped by air courier (DHL Express or FedEx International). Transit time 5 to 7 business days from dispatch to most destinations in the US, EU, UK, GCC, and Australia. Tracking is sent the day we hand the package to the carrier.
-      </p>
-
-      <h3>Furniture and statement lighting</h3>
-      <p>
-        Built into custom cedar crates in our workshop and shipped by sea-freight to the nearest port, then by white-glove last-mile carrier to your door. Transit time 6 to 10 weeks for the US, 4 to 6 weeks for the EU. We schedule the delivery appointment with you in advance.
-      </p>
-
-      <h2>Lead times</h2>
-      <p>
-        Lead times are honestly told and depend on whether the piece is in stock or made to order:
-      </p>
+      <h2>Delivery times</h2>
       <ul>
-        <li><strong>In stock</strong> (most poufs, smaller lighting): dispatched within 5 business days of order.</li>
-        <li><strong>Made to order</strong> (furniture, statement lighting, custom dimensions): 8 to 16 weeks of crafting before dispatch.</li>
+        <li><strong>United States · 3–5 business days</strong> · USPS or UPS Ground from a US warehouse.</li>
+        <li><strong>European Union, UK · 3–5 business days</strong> · regional carrier from an EU warehouse.</li>
+        <li><strong>Canada, Australia, Japan · 5–8 business days</strong> · DHL or local equivalent.</li>
+        <li><strong>Rest of world · 7–14 business days</strong> · tracked international post.</li>
       </ul>
       <p>
-        Your order confirmation will tell you the specific lead time for the piece you ordered. We update you when crafting begins and again when the piece ships.
-      </p>
-
-      <h2>Costs</h2>
-      <p>
-        Shipping is calculated at checkout based on weight, dimensions, and destination. Express delivery for smaller items typically ranges $25 to $85. Furniture and statement lighting are quoted individually at checkout — sea-freight + white-glove typically $300 to $1,200 depending on size and country.
-      </p>
-
-      <h2>Duties and taxes</h2>
-      <p>
-        Prices on the site are exclusive of import duties, VAT, and customs fees. These are your responsibility on arrival. The carrier will contact you to collect them before delivery.
-      </p>
-      <p>
-        Typical figures for our most common destinations: <strong>US</strong> generally no import duty for personal-use shipments under $800 (de minimis); duty 0–6% above that. <strong>EU</strong> VAT 19–25% + duty 0–6% on declared value. <strong>UK</strong> VAT 20% + duty 0–4% above £135. We are happy to send a customs-value estimate before you order; just ask.
+        Production windows are added to delivery time when stated separately
+        on the product page (limited drops may take longer to produce).
       </p>
 
       <h2>Tracking</h2>
       <p>
-        You will receive a tracking number by email the day your package ships. For sea-freight orders, we also send a milestone update at each stage (left workshop, loaded onto vessel, arrived at port, cleared customs, out for white-glove delivery).
+        You will receive a tracking link by email as soon as the courier
+        collects the order. If your tracking has not updated within five
+        business days of dispatch, write to <Link href="mailto:hello@kechken.com">hello@kechken.com</Link> and we will follow it
+        up with the carrier on your behalf.
       </p>
 
-      <h2>Damage in transit</h2>
+      <h2>Shipping cost</h2>
       <p>
-        Every piece is insured to its full value during transit. If anything arrives damaged, send us photographs of the damage and the packaging within 72 hours of delivery (hello@kechken.com). We will file the insurance claim with the carrier and replace, repair, or refund — your choice.
+        Standard shipping is included in the listed price on orders over
+        $80 USD shipped within the US and EU. Below that threshold and for
+        all international destinations, a flat shipping fee is shown at
+        checkout before you pay.
+      </p>
+      <p>
+        Customs duties and import VAT on international orders (outside the
+        US and EU) are the responsibility of the recipient. We declare the
+        actual value of the order on the customs form — we do not under-declare.
       </p>
 
-      <h2>Where we do not ship</h2>
+      <h2>Lost or damaged packages</h2>
       <p>
-        We ship globally with the exception of sanctioned destinations and a small number of countries where customs procedures make handmade-furniture imports impractical. If you are unsure, write to us before ordering.
+        Every order is insured to its full value during transit. If your
+        package arrives damaged, send us photographs of the damage and the
+        packaging within 72 hours of delivery (<Link href="mailto:hello@kechken.com">hello@kechken.com</Link>). We will file the
+        insurance claim with the carrier and replace, repair, or refund at
+        your option.
+      </p>
+      <p>
+        If your tracking shows delivered but the package has not arrived,
+        please check with neighbours and your building&apos;s mail room first.
+        If still missing after 24 hours, contact us and we will open an
+        investigation with the carrier.
+      </p>
+
+      <h2>Address changes</h2>
+      <p>
+        We can change a shipping address up until the order is dispatched
+        from the warehouse — usually within 4 hours of you placing the
+        order. After dispatch, the address is locked. Email us as soon as
+        you spot an error.
       </p>
 
       <h2>Questions</h2>
       <p>
-        Write to <a href="mailto:hello@kechken.com">hello@kechken.com</a>. We answer within one working day.
+        Write to <Link href="mailto:hello@kechken.com">hello@kechken.com</Link>. We
+        answer within one working day.
       </p>
-    </>
+    </article>
   );
 }

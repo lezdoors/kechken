@@ -1,89 +1,100 @@
 import type { Metadata } from "next";
+import Link from "next/link";
 
 export const metadata: Metadata = {
-  title: "Terms of Sale",
-  description: "The terms under which Kechken sells handcrafted objects from Marrakech.",
+  title: "Terms of Sale — Kechken",
+  description:
+    "The terms under which Kechken sells modern Moroccan apparel, jewelry, and leather goods.",
 };
 
 export default function TermsPage() {
   return (
-    <>
-      <span className="eyebrow">Legal</span>
-      <h1>Terms of Sale</h1>
-      <p className="updated">Last updated: 12 May 2026</p>
+    <article>
+      <span className="eyebrow">Terms of Sale</span>
+      <h1>The terms.</h1>
+      <p className="updated">Last updated · 19 May 2026</p>
 
       <p>
-        These terms apply to every order placed on www.kechken.com. By completing your purchase, you confirm you have read and agreed to them. If anything here is unclear, write to <a href="mailto:hello@kechken.com">hello@kechken.com</a> before you order.
+        These terms apply to every order placed on www.kechken.com. By
+        completing your purchase, you confirm you have read and agreed to
+        them. If anything here is unclear, write to <Link href="mailto:hello@kechken.com">hello@kechken.com</Link> before
+        you order.
       </p>
 
-      <h2>1. About us</h2>
+      <h2>About Kechken</h2>
       <p>
-        Kechken is a small atelier of makers based in Marrakech, Morocco. We design and handcraft furniture, lighting, vessels, and textile objects on Derb el Ferran. We sell direct to clients worldwide.
+        Kechken is a contemporary apparel label. We design streetwear,
+        jewelry, and leather goods in-house and produce each piece to order
+        through a vetted print-on-demand fulfillment partner. We sell direct
+        to customers worldwide via this website.
       </p>
 
-      <h2>2. About the work</h2>
+      <h2>Placing an order</h2>
       <p>
-        Every piece in our catalogue is handcrafted, signed by the maâlem, and unique. The piece you receive will resemble the photograph but will differ in subtle, natural ways — variations in grain, hand-stitch placement, pierce alignment, and patina. These are not defects. They are how handwork looks.
+        When you place an order, you make an offer to buy. We accept that
+        offer when we charge your payment method and dispatch a confirmation
+        email. Prices are listed in USD and converted to your local currency
+        at checkout where applicable.
       </p>
       <p>
-        Photographs are made from representative pieces in the workshop. Dimensions are nominal and may vary by ±2 cm.
-      </p>
-
-      <h2>3. Orders and acceptance</h2>
-      <p>
-        Your order is an offer to purchase. We confirm by email once we accept it — usually within 24 hours. Until that confirmation, no contract is formed.
-      </p>
-      <p>
-        For larger pieces (furniture, statement lighting), some items are made to order. We will tell you the lead time in your order confirmation: typically 2 to 6 weeks for in-stock pieces, 8 to 16 weeks for furniture made to order.
+        We reserve the right to refuse or cancel an order in cases of pricing
+        errors, suspected fraud, or stock issues with the production partner.
+        If we cancel, we refund in full immediately.
       </p>
 
-      <h2>4. Pricing and currency</h2>
+      <h2>Pricing and payment</h2>
       <p>
-        Prices are shown in US dollars (USD). Currency conversion is handled at checkout if you pay in another currency. Prices are exclusive of import duties and taxes, which are your responsibility on arrival (see <a href="/legal/shipping">Shipping</a>).
-      </p>
-      <p>
-        We reserve the right to correct pricing errors before shipping. If the price you paid is materially different from the correct price, we will contact you with the option to confirm or cancel.
-      </p>
-
-      <h2>5. Payment</h2>
-      <p>
-        Payment is taken at checkout through Stripe. We accept Visa, Mastercard, American Express, Apple Pay, and Google Pay. Your card is charged at order confirmation, not at delivery.
+        All prices are shown including any applicable EU VAT for orders
+        shipped within the EU. US orders are shown without sales tax;
+        tax is added at checkout where required by state law. Payment is
+        taken at the point of order via Stripe — we accept all major credit
+        cards, Apple Pay, and Google Pay.
       </p>
 
-      <h2>6. Shipping</h2>
+      <h2>Production and shipping</h2>
       <p>
-        We ship worldwide from Marrakech. Full details — methods, lead times, duties, white-glove delivery — are in our <a href="/legal/shipping">Shipping policy</a>.
+        Each piece is produced to order at our fulfillment partner&apos;s
+        warehouse, then shipped directly to you. See the{" "}
+        <Link href="/legal/shipping">Shipping page</Link> for delivery
+        times and costs.
       </p>
 
-      <h2>7. Returns</h2>
+      <h2>Returns and refunds</h2>
       <p>
-        Because pieces are handmade and many are made to order, return policies vary by category. Full details are in our <a href="/legal/returns">Returns policy</a>.
+        Standard returns are accepted within 30 days of delivery for unworn,
+        unwashed items with tags attached. See the{" "}
+        <Link href="/legal/returns">Returns page</Link> for the full process.
       </p>
 
-      <h2>8. Warranty</h2>
+      <h2>Intellectual property</h2>
       <p>
-        We warrant every piece to be free of manufacturing defects for twelve months from delivery. The warranty does not cover wear from use, exposure to direct sunlight or moisture beyond ordinary indoor conditions, or modifications by anyone outside our workshop.
+        All designs, prints, photographs, and copy on this site are the
+        property of Kechken. You may not reproduce them for commercial use.
+        Personal use (sharing a photo of you wearing the piece) is welcomed
+        and encouraged.
       </p>
 
-      <h2>9. Force majeure</h2>
+      <h2>Limitation of liability</h2>
       <p>
-        Lead times may be affected by events beyond our control — customs delays, strikes, weather, public-health closures. We will keep you informed and refund in full if delivery becomes impossible within a reasonable time.
+        To the extent permitted by law, our liability to you is limited to
+        the value of the order. We are not liable for indirect or consequential
+        losses, including lost income or third-party claims.
       </p>
 
-      <h2>10. Governing law</h2>
+      <h2>Governing law</h2>
       <p>
-        These terms are governed by the laws of Morocco. Any dispute that we cannot resolve directly will go to the courts of Marrakech, save where mandatory consumer-protection law in your country provides otherwise.
+        These terms are governed by the laws of the jurisdiction in which
+        Kechken is registered (the United Kingdom). Any dispute that cannot
+        be resolved by friendly discussion will be referred to the courts
+        of that jurisdiction.
       </p>
 
-      <h2>11. Changes</h2>
+      <h2>Contact</h2>
       <p>
-        We may update these terms occasionally. The version that applies to your order is the one displayed on this page when you placed it.
+        For any question about your order, write to{" "}
+        <Link href="mailto:hello@kechken.com">hello@kechken.com</Link>. We
+        answer within one working day.
       </p>
-
-      <h2>12. Contact</h2>
-      <p>
-        For any question about your order, write to <a href="mailto:hello@kechken.com">hello@kechken.com</a>. We answer within one working day.
-      </p>
-    </>
+    </article>
   );
 }

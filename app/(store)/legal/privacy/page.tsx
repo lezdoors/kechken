@@ -1,78 +1,98 @@
 import type { Metadata } from "next";
+import Link from "next/link";
 
 export const metadata: Metadata = {
-  title: "Privacy Policy",
-  description: "How Kechken collects, uses, and protects the personal information of our customers.",
+  title: "Privacy — Kechken",
+  description:
+    "How Kechken collects, uses, and protects the personal information of customers.",
 };
 
 export default function PrivacyPage() {
   return (
-    <>
-      <span className="eyebrow">Legal</span>
-      <h1>Privacy Policy</h1>
-      <p className="updated">Last updated: 12 May 2026</p>
+    <article>
+      <span className="eyebrow">Privacy</span>
+      <h1>Privacy policy.</h1>
+      <p className="updated">Last updated · 19 May 2026</p>
 
       <p>
-        Kechken ("we", "us", "our") respects your privacy. This policy explains what personal information we collect when you visit www.kechken.com, place an order, or contact our atelier, and how we use, store, share, and protect that information.
+        Kechken (&quot;we&quot;, &quot;us&quot;, &quot;our&quot;) respects your privacy. This policy
+        explains what personal information we collect when you visit
+        www.kechken.com, place an order, or write to us, and how we use,
+        store, share, and protect that information.
       </p>
 
-      <h2>1. Information we collect</h2>
-      <p>We collect only what we need to fulfil your order and serve you well:</p>
+      <h2>Information we collect</h2>
       <ul>
-        <li><strong>Order information:</strong> name, shipping and billing address, email, phone number, items ordered, payment confirmation (we do not store card numbers).</li>
-        <li><strong>Account information:</strong> if you create an account, your email and any preferences you save.</li>
+        <li><strong>Order details:</strong> name, billing and shipping address, email, phone number, and the items you ordered.</li>
+        <li><strong>Payment information:</strong> handled exclusively by Stripe (our payment processor). We never see or store your card number.</li>
         <li><strong>Correspondence:</strong> messages you send to hello@kechken.com or via our contact forms.</li>
-        <li><strong>Usage data:</strong> standard web analytics — pages viewed, device type, anonymised IP, referrer. We use this to improve the site, never to identify individuals.</li>
+        <li><strong>Site analytics:</strong> anonymous information about how you use the site (pages visited, device type, time on page), collected via privacy-respecting analytics.</li>
+        <li><strong>Marketing email:</strong> if you opt into the newsletter, we store your email and the date you subscribed.</li>
       </ul>
 
-      <h2>2. How we use it</h2>
+      <h2>How we use it</h2>
       <ul>
-        <li>To process and ship your order, and update you on its progress.</li>
-        <li>To respond to your inquiries.</li>
-        <li>To send order confirmations and shipping notifications (transactional emails only — never marketing without your explicit opt-in).</li>
-        <li>To detect and prevent fraud.</li>
-        <li>To comply with legal obligations (tax, customs, accounting).</li>
+        <li>To fulfill your order — passing your name and shipping address to our fulfillment partner and the courier.</li>
+        <li>To send order confirmations, shipping updates, and post-delivery follow-ups.</li>
+        <li>To respond to your questions and resolve any issues with your order.</li>
+        <li>To improve the site and the product range based on aggregate analytics.</li>
+        <li>To send marketing emails — only if you have explicitly opted in. You can unsubscribe at any time using the link in any email.</li>
       </ul>
 
-      <h2>3. Who we share it with</h2>
-      <p>We only share your information with parties strictly necessary to fulfil your order:</p>
-      <ul>
-        <li><strong>Stripe</strong> — payment processing. Stripe handles your card information directly; we never see it.</li>
-        <li><strong>Resend</strong> — transactional email delivery.</li>
-        <li><strong>Carriers</strong> (DHL, FedEx, sea-freight forwarders) — shipping fulfilment. They receive your shipping address only.</li>
-        <li><strong>Supabase</strong> — our database and storage provider (EU-region servers).</li>
-      </ul>
-      <p>We do not sell, rent, or trade your personal information with anyone. Ever.</p>
-
-      <h2>4. How long we keep it</h2>
-      <p>Order records are retained for seven years for tax and accounting purposes, as required by French and US commercial law. Account information is retained until you ask us to delete it. Anonymised analytics are retained for thirteen months.</p>
-
-      <h2>5. Your rights</h2>
-      <p>You can ask us at any time to:</p>
-      <ul>
-        <li>Access the personal information we hold about you.</li>
-        <li>Correct it if any of it is wrong.</li>
-        <li>Delete it (subject to legal retention obligations).</li>
-        <li>Export it in a portable format.</li>
-        <li>Withdraw any consent you previously gave.</li>
-      </ul>
-      <p>Write to <a href="mailto:hello@kechken.com">hello@kechken.com</a> and we will respond within thirty days.</p>
-
-      <h2>6. Cookies</h2>
-      <p>We use a minimal set of cookies: a session cookie for your shopping cart, and anonymised analytics cookies to understand site traffic. We do not use advertising or tracking cookies. Your browser settings can refuse cookies at any time; the site will still function.</p>
-
-      <h2>7. International transfers</h2>
-      <p>Our atelier is in Morocco; our hosting infrastructure is in the European Union and United States. By placing an order, you consent to your information being transferred across these jurisdictions, all of which we believe provide adequate protection.</p>
-
-      <h2>8. Changes to this policy</h2>
-      <p>We will post any changes to this page and update the "last updated" date above. For material changes affecting how we use your information, we will notify you by email.</p>
-
-      <h2>9. Contact</h2>
+      <h2>Who we share it with</h2>
       <p>
-        Questions about this policy or how we handle your information:
-        <br />
-        <a href="mailto:hello@kechken.com">hello@kechken.com</a>
+        We share the minimum information necessary with:
       </p>
-    </>
+      <ul>
+        <li><strong>Stripe</strong> — for payment processing.</li>
+        <li><strong>Our fulfillment partner</strong> — for production and shipping.</li>
+        <li><strong>Our courier</strong> — for delivery.</li>
+        <li><strong>Resend</strong> — for transactional and newsletter email delivery.</li>
+      </ul>
+      <p>
+        We do not sell, rent, or share your personal information with any
+        other third party for any other purpose.
+      </p>
+
+      <h2>How long we keep it</h2>
+      <p>
+        Order records are retained for seven years to meet tax and accounting
+        obligations. Newsletter records are kept until you unsubscribe.
+        Correspondence is kept for two years for customer-service continuity,
+        then deleted.
+      </p>
+
+      <h2>Your rights</h2>
+      <p>
+        You have the right to access the personal information we hold about
+        you, to correct it, to ask for it to be deleted, or to ask us to
+        stop using it for marketing. Write to{" "}
+        <Link href="mailto:hello@kechken.com">hello@kechken.com</Link> and
+        we will respond within thirty days.
+      </p>
+
+      <h2>Cookies</h2>
+      <p>
+        We use a small number of cookies to keep your cart between visits,
+        remember your country and currency preference, and measure
+        site traffic in aggregate. You can manage cookies in your browser
+        settings. Essential cookies (cart, checkout) are always on; non-essential
+        cookies can be declined via the banner on first visit.
+      </p>
+
+      <h2>Security</h2>
+      <p>
+        All data is transmitted over HTTPS. Payment information never
+        touches our servers — it goes directly from your browser to Stripe.
+        Customer records are stored encrypted at rest by our database
+        provider (Supabase, hosted in the EU).
+      </p>
+
+      <h2>Contact</h2>
+      <p>
+        For any privacy question, write to{" "}
+        <Link href="mailto:hello@kechken.com">hello@kechken.com</Link>.
+      </p>
+    </article>
   );
 }
