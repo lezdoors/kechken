@@ -11,18 +11,11 @@ type EditorialItem = {
 
 const ITEMS: EditorialItem[] = [
   {
-    eyebrow: "The Campaign",
-    title: "Drop 01 — Mediterranean light",
-    href: "/products",
-    image: "/hero/editorial-campaign.webp",
-    gradient: "linear-gradient(140deg, #d8a47a 0%, #8c6b3a 60%, #4a3625 100%)",
-  },
-  {
-    eyebrow: "The Lookbook",
-    title: "Wearing the house, easy and slow",
+    eyebrow: "The Material",
+    title: "Full-grain leather, hand-cured in Marrakech",
     href: "/about",
-    image: "/hero/hero-couple-v2.webp",
-    gradient: "linear-gradient(140deg, #ece4d2 0%, #c8b89a 100%)",
+    image: "/hero/editorial-material-v2.webp",
+    gradient: "linear-gradient(140deg, #d8a47a 0%, #8c6b3a 60%, #4a3625 100%)",
   },
   {
     eyebrow: "The Atelier",
@@ -49,7 +42,7 @@ export default function EditorialStrip() {
           </Link>
         </div>
 
-        <div className="grid grid-cols-1 md:grid-cols-3 gap-3 md:gap-4">
+        <div className="grid grid-cols-1 md:grid-cols-2 gap-3 md:gap-4">
           {ITEMS.map((item, idx) => (
             <Link
               key={item.title}
