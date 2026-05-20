@@ -51,7 +51,7 @@ export const STATIC_PRODUCTS: Product[] = [
     slug: "atlas-line-pendant",
     price: 18500,
     images: [
-      "/products/drop-01/atlas-pendant-01.svg",
+      "/products/drop-01/atlas-pendant-01.webp",
       "/products/drop-01/atlas-pendant-02.svg",
     ],
     category: "Jewelry",

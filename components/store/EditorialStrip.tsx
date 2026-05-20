@@ -41,7 +41,7 @@ export default function EditorialStrip() {
           <div>
             <div className="ed-eyebrow mb-4">The Journal</div>
             <h2 className="ed-h2 max-w-[20ch]">
-              Stories from inside the house.
+              Stories from inside the studio.
             </h2>
           </div>
           <Link href="/about" className="ed-more hidden md:inline-flex">
