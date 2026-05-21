@@ -47,7 +47,12 @@ export async function POST(request: NextRequest) {
       amount: totalMinor,
       currency: "USD",
       capture_mode: "automatic",
-      redirect_url: `${siteUrl}/checkout/success?revolut_order_id={ORDER_ID}`,
+      // Static redirect_url — Revolut does NOT substitute template
+      // placeholders like {ORDER_ID}. The embedded popup is the primary
+      // flow; on success the client redirects to
+      // /checkout/success?revolut_order_id=<actual id> from JS.
+      // The static URL below is only the hosted-checkout fallback.
+      redirect_url: `${siteUrl}/checkout/success`,
       description: `Maison Tanneurs · ${items.length} item${items.length > 1 ? "s" : ""}`,
       metadata: itemMetadata,
       line_items: items.map((i) => ({
