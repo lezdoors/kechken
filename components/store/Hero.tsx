@@ -18,30 +18,25 @@ export default function Hero() {
         className="object-cover kenburns"
       />
 
+      {/* Whisper-thin top scrim — just enough for navbar legibility over
+          the bright atelier ceiling. NOT the heavy dark band the old
+          version was rendering (78% → that read as a black header). */}
       <div
         aria-hidden
-        className="absolute inset-x-0 top-0 h-[180px] pointer-events-none"
+        className="absolute inset-x-0 top-0 h-[120px] pointer-events-none"
         style={{
           background:
-            "linear-gradient(180deg, rgba(8,7,6,0.78) 0%, rgba(8,7,6,0.55) 45%, rgba(8,7,6,0) 100%)",
+            "linear-gradient(180deg, rgba(8,7,6,0.32) 0%, rgba(8,7,6,0.12) 60%, rgba(8,7,6,0) 100%)",
         }}
       />
 
+      {/* Bottom scrim — soft lift behind the CTA buttons + subhead. */}
       <div
         aria-hidden
-        className="absolute inset-y-0 left-0 w-[58%] pointer-events-none"
+        className="absolute inset-x-0 bottom-0 h-[300px] pointer-events-none"
         style={{
           background:
-            "linear-gradient(90deg, rgba(8,7,6,0.72) 0%, rgba(8,7,6,0.45) 45%, rgba(8,7,6,0) 100%)",
-        }}
-      />
-
-      <div
-        aria-hidden
-        className="absolute inset-x-0 bottom-0 h-[360px] pointer-events-none"
-        style={{
-          background:
-            "linear-gradient(180deg, rgba(8,7,6,0) 0%, rgba(8,7,6,0.4) 45%, rgba(8,7,6,0.85) 100%)",
+            "linear-gradient(180deg, rgba(8,7,6,0) 0%, rgba(8,7,6,0.15) 50%, rgba(8,7,6,0.55) 100%)",
         }}
       />
 
