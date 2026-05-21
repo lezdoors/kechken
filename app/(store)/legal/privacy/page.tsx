@@ -17,7 +17,7 @@ export default function PrivacyPage() {
       <p>
         Maison Tanneurs (&quot;we&quot;, &quot;us&quot;, &quot;our&quot;) respects your privacy. This policy
         explains what personal information we collect when you visit
-        www.kechken.com, place an order, or write to us, and how we use,
+        www.maisontanneurs.com, place an order, or write to us, and how we use,
         store, share, and protect that information.
       </p>
 
@@ -25,7 +25,7 @@ export default function PrivacyPage() {
       <ul>
         <li><strong>Order details:</strong> name, billing and shipping address, email, phone number, and the items you ordered.</li>
         <li><strong>Payment information:</strong> handled exclusively by Stripe (our payment processor). We never see or store your card number.</li>
-        <li><strong>Correspondence:</strong> messages you send to hello@kechken.com or via our contact forms.</li>
+        <li><strong>Correspondence:</strong> messages you send to hello@maisontanneurs.com or via our contact forms.</li>
         <li><strong>Site analytics:</strong> anonymous information about how you use the site (pages visited, device type, time on page), collected via privacy-respecting analytics.</li>
         <li><strong>Marketing email:</strong> if you opt into the newsletter, we store your email and the date you subscribed.</li>
       </ul>
@@ -67,7 +67,7 @@ export default function PrivacyPage() {
         You have the right to access the personal information we hold about
         you, to correct it, to ask for it to be deleted, or to ask us to
         stop using it for marketing. Write to{" "}
-        <Link href="mailto:hello@kechken.com">hello@kechken.com</Link> and
+        <Link href="mailto:hello@maisontanneurs.com">hello@maisontanneurs.com</Link> and
         we will respond within thirty days.
       </p>
 
@@ -91,7 +91,7 @@ export default function PrivacyPage() {
       <h2>Contact</h2>
       <p>
         For any privacy question, write to{" "}
-        <Link href="mailto:hello@kechken.com">hello@kechken.com</Link>.
+        <Link href="mailto:hello@maisontanneurs.com">hello@maisontanneurs.com</Link>.
       </p>
     </article>
   );

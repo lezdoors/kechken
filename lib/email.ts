@@ -11,9 +11,9 @@ function getResend(): Resend {
   return new Resend(key);
 }
 
-const FROM_EMAIL = "Maison Tanneurs <orders@kechken.com>";
-const REPLY_TO = "hello@kechken.com";
-const ADMIN_EMAIL = "kechken@outlook.com";
+const FROM_EMAIL = "Maison Tanneurs <orders@maisontanneurs.com>";
+const REPLY_TO = "hello@maisontanneurs.com";
+const ADMIN_EMAIL = "haddaoui.ops@outlook.com";
 
 interface OrderEmailData {
   to: string;

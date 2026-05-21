@@ -24,10 +24,10 @@ export default function ContactPage() {
               General &amp; orders
             </div>
             <a
-              href="mailto:hello@kechken.com"
+              href="mailto:hello@maisontanneurs.com"
               className="font-serif text-[28px] md:text-[34px] tracking-[-0.01em] text-[var(--color-ink)] underline-offset-4 hover:underline"
             >
-              hello@kechken.com
+              hello@maisontanneurs.com
             </a>
           </div>
 
@@ -36,10 +36,10 @@ export default function ContactPage() {
               Press &amp; partnerships
             </div>
             <a
-              href="mailto:hello@kechken.com?subject=Press"
+              href="mailto:hello@maisontanneurs.com?subject=Press"
               className="font-serif text-[22px] md:text-[26px] tracking-[-0.01em] text-[var(--color-ink)] underline-offset-4 hover:underline"
             >
-              hello@kechken.com
+              hello@maisontanneurs.com
             </a>
             <p className="text-[14px] text-[var(--color-mineral)] mt-2">
               Mark the subject line &ldquo;Press&rdquo;.

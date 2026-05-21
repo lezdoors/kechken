@@ -35,7 +35,7 @@ export default function ReturnsPage() {
 
       <h2>How to return</h2>
       <ol style={{paddingLeft: "20px", marginBottom: "20px"}}>
-        <li style={{marginBottom: "8px"}}>Write to <Link href="mailto:hello@kechken.com">hello@kechken.com</Link> within 30 days of delivery with your order number and the reason for the return.</li>
+        <li style={{marginBottom: "8px"}}>Write to <Link href="mailto:hello@maisontanneurs.com">hello@maisontanneurs.com</Link> within 30 days of delivery with your order number and the reason for the return.</li>
         <li style={{marginBottom: "8px"}}>We will arrange a return shipping label via DHL or FedEx (EU and US orders) and email it to you within one working day.</li>
         <li style={{marginBottom: "8px"}}>Ship the bag back within 14 days of receiving the label.</li>
         <li style={{marginBottom: "8px"}}>Once we receive and inspect the return, we will refund the original payment method within 5 business days, or dispatch the exchange.</li>
@@ -59,14 +59,14 @@ export default function ReturnsPage() {
       <h2>Damaged or wrong items</h2>
       <p>
         If your order arrives damaged, or we sent the wrong piece, please
-        write to <Link href="mailto:hello@kechken.com">hello@kechken.com</Link> within 72 hours of
+        write to <Link href="mailto:hello@maisontanneurs.com">hello@maisontanneurs.com</Link> within 72 hours of
         delivery with photographs. We will cover the full cost of return
         and replacement — no questions asked.
       </p>
 
       <h2>Questions</h2>
       <p>
-        Write to <Link href="mailto:hello@kechken.com">hello@kechken.com</Link>. We
+        Write to <Link href="mailto:hello@maisontanneurs.com">hello@maisontanneurs.com</Link>. We
         answer within one working day.
       </p>
     </article>

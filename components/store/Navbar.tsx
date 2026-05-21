@@ -10,7 +10,7 @@ const NAV_LINKS: { label: string; href: string }[] = [
   { label: "Shop", href: "/products" },
   { label: "Care", href: "/legal/care" },
   { label: "Story", href: "/about" },
-  { label: "Contact", href: "mailto:hello@kechken.com" },
+  { label: "Contact", href: "mailto:hello@maisontanneurs.com" },
 ];
 
 export default function Navbar() {

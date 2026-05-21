@@ -11,19 +11,19 @@ const SHOP_LINKS = [
 const HOUSE_LINKS = [
   { label: "The Story", href: "/about" },
   { label: "The Atelier", href: "/about" },
-  { label: "Press", href: "mailto:hello@kechken.com?subject=Press" },
+  { label: "Press", href: "mailto:hello@maisontanneurs.com?subject=Press" },
 ];
 
 const HELP_LINKS = [
   { label: "Shipping", href: "/legal/shipping" },
   { label: "Returns", href: "/legal/returns" },
   { label: "Care", href: "/legal/care" },
-  { label: "Contact", href: "mailto:hello@kechken.com" },
+  { label: "Contact", href: "mailto:hello@maisontanneurs.com" },
 ];
 
 const SOCIAL = [
-  { label: "Instagram", href: "https://www.instagram.com/kechken" },
-  { label: "TikTok", href: "https://www.tiktok.com/@kechken" },
+  { label: "Instagram", href: "https://www.instagram.com/maisontanneurs" },
+  { label: "TikTok", href: "https://www.tiktok.com/@maisontanneurs" },
 ];
 
 type NewsletterStatus = "idle" | "submitting" | "ok" | "error";

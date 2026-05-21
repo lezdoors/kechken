@@ -34,7 +34,7 @@ const FAQ = [
   },
   {
     q: "Where can I get help with my order?",
-    a: "Email hello@kechken.com — we reply within one working day, usually faster.",
+    a: "Email hello@maisontanneurs.com — we reply within one working day, usually faster.",
   },
 ];
 
@@ -55,7 +55,7 @@ export default function FaqPage() {
       <h2>Still have a question?</h2>
       <p>
         Write to{" "}
-        <Link href="mailto:hello@kechken.com">hello@kechken.com</Link>. We
+        <Link href="mailto:hello@maisontanneurs.com">hello@maisontanneurs.com</Link>. We
         reply within one working day.
       </p>
     </article>

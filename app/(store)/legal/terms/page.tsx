@@ -15,9 +15,9 @@ export default function TermsPage() {
       <p className="updated">Last updated · 19 May 2026</p>
 
       <p>
-        These terms apply to every order placed on www.kechken.com. By
+        These terms apply to every order placed on www.maisontanneurs.com. By
         completing your purchase, you confirm you have read and agreed to
-        them. If anything here is unclear, write to <Link href="mailto:hello@kechken.com">hello@kechken.com</Link> before
+        them. If anything here is unclear, write to <Link href="mailto:hello@maisontanneurs.com">hello@maisontanneurs.com</Link> before
         you order.
       </p>
 
@@ -92,7 +92,7 @@ export default function TermsPage() {
       <h2>Contact</h2>
       <p>
         For any question about your order, write to{" "}
-        <Link href="mailto:hello@kechken.com">hello@kechken.com</Link>. We
+        <Link href="mailto:hello@maisontanneurs.com">hello@maisontanneurs.com</Link>. We
         answer within one working day.
       </p>
     </article>

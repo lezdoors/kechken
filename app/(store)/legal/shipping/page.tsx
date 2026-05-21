@@ -37,7 +37,7 @@ export default function ShippingPage() {
       <p>
         You will receive a tracking link by email as soon as the courier
         collects the order. If your tracking has not updated within five
-        business days of dispatch, write to <Link href="mailto:hello@kechken.com">hello@kechken.com</Link> and we will follow it
+        business days of dispatch, write to <Link href="mailto:hello@maisontanneurs.com">hello@maisontanneurs.com</Link> and we will follow it
         up with the carrier on your behalf.
       </p>
 
@@ -57,7 +57,7 @@ export default function ShippingPage() {
       <p>
         Every order is insured to its full value during transit. If your
         package arrives damaged, send us photographs of the damage and the
-        packaging within 72 hours of delivery (<Link href="mailto:hello@kechken.com">hello@kechken.com</Link>). We will file the
+        packaging within 72 hours of delivery (<Link href="mailto:hello@maisontanneurs.com">hello@maisontanneurs.com</Link>). We will file the
         insurance claim with the carrier and replace, repair, or refund at
         your option.
       </p>
@@ -78,7 +78,7 @@ export default function ShippingPage() {
 
       <h2>Questions</h2>
       <p>
-        Write to <Link href="mailto:hello@kechken.com">hello@kechken.com</Link>. We
+        Write to <Link href="mailto:hello@maisontanneurs.com">hello@maisontanneurs.com</Link>. We
         answer within one working day.
       </p>
     </article>

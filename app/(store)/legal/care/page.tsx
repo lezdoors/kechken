@@ -40,7 +40,7 @@ export default function CarePage() {
       <h2>Repairs</h2>
       <p>
         If a piece gets damaged through normal wear, write to{" "}
-        <Link href="mailto:hello@kechken.com">hello@kechken.com</Link> with
+        <Link href="mailto:hello@maisontanneurs.com">hello@maisontanneurs.com</Link> with
         a photo. Minor repairs (loose stitching, broken chain) are usually
         free of charge in the first year. Beyond that, we will quote at
         cost.
@@ -57,7 +57,7 @@ export default function CarePage() {
 
       <h2>Questions</h2>
       <p>
-        Write to <Link href="mailto:hello@kechken.com">hello@kechken.com</Link>.
+        Write to <Link href="mailto:hello@maisontanneurs.com">hello@maisontanneurs.com</Link>.
         We answer within one working day.
       </p>
     </article>

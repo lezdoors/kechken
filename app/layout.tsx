@@ -79,7 +79,7 @@ const ORGANIZATION_LD = {
   logo: "https://www.maisontanneurs.com/icon.svg",
   description:
     "Hand-stitched leather wearables sourced direct from a Marrakech atelier. Full-grain leather, editorial silhouettes.",
-  email: "hello@kechken.com",
+  email: "hello@maisontanneurs.com",
 };
 
 const CLARITY_PROJECT_ID =
