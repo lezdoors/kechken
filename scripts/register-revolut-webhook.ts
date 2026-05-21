@@ -14,15 +14,17 @@
 import { registerWebhook, listWebhooks } from "@/lib/revolut";
 
 const TARGET_URL = "https://www.maisontanneurs.com/api/webhooks/revolut";
+
+// Revolut Merchant API only accepts a specific event enum and silently
+// 400s if any value is out of bounds (no error description in the body —
+// just timestamp + errorId).
+//
+// For Drop 01 we only need ORDER_COMPLETED — that fires on a successful
+// captured payment and is what the webhook handler dispatches on.
+// Add other events here (REFUND_COMPLETED, PAYMENT_FAILED, etc.) one at
+// a time once they're confirmed against Revolut's docs / their support.
 const EVENTS = [
-  "ORDER_AUTHORISED",
   "ORDER_COMPLETED",
-  "ORDER_CANCELLED",
-  "ORDER_FAILED",
-  "REFUND_COMPLETED",
-  "REFUND_FAILED",
-  "PAYMENT_FAILED",
-  "PAYMENT_AUTHENTICATION_CHALLENGE",
 ];
 
 async function main() {
