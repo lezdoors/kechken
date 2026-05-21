@@ -13,11 +13,16 @@
 
 import crypto from "node:crypto";
 
-const API_VERSION = "1.0";
-
-function base(): string {
+// Revolut's API path versioning is inconsistent across endpoints:
+//   POST /api/orders             — versioned via `Revolut-Api-Version` header
+//   GET  /api/orders/{id}        — same
+//   POST /api/1.0/webhooks       — versioned in the path (no header)
+//   GET  /api/1.0/webhooks       — same
+//
+// Each call passes its own absolute path here. Don't pre-pend a version.
+function url(path: string): string {
   const root = process.env.REVOLUT_API_BASE || "https://merchant.revolut.com/api";
-  return `${root.replace(/\/$/, "")}/${API_VERSION}`;
+  return `${root.replace(/\/$/, "")}${path}`;
 }
 
 function authHeaders(): Record<string, string> {
@@ -90,7 +95,7 @@ export interface RevolutOrder {
 }
 
 export async function createOrder(input: CreateOrderInput): Promise<RevolutOrder> {
-  const res = await fetch(`${base()}/orders`, {
+  const res = await fetch(url("/orders"), {
     method: "POST",
     headers: authHeaders(),
     body: JSON.stringify(input),
@@ -105,7 +110,7 @@ export async function createOrder(input: CreateOrderInput): Promise<RevolutOrder
 }
 
 export async function getOrder(orderId: string): Promise<RevolutOrder> {
-  const res = await fetch(`${base()}/orders/${orderId}`, {
+  const res = await fetch(url(`/orders/${orderId}`), {
     method: "GET",
     headers: authHeaders(),
   });
@@ -126,13 +131,13 @@ export interface WebhookSubscription {
 }
 
 export async function registerWebhook(
-  url: string,
+  webhookUrl: string,
   events: string[],
 ): Promise<WebhookSubscription> {
-  const res = await fetch(`${base()}/webhooks`, {
+  const res = await fetch(url("/1.0/webhooks"), {
     method: "POST",
     headers: authHeaders(),
-    body: JSON.stringify({ url, events }),
+    body: JSON.stringify({ url: webhookUrl, events }),
   });
   const json = await res.json();
   if (!res.ok) {
@@ -144,7 +149,7 @@ export async function registerWebhook(
 }
 
 export async function listWebhooks(): Promise<WebhookSubscription[]> {
-  const res = await fetch(`${base()}/webhooks`, {
+  const res = await fetch(url("/1.0/webhooks"), {
     method: "GET",
     headers: authHeaders(),
   });
