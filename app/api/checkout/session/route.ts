@@ -1,15 +1,20 @@
 import { NextRequest, NextResponse } from "next/server";
-import { stripe } from "@/lib/stripe";
+import { createOrder } from "@/lib/revolut";
 
-// Stripe Checkout Sessions API with ui_mode: "elements" — recommended pattern
-// for embedded Payment Element. Returns a `client_secret` that the client uses
-// with <CheckoutElementsProvider> from @stripe/react-stripe-js/checkout.
-//
-// The Session fires `checkout.session.completed` to our existing webhook on
-// success — no new event types needed.
+// Creates a Revolut Acquiring order and returns the public token for the
+// embedded payment widget. Webhook fires ORDER_COMPLETED on success →
+// app/api/webhooks/revolut handles persistence + emails + Meta CAPI.
+
+type CartItem = {
+  product_id: string;
+  title: string;
+  price: number; // minor units (cents)
+  quantity: number;
+  image?: string;
+};
 
 export async function POST(request: NextRequest) {
-  const { items } = await request.json();
+  const { items } = (await request.json()) as { items?: CartItem[] };
   if (!items || items.length === 0) {
     return NextResponse.json({ error: "No items" }, { status: 400 });
   }
@@ -17,80 +22,58 @@ export async function POST(request: NextRequest) {
   const siteUrl =
     process.env.NEXT_PUBLIC_SITE_URL || "https://www.maisontanneurs.com";
 
+  // Sum minor-unit amounts directly to avoid float drift
+  const totalMinor = items.reduce(
+    (acc, i) => acc + i.price * i.quantity,
+    0,
+  );
+
   try {
-    const session = await stripe.checkout.sessions.create({
-      mode: "payment",
-      ui_mode: "elements",
-      line_items: items.map(
-        (item: {
-          product_id: string;
-          title: string;
-          price: number;
-          quantity: number;
-          image?: string;
-        }) => ({
-          price_data: {
-            currency: "usd",
-            product_data: {
-              name: item.title,
-              images: item.image
-                ? [item.image.startsWith("http") ? item.image : `${siteUrl}${item.image}`]
-                : [],
-              metadata: { product_id: item.product_id },
-            },
-            unit_amount: item.price,
-          },
-          quantity: item.quantity,
-        }),
-      ),
-      shipping_address_collection: {
-        allowed_countries: [
-          "US","CA","GB","FR","DE","IT","ES","AU","JP","AE",
-          "CH","BE","NL","SE","DK","NO","FI","IE","AT","PT","MA",
-        ],
-      },
-      phone_number_collection: { enabled: true },
-      automatic_tax: { enabled: false },
-      return_url: `${siteUrl}/checkout/success?session_id={CHECKOUT_SESSION_ID}`,
-      metadata: {
-        // Stripe caps each metadata value at 500 chars, so we can't put the
-        // full items array in one field. Split per item and drop image URLs
-        // (only needed in line_items for Stripe's UI, not in our order record).
-        // Webhook reads item_count + item_N to reconstruct the cart.
-        item_count: String(items.length),
-        ...Object.fromEntries(
-          items.map(
-            (
-              i: {
-                product_id: string;
-                title: string;
-                price: number;
-                quantity: number;
-              },
-              idx: number,
-            ) => [
-              `item_${idx}`,
-              JSON.stringify({
-                product_id: i.product_id,
-                title: i.title.slice(0, 80),
-                price: i.price,
-                quantity: i.quantity,
-              }),
-            ],
-          ),
-        ),
-      },
+    // Revolut metadata values are limited per field. Mirror the Stripe-era
+    // approach: store item_count + item_N to reconstruct the cart later.
+    const itemMetadata: Record<string, string> = {
+      item_count: String(items.length),
+    };
+    items.forEach((i, idx) => {
+      itemMetadata[`item_${idx}`] = JSON.stringify({
+        product_id: i.product_id,
+        title: i.title.slice(0, 80),
+        price: i.price,
+        quantity: i.quantity,
+      });
+    });
+
+    const order = await createOrder({
+      amount: totalMinor,
+      currency: "USD",
+      capture_mode: "automatic",
+      redirect_url: `${siteUrl}/checkout/success?revolut_order_id={ORDER_ID}`,
+      description: `Maison Tanneurs · ${items.length} item${items.length > 1 ? "s" : ""}`,
+      metadata: itemMetadata,
+      line_items: items.map((i) => ({
+        name: i.title,
+        type: "physical",
+        quantity: { value: i.quantity, unit: "piece" },
+        unit_price_amount: i.price,
+        total_amount: i.price * i.quantity,
+        external_id: i.product_id,
+        image_urls: i.image
+          ? [i.image.startsWith("http") ? i.image : `${siteUrl}${i.image}`]
+          : undefined,
+      })),
     });
 
     return NextResponse.json({
-      clientSecret: session.client_secret,
-      sessionId: session.id,
+      orderId: order.id,
+      token: order.token,
+      checkoutUrl: order.checkout_url,
+      publicKey: process.env.NEXT_PUBLIC_REVOLUT_PUBLIC_KEY,
     });
   } catch (err: unknown) {
     const message = err instanceof Error ? err.message : "Unknown error";
-    console.error("Stripe Checkout Session error:", message);
+    console.error("Revolut createOrder failed:", message);
     return NextResponse.json(
-      { error: "Failed to create checkout session", detail: message },
+      { error: "Failed to create checkout order", detail: message },
       { status: 500 },
     );
   }

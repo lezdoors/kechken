@@ -1,9 +1,9 @@
 import Link from "next/link";
-import { stripe } from "@/lib/stripe";
+import { createClient } from "@supabase/supabase-js";
+import { getOrder, type RevolutOrder } from "@/lib/revolut";
 import { formatPrice } from "@/lib/utils";
 import { ClearCart } from "@/components/store/ClearCart";
 import PurchaseTracking from "@/components/store/PurchaseTracking";
-import { createClient } from "@supabase/supabase-js";
 
 function getSupabase() {
   const url = process.env.NEXT_PUBLIC_SUPABASE_URL;
@@ -14,17 +14,37 @@ function getSupabase() {
   return createClient(url, key);
 }
 
+type CartItem = { title: string; price: number; quantity: number };
+
+function parseItemsFromMetadata(
+  metadata: Record<string, string> | undefined,
+): CartItem[] {
+  if (!metadata) return [];
+  const count = parseInt(metadata.item_count || "0", 10);
+  if (!count) return [];
+  const items: CartItem[] = [];
+  for (let i = 0; i < count; i++) {
+    const raw = metadata[`item_${i}`];
+    if (!raw) continue;
+    try {
+      items.push(JSON.parse(raw));
+    } catch {
+      /* skip */
+    }
+  }
+  return items;
+}
+
 export default async function CheckoutSuccessPage({
   searchParams,
 }: {
   searchParams: Promise<{ [key: string]: string | string[] | undefined }>;
 }) {
   const sp = await searchParams;
-  const sessionId = typeof sp.session_id === "string" ? sp.session_id : null;
-  const paymentIntentId =
-    typeof sp.payment_intent === "string" ? sp.payment_intent : null;
+  const revolutOrderId =
+    typeof sp.revolut_order_id === "string" ? sp.revolut_order_id : null;
 
-  if (!sessionId && !paymentIntentId) {
+  if (!revolutOrderId) {
     return (
       <SuccessErrorState
         title="Invalid Session"
@@ -33,67 +53,46 @@ export default async function CheckoutSuccessPage({
     );
   }
 
-  let items: Array<{ title: string; price: number; quantity: number }> = [];
-  let customerName = "Friend";
-  let customerEmail = "";
-  let total = 0;
-
-  if (sessionId) {
-    try {
-      const session = await stripe.checkout.sessions.retrieve(sessionId, {
-        expand: ["line_items"],
-      });
-      items = session.metadata?.items ? JSON.parse(session.metadata.items) : [];
-      customerName = session.customer_details?.name || "Friend";
-      customerEmail = session.customer_details?.email || "";
-      total = session.amount_total || 0;
-    } catch {
-      return (
-        <SuccessErrorState
-          title="Session Not Found"
-          body="This checkout session may have expired or is invalid."
-        />
-      );
-    }
-  } else if (paymentIntentId) {
-    try {
-      const intent = await stripe.paymentIntents.retrieve(paymentIntentId);
-      items = intent.metadata?.items ? JSON.parse(intent.metadata.items) : [];
-      customerName = intent.shipping?.name || "Friend";
-      customerEmail = intent.receipt_email || intent.metadata?.email || "";
-      total = intent.amount_received || intent.amount || 0;
-    } catch {
-      return (
-        <SuccessErrorState
-          title="Payment Not Found"
-          body="We couldn't retrieve your payment details. Please contact us."
-        />
-      );
-    }
+  let order: RevolutOrder;
+  try {
+    order = await getOrder(revolutOrderId);
+  } catch {
+    return (
+      <SuccessErrorState
+        title="Order Not Found"
+        body="This order may have expired or is invalid. Email us with your reference if you completed payment."
+      />
+    );
   }
 
-  // Fetch the actual order from Supabase by either id (webhook stores PI id in
-  // stripe_session_id field for both flows).
-  const lookupId = sessionId || paymentIntentId;
+  const items = parseItemsFromMetadata(order.metadata);
+  let customerName = order.customer?.full_name || "Friend";
+  let customerEmail = order.customer?.email || "";
+  const total = order.amount;
+
+  // Cross-reference with our orders table — the webhook persists order_number
+  // here. May not exist yet if the customer beats the webhook to /success,
+  // in which case we render the Revolut order details directly.
   const supabase = getSupabase();
   const orderRow = supabase
     ? (
         await supabase
           .from("orders")
-          .select("order_number, customer_email")
-          .eq("stripe_session_id", lookupId)
+          .select("order_number, customer_email, customer_name")
+          .eq("revolut_order_id", revolutOrderId)
           .maybeSingle()
       ).data
     : null;
 
   customerEmail = customerEmail || orderRow?.customer_email || "";
+  customerName = customerName || orderRow?.customer_name || "Friend";
   const orderNumber = orderRow?.order_number;
 
   return (
     <main className="min-h-screen px-6 py-16 md:py-24">
       <ClearCart />
       <PurchaseTracking
-        orderId={orderNumber || lookupId || "unknown"}
+        orderId={orderNumber || revolutOrderId}
         total={total}
         items={items.map((i) => ({
           slug: undefined,
@@ -109,10 +108,10 @@ export default async function CheckoutSuccessPage({
           Thank you, {customerName.split(" ")[0]}.
         </h1>
 
-        {/* Confirmation message */}
         <p className="font-serif text-[clamp(17px,1.4vw,20px)] italic text-graphite text-center leading-relaxed mb-10">
-          Your order has been placed. Each piece will be handcrafted by our artisans
-          in Marrakech and carefully prepared for shipping.
+          Your order has been placed. Each piece is hand-stitched in our
+          Marrakech atelier and shipped direct via DHL or FedEx — 3 to 5
+          business days to your door.
         </p>
 
         {/* Order number — prominent */}
@@ -133,39 +132,48 @@ export default async function CheckoutSuccessPage({
           </div>
         )}
 
-        {/* Items ordered */}
+        {!orderNumber && (
+          <div className="border-y border-stone py-6 mb-10 text-center">
+            <p className="eye mb-2">Payment Reference</p>
+            <p
+              className="font-mono tracking-[0.2em] text-[clamp(14px,1.6vw,18px)]"
+              style={{ color: "var(--color-ink)" }}
+            >
+              {revolutOrderId.slice(0, 8)}…{revolutOrderId.slice(-4)}
+            </p>
+            <p className="text-[12px] text-mineral mt-3">
+              We&apos;re finalising your order. Your confirmation email
+              will arrive in a few moments.
+            </p>
+          </div>
+        )}
+
         {items.length > 0 && (
           <div className="mb-10">
             <p className="eye mb-4">Items Ordered</p>
             <ul className="flex flex-col gap-3">
-              {items.map(
-                (
-                  item: { title: string; price: number; quantity: number },
-                  idx: number,
-                ) => (
-                  <li
-                    key={idx}
-                    className="flex items-baseline justify-between gap-4 pb-3 border-b border-stone/20 last:border-0"
-                  >
-                    <span className="font-sans text-[15px] text-graphite">
-                      {item.title}
-                      {item.quantity > 1 && (
-                        <span className="font-mono text-[10px] tracking-[0.16em] text-mineral ml-2">
-                          x{item.quantity}
-                        </span>
-                      )}
-                    </span>
-                    <span className="font-serif text-[16px] italic shrink-0">
-                      {formatPrice(item.price * item.quantity)}
-                    </span>
-                  </li>
-                ),
-              )}
+              {items.map((item, idx) => (
+                <li
+                  key={idx}
+                  className="flex items-baseline justify-between gap-4 pb-3 border-b border-stone/20 last:border-0"
+                >
+                  <span className="font-sans text-[15px] text-graphite">
+                    {item.title}
+                    {item.quantity > 1 && (
+                      <span className="font-mono text-[10px] tracking-[0.16em] text-mineral ml-2">
+                        x{item.quantity}
+                      </span>
+                    )}
+                  </span>
+                  <span className="font-serif text-[16px] italic shrink-0">
+                    {formatPrice(item.price * item.quantity)}
+                  </span>
+                </li>
+              ))}
             </ul>
           </div>
         )}
 
-        {/* Total */}
         <div className="flex items-baseline justify-between border-t border-stone pt-4 mb-12">
           <span className="eye">Total</span>
           <span
@@ -176,29 +184,27 @@ export default async function CheckoutSuccessPage({
           </span>
         </div>
 
-        {/* What happens next — timeline */}
         <div className="mb-12">
           <p className="eye mb-6 text-center">What happens next</p>
           <ol className="space-y-6">
             <TimelineStep
               n="01"
-              title="Crafted in Marrakech"
-              body="Your piece enters production at the atelier. Expect 2–4 weeks for crafting."
+              title="Hand-finished in Marrakech"
+              body="Your bag is signed inside by the artisan who completed it."
             />
             <TimelineStep
               n="02"
               title="Inspected &amp; packed"
-              body="Every piece is hand-inspected before being packed for the journey."
+              body="Every piece is hand-inspected before being packed in the dust bag."
             />
             <TimelineStep
               n="03"
-              title="Shipped &amp; tracked"
-              body="You'll receive a tracking number by email once the parcel leaves the atelier."
+              title="Shipped via DHL / FedEx"
+              body="You'll receive a tracking number by email the moment the parcel leaves the atelier."
             />
           </ol>
         </div>
 
-        {/* CTAs */}
         <div className="flex flex-col sm:flex-row gap-3 justify-center">
           <Link
             href="/products"
@@ -216,7 +222,6 @@ export default async function CheckoutSuccessPage({
           </Link>
         </div>
 
-        {/* Support note */}
         <p className="text-[12px] text-mineral text-center mt-12 leading-relaxed">
           Questions? Email{" "}
           <a
@@ -226,7 +231,13 @@ export default async function CheckoutSuccessPage({
           >
             hello@maisontanneurs.com
           </a>
-          {orderNumber && <> with order number <strong style={{ color: "var(--color-ink)" }}>{orderNumber}</strong></>}.
+          {orderNumber && (
+            <>
+              {" "}with order number{" "}
+              <strong style={{ color: "var(--color-ink)" }}>{orderNumber}</strong>
+            </>
+          )}
+          .
         </p>
       </div>
     </main>

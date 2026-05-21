@@ -2,26 +2,89 @@
 
 import { useEffect, useState } from "react";
 import Link from "next/link";
+import { useRouter } from "next/navigation";
 import { useCart } from "@/components/store/CartProvider";
-import StripeProvider from "./StripeProvider";
-import CheckoutForm from "./CheckoutForm";
 import OrderSummary from "./OrderSummary";
+
+type Status = "loading" | "ready" | "empty" | "error" | "missing-key";
+
+// Revolut Pay JS widget — loaded once per page lifecycle from the merchant
+// CDN. The global `RevolutCheckout` factory is exposed on window.
+const REVOLUT_EMBED_SRC = "https://merchant.revolut.com/embed.js";
+
+declare global {
+  interface Window {
+    RevolutCheckout?: (
+      token: string,
+      mode?: "prod" | "sandbox" | { mode: "prod" | "sandbox"; publicToken?: string },
+    ) => Promise<RevolutCheckoutInstance>;
+  }
+}
+
+interface RevolutCheckoutInstance {
+  payWithPopup: (options: PayWithPopupOptions) => void;
+  destroy?: () => void;
+}
+
+interface PayWithPopupOptions {
+  name?: string;
+  email?: string;
+  phone?: string;
+  savePaymentMethodFor?: "merchant" | "customer";
+  shippingAddress?: {
+    streetLine1?: string;
+    streetLine2?: string;
+    region?: string;
+    city?: string;
+    countryCode?: string;
+    postcode?: string;
+  };
+  onSuccess: () => void;
+  onError: (error: { message?: string; code?: string }) => void;
+  onCancel?: () => void;
+}
+
+function loadRevolutEmbed(): Promise<void> {
+  if (typeof window === "undefined") return Promise.reject(new Error("server"));
+  if (window.RevolutCheckout) return Promise.resolve();
+  const existing = document.querySelector(
+    `script[src="${REVOLUT_EMBED_SRC}"]`,
+  );
+  if (existing) {
+    return new Promise((resolve, reject) => {
+      existing.addEventListener("load", () => resolve());
+      existing.addEventListener("error", () => reject(new Error("embed load failed")));
+    });
+  }
+  return new Promise((resolve, reject) => {
+    const s = document.createElement("script");
+    s.src = REVOLUT_EMBED_SRC;
+    s.async = true;
+    s.onload = () => resolve();
+    s.onerror = () => reject(new Error("embed load failed"));
+    document.head.appendChild(s);
+  });
+}
 
 export default function CheckoutShell() {
   const { items, subtotal } = useCart();
-  const [clientSecret, setClientSecret] = useState<string | null>(null);
-  const [status, setStatus] = useState<"loading" | "ready" | "empty" | "error" | "missing-key">(
-    "loading",
-  );
+  const router = useRouter();
+  const [status, setStatus] = useState<Status>("loading");
+  const [token, setToken] = useState<string | null>(null);
+  const [orderId, setOrderId] = useState<string | null>(null);
+  const [email, setEmail] = useState("");
+  const [name, setName] = useState("");
+  const [submitting, setSubmitting] = useState(false);
+  const [errorMessage, setErrorMessage] = useState<string | null>(null);
 
-  const publishableKey = process.env.NEXT_PUBLIC_STRIPE_PUBLISHABLE_KEY;
+  const publicKey = process.env.NEXT_PUBLIC_REVOLUT_PUBLIC_KEY;
 
   useEffect(() => {
     if (items.length === 0) {
       setStatus("empty");
       return;
     }
-    if (!publishableKey) {
+    if (!publicKey) {
       setStatus("missing-key");
       return;
     }
@@ -29,15 +92,17 @@ export default function CheckoutShell() {
     let cancelled = false;
     (async () => {
       try {
+        await loadRevolutEmbed();
         const res = await fetch("/api/checkout/session", {
           method: "POST",
           headers: { "Content-Type": "application/json" },
           body: JSON.stringify({ items }),
         });
-        if (!res.ok) throw new Error("Failed to create checkout session");
-        const data = await res.json();
+        if (!res.ok) throw new Error("Failed to create checkout order");
+        const data = (await res.json()) as { token: string; orderId: string };
         if (cancelled) return;
-        setClientSecret(data.clientSecret);
+        setToken(data.token);
+        setOrderId(data.orderId);
         setStatus("ready");
       } catch {
         if (!cancelled) setStatus("error");
@@ -47,11 +112,41 @@ export default function CheckoutShell() {
     return () => {
       cancelled = true;
     };
-    // Create one Checkout Session when the cart first has items at this total.
-    // Quantity edits are reflected via Stripe's line items so re-creation on
-    // every change would just create orphaned sessions in the dashboard.
+    // Re-create order when the cart line-changes; quantity-only edits are
+    // also reflected because subtotal changes.
     // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [items.length === 0, publishableKey, subtotal]);
+  }, [items.length === 0, publicKey, subtotal]);
+
+  async function handleSubmit(e: React.FormEvent) {
+    e.preventDefault();
+    if (!token || !orderId || !window.RevolutCheckout) return;
+    setSubmitting(true);
+    setErrorMessage(null);
+    try {
+      const RC = await window.RevolutCheckout(token, "prod");
+      RC.payWithPopup({
+        email,
+        name,
+        savePaymentMethodFor: "merchant",
+        onSuccess: () => {
+          router.push(`/checkout/success?revolut_order_id=${orderId}`);
+        },
+        onError: (err) => {
+          setErrorMessage(
+            err.message || "Payment did not complete. Please try again.",
+          );
+          setSubmitting(false);
+        },
+        onCancel: () => {
+          setSubmitting(false);
+        },
+      });
+    } catch (err: unknown) {
+      const message = err instanceof Error ? err.message : "Unknown error";
+      setErrorMessage(message);
+      setSubmitting(false);
+    }
+  }
 
   if (status === "empty") {
     return (
@@ -109,7 +204,7 @@ export default function CheckoutShell() {
       <div className="max-w-[520px] mx-auto text-center py-16">
         <p className="eye mb-4">Error</p>
         <h1 className="disp text-[clamp(28px,4vw,40px)] mb-6">
-          We couldn't start your checkout.
+          We couldn&apos;t start your checkout.
         </h1>
         <p className="font-serif italic text-graphite text-[16px] leading-relaxed mb-10">
           Please refresh the page, or email{" "}
@@ -134,40 +229,93 @@ export default function CheckoutShell() {
   }
 
   return (
-    <StripeProvider clientSecret={clientSecret}>
-      <div className="grid lg:grid-cols-[1fr_460px] gap-10 lg:gap-16">
-        {/* Form column */}
-        <div>
-          {status === "loading" ? <FormSkeleton /> : <CheckoutForm />}
-        </div>
+    <div className="grid lg:grid-cols-[1fr_460px] gap-10 lg:gap-16">
+      <div>
+        <form onSubmit={handleSubmit} className="space-y-10">
+          {/* Contact */}
+          <section>
+            <h2 className="eye mb-5">Contact</h2>
+            <label
+              htmlFor="email"
+              className="text-[11px] font-sans tracking-[0.18em] uppercase text-mineral block mb-2"
+            >
+              Email
+            </label>
+            <input
+              id="email"
+              type="email"
+              required
+              autoComplete="email"
+              value={email}
+              onChange={(e) => setEmail(e.target.value)}
+              placeholder="you@example.com"
+              className="w-full border border-stone/40 focus:border-ink focus:outline-none transition-colors px-4 py-3.5 text-[15px] font-sans bg-white"
+              style={{ borderRadius: 0 }}
+            />
+            <label
+              htmlFor="name"
+              className="text-[11px] font-sans tracking-[0.18em] uppercase text-mineral block mb-2 mt-6"
+            >
+              Full Name
+            </label>
+            <input
+              id="name"
+              type="text"
+              required
+              autoComplete="name"
+              value={name}
+              onChange={(e) => setName(e.target.value)}
+              placeholder="Your full name"
+              className="w-full border border-stone/40 focus:border-ink focus:outline-none transition-colors px-4 py-3.5 text-[15px] font-sans bg-white"
+              style={{ borderRadius: 0 }}
+            />
+          </section>
 
-        {/* Summary column */}
-        <div className="lg:sticky lg:top-28 lg:self-start">
-          <OrderSummary />
-        </div>
-      </div>
-    </StripeProvider>
-  );
-}
+          {/* Payment */}
+          <section>
+            <h2 className="eye mb-5">Payment</h2>
+            <p className="text-[13px] font-sans text-graphite leading-relaxed">
+              Card, Apple Pay, Google Pay, and Revolut Pay are all supported.
+              Press <em>Pay</em> to open the secure Revolut payment window.
+            </p>
+          </section>
 
-function FormSkeleton() {
-  return (
-    <div className="space-y-10 animate-pulse">
-      <div>
-        <div className="h-3 w-24 bg-stone/30 mb-5" />
-        <div className="h-12 bg-stone/20" />
+          {errorMessage && (
+            <p
+              className="font-serif italic text-[14px] leading-relaxed"
+              style={{ color: "#9B2C2C" }}
+            >
+              {errorMessage}
+            </p>
+          )}
+
+          <div className="pt-2">
+            <button
+              type="submit"
+              disabled={status !== "ready" || submitting || items.length === 0}
+              className="rb-cta w-full"
+              style={{
+                fontSize: 13,
+                fontWeight: 600,
+                letterSpacing: "0.18em",
+                padding: "20px 28px",
+                opacity: submitting ? 0.65 : 1,
+                cursor: submitting ? "wait" : "pointer",
+              }}
+            >
+              {submitting
+                ? "Processing…"
+                : `Pay ${new Intl.NumberFormat("en-US", { style: "currency", currency: "USD" }).format(subtotal / 100)}`}
+            </button>
+            <p className="text-[11px] font-sans font-light text-mineral leading-relaxed text-center mt-5">
+              Encrypted by Revolut Acquiring. Card details never touch our servers.
+            </p>
+          </div>
+        </form>
       </div>
-      <div>
-        <div className="h-3 w-32 bg-stone/30 mb-5" />
-        <div className="h-12 bg-stone/20 mb-3" />
-        <div className="grid grid-cols-2 gap-3">
-          <div className="h-12 bg-stone/20" />
-          <div className="h-12 bg-stone/20" />
-        </div>
-      </div>
-      <div>
-        <div className="h-3 w-20 bg-stone/30 mb-5" />
-        <div className="h-32 bg-stone/20" />
+
+      <div className="lg:sticky lg:top-28 lg:self-start">
+        <OrderSummary />
       </div>
     </div>
   );

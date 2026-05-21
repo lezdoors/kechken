@@ -47,7 +47,7 @@ export default function TermsPage() {
         All prices are shown including any applicable EU VAT for orders
         shipped within the EU. US orders are shown without sales tax;
         tax is added at checkout where required by state law. Payment is
-        taken at the point of order via Stripe — we accept all major credit
+        taken at the point of order via Revolut — we accept all major credit
         cards, Apple Pay, and Google Pay.
       </p>
 

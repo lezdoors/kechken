@@ -24,7 +24,7 @@ export default function PrivacyPage() {
       <h2>Information we collect</h2>
       <ul>
         <li><strong>Order details:</strong> name, billing and shipping address, email, phone number, and the items you ordered.</li>
-        <li><strong>Payment information:</strong> handled exclusively by Stripe (our payment processor). We never see or store your card number.</li>
+        <li><strong>Payment information:</strong> handled exclusively by Revolut (our payment processor). We never see or store your card number.</li>
         <li><strong>Correspondence:</strong> messages you send to hello@maisontanneurs.com or via our contact forms.</li>
         <li><strong>Site analytics:</strong> anonymous information about how you use the site (pages visited, device type, time on page), collected via privacy-respecting analytics.</li>
         <li><strong>Marketing email:</strong> if you opt into the newsletter, we store your email and the date you subscribed.</li>
@@ -44,7 +44,7 @@ export default function PrivacyPage() {
         We share the minimum information necessary with:
       </p>
       <ul>
-        <li><strong>Stripe</strong> — for payment processing.</li>
+        <li><strong>Revolut</strong> — for payment processing.</li>
         <li><strong>Our Marrakech atelier</strong> — for finishing and dispatch.</li>
         <li><strong>Our courier</strong> — for delivery.</li>
         <li><strong>Resend</strong> — for transactional and newsletter email delivery.</li>
@@ -83,7 +83,7 @@ export default function PrivacyPage() {
       <h2>Security</h2>
       <p>
         All data is transmitted over HTTPS. Payment information never
-        touches our servers — it goes directly from your browser to Stripe.
+        touches our servers — it goes directly from your browser to Revolut.
         Customer records are stored encrypted at rest by our database
         provider (Supabase, hosted in the EU).
       </p>

@@ -22,6 +22,7 @@ export interface Order {
   id: string;
   order_number: string;
   sales_channel: "direct" | "etsy";
+  revolut_order_id: string | null;
   stripe_session_id: string | null;
   etsy_order_id: string | null;
   customer_email: string;

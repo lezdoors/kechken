@@ -291,9 +291,14 @@ export default async function OrderDetailPage({
           <div className="grid grid-cols-2 gap-2 text-[12px] font-mono text-muted">
             <p>Created: {new Date(order.created_at).toLocaleString()}</p>
             <p>Updated: {new Date(order.updated_at).toLocaleString()}</p>
+            {order.revolut_order_id && (
+              <p className="col-span-2">
+                Revolut: {order.revolut_order_id}
+              </p>
+            )}
             {order.stripe_session_id && (
               <p className="col-span-2">
-                Stripe: {order.stripe_session_id}
+                Stripe (legacy): {order.stripe_session_id}
               </p>
             )}
             {order.etsy_order_id && (
