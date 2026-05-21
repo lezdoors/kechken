@@ -8,6 +8,7 @@
 
 import { NextResponse } from "next/server";
 import { createClient } from "@supabase/supabase-js";
+import { STATIC_PRODUCTS } from "@/lib/products";
 
 export const revalidate = 3600; // 1 hour
 export const dynamic = "force-dynamic";
@@ -15,12 +16,15 @@ export const dynamic = "force-dynamic";
 const SITE_URL = process.env.NEXT_PUBLIC_SITE_URL || "https://www.maisontanneurs.com";
 
 // Defer client creation until request time so build-time env-var absence
-// doesn't fail the build.
+// doesn't fail the build. Returns null when Supabase isn't configured —
+// caller falls back to STATIC_PRODUCTS so Meta still gets a valid feed.
 function getSupabase() {
-  return createClient(
-    process.env.NEXT_PUBLIC_SUPABASE_URL!,
-    process.env.SUPABASE_SERVICE_ROLE_KEY || process.env.NEXT_PUBLIC_SUPABASE_ANON_KEY!,
-  );
+  const url = process.env.NEXT_PUBLIC_SUPABASE_URL;
+  const key =
+    process.env.SUPABASE_SERVICE_ROLE_KEY ||
+    process.env.NEXT_PUBLIC_SUPABASE_ANON_KEY;
+  if (!url || !key) return null;
+  return createClient(url, key);
 }
 
 function xmlEscape(s: string): string {
@@ -53,21 +57,51 @@ interface ProductRow {
 }
 
 export async function GET() {
-  const { data, error } = await getSupabase()
-    .from("products")
-    .select("id, title, slug, description, price, images, category, available_quantity, status, materials, weight_lbs")
-    .eq("status", "available")
-    .order("created_at", { ascending: false });
+  const supabase = getSupabase();
+  let products: ProductRow[] = [];
 
-  if (error) {
-    return new NextResponse(`<!-- error: ${error.message} -->`, {
-      status: 500,
-      headers: { "Content-Type": "application/xml; charset=utf-8" },
-    });
+  if (supabase) {
+    const { data, error } = await supabase
+      .from("products")
+      .select(
+        "id, title, slug, description, price, images, category, available_quantity, status, materials, weight_lbs",
+      )
+      .eq("status", "available")
+      .order("created_at", { ascending: false });
+
+    if (error) {
+      // Don't 500 — fall through to STATIC_PRODUCTS so Meta ingest still has
+      // something valid to parse. Log the error in the XML as a comment.
+      const xml = `<?xml version="1.0" encoding="UTF-8"?>
+<!-- supabase error: ${xmlEscape(error.message)} — falling back to static -->
+${renderFeed(STATIC_PRODUCTS as unknown as ProductRow[])}`;
+      return new NextResponse(xml, {
+        status: 200,
+        headers: { "Content-Type": "application/xml; charset=utf-8" },
+      });
+    }
+    products = data || [];
+  } else {
+    // No Supabase configured (e.g., env vars missing on Vercel) — serve the
+    // static catalogue. Maison Tanneurs Drop 01 lives in lib/products.ts so
+    // the feed always returns the 2 leather SKUs regardless of DB state.
+    products = STATIC_PRODUCTS as unknown as ProductRow[];
   }
 
-  const products: ProductRow[] = data || [];
+  return renderResponse(renderFeed(products));
+}
 
+function renderResponse(xml: string): NextResponse {
+  return new NextResponse(xml, {
+    status: 200,
+    headers: {
+      "Content-Type": "application/xml; charset=utf-8",
+      "Cache-Control": "public, s-maxage=3600, stale-while-revalidate=86400",
+    },
+  });
+}
+
+function renderFeed(products: ProductRow[]): string {
   const items = products
     .map((p) => {
       const imgs = (p.images || []).filter(Boolean);
@@ -104,7 +138,7 @@ ${additionalImages}
     .filter(Boolean)
     .join("\n");
 
-  const xml = `<?xml version="1.0" encoding="UTF-8"?>
+  return `<?xml version="1.0" encoding="UTF-8"?>
 <rss xmlns:g="http://base.google.com/ns/1.0" version="2.0">
   <channel>
     <title>Maison Tanneurs — Product Catalog</title>
@@ -113,12 +147,4 @@ ${additionalImages}
 ${items}
   </channel>
 </rss>`;
-
-  return new NextResponse(xml, {
-    status: 200,
-    headers: {
-      "Content-Type": "application/xml; charset=utf-8",
-      "Cache-Control": "public, s-maxage=3600, stale-while-revalidate=86400",
-    },
-  });
 }
