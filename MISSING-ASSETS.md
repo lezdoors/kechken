@@ -52,20 +52,54 @@ Plus `test-e2e` ($0.30, `featured=false`, hidden) for the Revolut checkout test 
 
 ### Grandfathered SKUs — generate scale (lifestyle) shots to remove warnings
 
-Use the [`higgsfield-product-photoshoot`](~/.claude/skills/higgsfield-product-photoshoot/) skill with `lifestyle_scene` mode. Reference image is each SKU's existing `-pdp-white.webp` Supabase URL. Save as `<slug>-scale.webp`, upload to Storage, then remove the slug from `AWAITING_SCALE_SHOTS` in the audit script.
+Use the [`higgsfield-product-photoshoot`](~/.claude/skills/higgsfield-product-photoshoot/) skill with **`lifestyle_scene`** mode. Reference image is each SKU's existing `-pdp-white.webp` Supabase URL (or the current `-01.webp` until Storage rename runs). Output: **2400×3200 portrait** WebP q=82. Save as `<slug>-scale.webp`, upload to Storage `products/drop-01/`, then remove the slug from `AWAITING_SCALE_SHOTS` in `scripts/audit-catalogue.ts`.
 
-- `black-stitched-backpack`
-- `cognac-brogue-backpack`
-- `classic-cognac-satchel`
-- `woven-leather-backpack`
-- `vintage-buckle-backpack`
+Same skeleton intent across all 5 (per skill brief — backend assembles the actual prompt). Vary only the silhouette + colorway phrase per SKU.
+
+**Skill brief — copy-paste into the `higgsfield-product-photoshoot` skill prompt:**
+
+```
+mode=lifestyle_scene
+brand context=Maison Tanneurs · heritage Moroccan leather atelier
+aspect=4:5 portrait (2400×3200 final)
+reference image=<paste pdp-white URL here>
+intent=editorial lifestyle hero for catalogue tile. Bag is sitting on a sun-warmed limestone bench inside a calm Marrakech atelier interior, late-afternoon side light catching the leather grain. Generous negative space, soft uncluttered composition, no people in frame, no props except optional cream linen folded beside. Calm flat-saturation editorial register. No logos, no monograms, no typography, no signage, no text.
+```
+
+Per-SKU silhouette context (append to intent if the reference image alone needs reinforcement):
+
+| Slug | Silhouette context |
+|---|---|
+| `black-stitched-backpack` | black full-grain leather backpack, cream contrast zigzag stitching |
+| `cognac-brogue-backpack` | cognac full-grain backpack, brogue-style scallop stitching, single buckled flap |
+| `classic-cognac-satchel` | cognac briefcase satchel, dual brass buckles, top handle |
+| `woven-leather-backpack` | dark-chocolate hand-woven leather backpack, diamond lattice |
+| `vintage-buckle-backpack` | cognac safari-classic backpack, three buckled exterior pockets |
 
 ### `rolltop-daypack` — needs full re-shoot
 
-Three legacy heroes (`-01.webp`, `-02.webp`, `-03.webp`) were all supplier-pile / souk-worn raws. SKU is `status='draft'` until a clean white-bg `-pdp-white.webp` + lifestyle `-scale.webp` arrive. Fire the storyboard pipeline:
-1. White-bg storyboard via `higgsfield-product-photoshoot` (mode: `product_shot`)
-2. Lifestyle scale via `lifestyle_scene` mode
-3. Upload + reseed + flip `status` back to `available` + `featured` to `true`.
+Three legacy heroes (`-01.webp`, `-02.webp`, `-03.webp`) were all supplier-pile / souk-worn raws. SKU is `status='draft'` until a clean white-bg `-pdp-white.webp` + lifestyle `-scale.webp` arrive.
+
+**Skill briefs — fire BOTH in `higgsfield-product-photoshoot`:**
+
+Brief 1 — `product_shot` mode for the white-bg PDP plate (1200×1200 square):
+```
+mode=product_shot
+brand context=Maison Tanneurs · heritage Moroccan leather atelier
+aspect=1:1 square (1200×1200 final)
+reference image=<one of the legacy -01.webp / -02.webp supplier raws as silhouette ref>
+intent=clean white-bg catalogue front. Cognac full-grain leather roll-top daypack, single front pocket, X-strap closure, leather top handle, adjustable padded shoulder straps. Camera straight-on front view, bag centered, straps tucked neutrally behind. Soft even front-key light, no directional shadows, very subtle contact shadow. Generous white margin on all sides. Calm editorial PDP register. No logos, no monograms, no typography, no text.
+```
+
+Brief 2 — `lifestyle_scene` mode for the scale (lifestyle hero), 2400×3200 portrait. Use the brief from the grandfathered SKUs block above (atelier limestone bench), substituting the silhouette text:
+> *Silhouette: cognac full-grain leather roll-top daypack, single front pocket, X-strap closure*
+
+After both shots land:
+1. Save as `rolltop-daypack-pdp-white.webp` + `rolltop-daypack-scale.webp` at q=82
+2. Upload to Supabase Storage `products/drop-01/`
+3. Update `lib/products.ts` SKU #2: `status: "available"`, `featured: true`, `images: [scale_url, pdp_white_url]`
+4. Apply DB UPDATE flipping status + images[]
+5. Re-run `pnpm audit:catalogue` — should pass with rolltop-daypack now live
 
 ## Deferred SKUs — slugs locked, shots pending
 
