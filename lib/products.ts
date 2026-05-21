@@ -41,12 +41,13 @@ export const STATIC_PRODUCTS: Product[] = [
     slug: "rolltop-daypack",
     price: 24500,
     // Original heroes (supplier-pile + souk-worn raws) failed the catalogue
-    // audit. Demoted to draft until clean white-bg PDP + scale shots land
-    // via HF. Re-publish by flipping status back to "available" + featured
-    // back to true once images[] has -pdp-white.webp at [0].
+    // audit. Demoted to `reserved` with no images until clean white-bg
+    // PDP + scale shots land via HF. The audit skips reserved+zero-images
+    // SKUs by design. Re-publish by flipping back to "available" with a
+    // real images[] once -pdp-white.webp + -scale.webp arrive.
     images: [],
     category: "Leather Goods",
-    status: "draft",
+    status: "reserved",
     featured: false,
     materials: ["Full-grain Moroccan leather", "Solid brass hardware", "Hand-stitched in Marrakech"],
     dimensions: { size: "42cm × 30cm × 14cm · single-pocket" },
