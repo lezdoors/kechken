@@ -16,7 +16,7 @@ const TILES: Tile[] = [
     label: "Leather Goods",
     href: "/products?category=Leather%20Goods",
     caption: "Hand-stitched in Marrakech",
-    image: "/products/drop-01/leather-goods-tile.webp",
+    image: "https://xbtabpurfavngwmwtawc.supabase.co/storage/v1/object/public/products/drop-01/leather-goods-tile.webp",
     gradient: "linear-gradient(180deg, #d8a47a 0%, #8c4d2e 100%)",
   },
   {
