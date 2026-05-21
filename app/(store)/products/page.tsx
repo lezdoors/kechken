@@ -57,6 +57,7 @@ async function getProducts(category?: string, q?: string): Promise<Product[]> {
       .from("products")
       .select("*")
       .eq("status", "available")
+      .eq("featured", true) // hidden SKUs (e.g. test-e2e) stay accessible by slug but never list
       .order("created_at", { ascending: false });
 
     if (category && category !== "all") {
