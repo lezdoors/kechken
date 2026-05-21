@@ -5,14 +5,14 @@ const ATELIER_HERO: string | null = "/hero/atelier-arch-rucksack.webp";
 
 export default function AtelierFocus() {
   return (
-    <section className="ed-section bg-[var(--color-bg-dark)] text-white">
+    <section className="ed-section bg-[var(--color-bg)]">
       <div className="max-w-[1480px] mx-auto grid grid-cols-1 lg:grid-cols-2 gap-12 lg:gap-20 items-center">
         <div className="order-2 lg:order-1 max-w-[460px] reveal">
-          <div className="ed-eyebrow text-white/55 mb-6">The Atelier</div>
-          <h2 className="ed-h2 text-white max-w-[14ch]">
+          <div className="ed-eyebrow mb-6">The Atelier</div>
+          <h2 className="ed-h2 max-w-[14ch]">
             Hand-stitched in Marrakech.
           </h2>
-          <p className="ed-body-lg mt-7 max-w-[40ch] text-white/75">
+          <p className="ed-body-lg mt-7 max-w-[40ch] text-[var(--color-ink-soft)]">
             Full-grain leather, solid brass, contrast saddle-stitch. Every
             piece is finished by hand in a small Marrakech atelier — one
             artisan, one bag, signed and shipped.
@@ -20,14 +20,14 @@ export default function AtelierFocus() {
           <div className="mt-10">
             <Link
               href="/products?category=Leather%20Goods"
-              className="ed-cta-light"
+              className="ed-cta"
             >
               See the leather
             </Link>
           </div>
         </div>
 
-        <div className="order-1 lg:order-2 relative aspect-square lg:aspect-[4/5] overflow-hidden bg-[var(--color-bg-dark-soft)]">
+        <div className="order-1 lg:order-2 relative aspect-square lg:aspect-[4/5] overflow-hidden bg-[var(--color-bg-alt)]">
           {ATELIER_HERO ? (
             <Image
               src={ATELIER_HERO}
