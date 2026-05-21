@@ -40,19 +40,258 @@ That's the universal "shoot pending" graphic. Once the real shot lands, replace 
 
 Plus `test-e2e` ($0.30, `featured=false`, hidden) for the Revolut checkout test path.
 
-## Deferred SKUs — supplier shots exist but not white-bg multi-angle
+## Deferred SKUs — supplier shots exist, need restaging + multi-angle
 
-These have product photos in `~/brand-assets/maison-tanneurs/_unsorted/leather-bags-supplier-pool/` but on cream-wall + linen-surface backgrounds rather than pure white. Push to Drop 02 unless we restage them.
+These have product photos in `~/brand-assets/maison-tanneurs/_unsorted/leather-bags-supplier-pool/` but on cream-wall + linen-surface backgrounds or in-souk phone snaps rather than clean white-bg studio. **Renamed to brand-canonical slugs.** Fire the listed HF prompts to fill the gaps.
 
-| Tentative slug | Style | Have | Need |
+| Final slug | Style | Have (source files) | Gap |
 |---|---|---|---|
-| `black-saddle-tote` | Plain black tote, cream contrast saddle-stitch | 3 angles cream-wall | Hero on white bg + lifestyle |
-| `burgundy-saddle-tote` | Plain burgundy tote, cream contrast saddle-stitch | 3 angles cream-wall | Hero on white bg + lifestyle |
-| `embossed-saddle-cognac` | Diamond-floral embossed saddle bag | 1 product shot + 1 on Berber rug | Multi-angle white bg + interior |
-| `embossed-saddle-teal` | Same silhouette, teal colorway | 1 shot on Berber linen | Multi-angle white bg |
-| `embossed-saddle-burgundy` | Same silhouette, burgundy colorway | 1 lifestyle shot only | Hero white-bg + multi-angle |
-| `tall-duffle-backpack` | Tall cognac duffle, single pocket | 1 supplier-in-souk phone snap | White-bg studio shot |
-| `roll-top-x-strap-rucksack` | Cognac, X-strap, very large | 1 in-souk phone snap (32e97985) | White-bg studio shot |
+| `marrakech-tote-noir` | Plain black tote, cream contrast saddle-stitch | 3 angles cream-wall (image_4b5ea538, image_8ed7f752, image_b9024dfd) | White-bg hero + lifestyle |
+| `marrakech-tote-bordeaux` | Plain burgundy tote, cream contrast saddle-stitch | 3 angles cream-wall (image_3028860e, image_7842a5d3, image_a5c51ba1) | White-bg hero + lifestyle |
+| `medina-crossbody-cognac` | Diamond-floral embossed saddle crossbody | 1 product (brown-leather-bag-small) + 1 Berber-rug (Morocco0044) | Multi-angle white-bg |
+| `medina-crossbody-jade` | Same silhouette, jade-teal colorway | 1 on Berber linen (0cf6e4_*) | Multi-angle white-bg |
+| `medina-crossbody-bordeaux` | Same silhouette, burgundy colorway | 1 lifestyle hanging on hook (Morocco0026) | Hero white-bg + multi-angle |
+| `medina-duffle` | Tall cognac duffle, single pocket | 1 supplier-in-souk phone snap (01fd3484) | White-bg hero + multi-angle |
+| `explorer-rucksack` | Cognac X-strap, multi-pocket, very large | 2 in-souk snaps (86b8c4fb, 32e97985) | White-bg hero + lifestyle |
+
+## HF prompts — restage these 7 SKUs
+
+**Workflow per shot:**
+1. **HF UI → Image tab**, model: `nano_banana_2` (best for reference-image fidelity, 2 credits per shot — toggle Unlimited)
+2. Upload the source file from `~/brand-assets/maison-tanneurs/_unsorted/leather-bags-supplier-pool/` as the **reference image**
+3. Paste the prompt below
+4. Aspect: **1:1 square** for white-bg PDP shots, **4:5 portrait** for lifestyle
+5. Generate 2-4 per slot, pick strongest, save to local
+
+Then ping me with the chosen filenames and I'll upload + wire into the SKU.
+
+---
+
+### `marrakech-tote-noir` — 2 shots to fire
+
+**Reference:** `image_4b5ea538-e7fd-46fd-a672-d60fa0fbf08d.heic.webp` (or `image_8ed7f752`, `image_b9024dfd`)
+
+**Shot 1 — White-bg hero (1:1):**
+```
+Restage this exact black full-grain leather tote bag on a pure
+white seamless cyclorama background, photographed in soft
+overhead studio light. Keep the leather grain, the cream contrast
+saddle-stitching, and the bag's silhouette identical to the
+reference. Editorial product photography, no shadows below the
+bag except a faint contact shadow, medium-format quality, no
+typography, no logos. 1:1 square.
+```
+
+**Shot 2 — Lifestyle (4:5):**
+```
+Same black full-grain leather tote bag from the reference image,
+sitting on a sun-warmed limestone bench inside a minimalist
+Marrakech atelier. Soft afternoon side-light catches the cream
+contrast stitching. Cream linen folded beside. Editorial 4:5
+portrait composition, no logos, no text.
+```
+
+---
+
+### `marrakech-tote-bordeaux` — 2 shots to fire
+
+**Reference:** `image_3028860e-ccdf-426b-9625-c5e64dc070d3.heic.webp`
+
+**Shot 1 — White-bg hero (1:1):**
+```
+Restage this exact burgundy / oxblood full-grain leather tote bag
+on a pure white seamless cyclorama background, photographed in
+soft overhead studio light. Preserve the leather grain, the cream
+contrast saddle-stitching, and the bag's silhouette identical to
+the reference. Faint contact shadow only. Editorial, no
+typography, 1:1 square.
+```
+
+**Shot 2 — Lifestyle (4:5):**
+```
+Same burgundy full-grain leather tote bag from the reference,
+placed on a warm-toned walnut writing desk near a sunlit Moroccan
+window, ivory linen handkerchief draped to one side, ink-blue
+inkwell visible. Soft daylight, cinematic shadows, no logos,
+no text. 4:5 portrait.
+```
+
+---
+
+### `medina-crossbody-cognac` — 3 shots to fire
+
+**Reference:** `brown-leather-bag-small.jpg.webp` (cognac embossed saddle bag, half-moon silhouette with diamond floral motif)
+
+**Shot 1 — White-bg hero (1:1):**
+```
+Restage this exact cognac full-grain leather crossbody saddle
+bag on a pure white seamless cyclorama background, soft overhead
+studio light. Keep the embossed diamond-floral motif on the flap
+exactly as in the reference. Preserve the shoulder strap, the
+silhouette, the natural patina. Faint contact shadow only.
+Editorial product photography, 1:1 square, no typography.
+```
+
+**Shot 2 — Open / interior (1:1):**
+```
+Same cognac embossed crossbody saddle bag, photographed with the
+flap open showing a clean leather interior in a slightly darker
+tan tone, single inner pocket visible. Pure white seamless
+cyclorama, overhead light, 1:1 square. Editorial detail shot.
+```
+
+**Shot 3 — Lifestyle (4:5):**
+```
+Same cognac embossed crossbody saddle bag worn over the shoulder
+by a refined Mediterranean woman in cream linen, walking through
+a Marrakech medina alley with carved-arch doorway in soft focus
+background, warm afternoon light. Editorial, 4:5 portrait,
+no logos.
+```
+
+---
+
+### `medina-crossbody-jade` — 2 shots to fire
+
+**Reference:** `0cf6e4_e7b3984a64fd4a79a057f99d4e3ce414_mv2.jpg.webp` (jade-teal embossed crossbody)
+
+**Shot 1 — White-bg hero (1:1):**
+```
+Restage this exact jade-teal full-grain leather crossbody saddle
+bag on a pure white seamless cyclorama background, soft overhead
+studio light. Keep the embossed diamond-floral motif on the flap
+identical to the reference. Saturate the teal naturally — not
+electric, more aged-patina mineral green. Faint contact shadow.
+Editorial, 1:1 square, no typography.
+```
+
+**Shot 2 — Lifestyle (4:5):**
+```
+Same jade-teal embossed crossbody saddle bag resting on a cream
+Berber wool rug, soft afternoon daylight, woven textile shadows.
+Editorial still-life, 4:5 portrait, no logos, no text.
+```
+
+---
+
+### `medina-crossbody-bordeaux` — 3 shots to fire
+
+**Reference:** `Morocco0026.jpg.webp` (burgundy embossed crossbody hanging on a hook in a Moroccan room)
+
+**Shot 1 — White-bg hero (1:1):**
+```
+Restage this exact burgundy / oxblood full-grain leather crossbody
+saddle bag on a pure white seamless cyclorama background, soft
+overhead studio light. Keep the embossed diamond-floral motif on
+the flap exactly as in the reference image. Saturate the burgundy
+as a deep aged wine tone. Faint contact shadow. Editorial,
+1:1 square, no typography, no logos.
+```
+
+**Shot 2 — Three-quarter angle (1:1):**
+```
+Same burgundy embossed crossbody at a 3/4 angle showing the
+shoulder strap and the side panel detail, pure white seamless
+cyclorama background, overhead light. Editorial product
+photography, 1:1 square.
+```
+
+**Shot 3 — Lifestyle (4:5):**
+```
+Same burgundy embossed crossbody hanging on a wrought-iron hook
+inside a sunlit Moroccan riad, plaster wall, narrow brass mirror
+visible in shallow background. Warm afternoon side light.
+Editorial 4:5 portrait, no logos.
+```
+
+---
+
+### `medina-duffle` — 3 shots to fire
+
+**Reference:** `01fd3484-0349-4c88-895c-71b609cddbf2.JPG` (souk-context phone snap of a tall cognac duffle backpack)
+
+**Shot 1 — White-bg hero (1:1):**
+```
+Restage this exact tall cognac full-grain leather duffle backpack
+on a pure white seamless cyclorama background, soft overhead
+studio light. Cylindrical silhouette with single front buckled
+pocket, drawstring top closure with buckle flap, vertical
+shoulder strap. Preserve the leather grain and brass hardware
+from the reference. Faint contact shadow. Editorial, 1:1 square,
+no typography, no logos.
+```
+
+**Shot 2 — Side profile (1:1):**
+```
+Same tall cognac leather duffle from the reference, side profile
+view showing the full vertical silhouette and the side seam
+saddle-stitching, pure white seamless cyclorama, overhead light.
+Editorial, 1:1 square.
+```
+
+**Shot 3 — Lifestyle worn (4:5):**
+```
+Same tall cognac leather duffle worn cross-body by a young
+Mediterranean man in a cream linen shirt, walking through a
+Marrakech medina alley at golden hour, warm sun spilling along
+the limestone walls. Bag dominant in the lower-foreground.
+Editorial 4:5 portrait, no logos.
+```
+
+---
+
+### `explorer-rucksack` — 3 shots to fire
+
+**Reference:** `86b8c4fb-064d-40eb-9685-e3cf3f9b6e3c.JPG` (large cognac X-strap rucksack, multi-pocket, tile-floor supplier shot)
+
+**Shot 1 — White-bg hero (1:1):**
+```
+Restage this exact large cognac full-grain leather rucksack with
+double X-strap closure on the main compartment, multiple
+exterior pockets, brass buckles throughout, on a pure white
+seamless cyclorama background. Soft overhead studio light,
+faint contact shadow. Editorial product photography, 1:1 square,
+no typography, no logos.
+```
+
+**Shot 2 — Back / strap detail (1:1):**
+```
+Same cognac X-strap rucksack from the reference, photographed
+from the back showing the dual shoulder straps and the top
+handle, pure white seamless cyclorama, overhead light.
+Editorial, 1:1 square.
+```
+
+**Shot 3 — Lifestyle worn (4:5):**
+```
+Same cognac X-strap rucksack worn on the back by a young
+Mediterranean man in a black puffer jacket and jeans, walking
+through a sun-soaked Marrakech medina alley with ornate carved-
+arch doorway behind. Warm Mediterranean daylight, cinematic
+shadows. Editorial 4:5 portrait, no logos, no text.
+```
+
+---
+
+## Output naming convention when you save HF results
+
+Save the chosen WebP from each batch to `~/Downloads/` with this exact filename pattern:
+
+```
+<slug>-<NN>.webp
+```
+
+Where `NN` is `01` for hero white-bg, `02-04` for additional angles, `05` for lifestyle. Examples:
+
+```
+marrakech-tote-noir-01.webp        ← white-bg hero
+marrakech-tote-noir-05.webp        ← lifestyle 4:5
+medina-crossbody-cognac-01.webp    ← white-bg hero
+medina-crossbody-cognac-02.webp    ← open interior
+medina-crossbody-cognac-05.webp    ← lifestyle 4:5
+```
+
+When all 7 SKUs are shot, ping me with "renders ready in ~/Downloads" and I'll batch-upload to Supabase Storage + seed the SKUs into the catalog + remove the corresponding row from the deferred table above.
 
 ## HF work list — lifestyle + scale shots for current 7 SKUs
 
