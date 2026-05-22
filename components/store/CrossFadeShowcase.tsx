@@ -65,7 +65,7 @@ export default function CrossFadeShowcase({
                 alt={img.alt}
                 fill
                 sizes="(min-width: 1024px) 50vw, 100vw"
-                className="object-contain"
+                className="object-cover"
                 priority={i === 0}
               />
             </div>

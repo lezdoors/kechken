@@ -24,9 +24,9 @@ export default async function Home() {
         ctaLabel="Shop Heritage"
         ctaHref="/products/heritage-rucksack"
         images={[
-          { src: `${STORAGE}/heritage-rucksack-scale.webp`, alt: "Heritage Rucksack — scale" },
-          { src: `${STORAGE}/heritage-rucksack-archive-1.webp`, alt: "Heritage Rucksack — archive view" },
-          { src: `${STORAGE}/heritage-rucksack-archive-2.webp`, alt: "Heritage Rucksack — atelier" },
+          { src: "/brand/hero/home-hero-3-woman-arches.webp", alt: "Heritage Rucksack — arched gallery" },
+          { src: `${STORAGE}/heritage-rucksack-scale.webp`, alt: "Heritage Rucksack — alley walk" },
+          { src: `${STORAGE}/heritage-rucksack-archive-1.webp`, alt: "Heritage Rucksack — souk light" },
         ]}
         photoSide="left"
       />
