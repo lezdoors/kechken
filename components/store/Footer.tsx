@@ -60,13 +60,38 @@ export default function Footer() {
   }
 
   return (
-    <footer className="bg-[var(--color-bg-dark)] text-white">
+    <footer
+      className="bg-[color:var(--color-paper)] text-[color:var(--color-ink)]"
+      style={{ borderTop: "1px solid var(--color-rule-strong)" }}
+    >
       {/* Newsletter editorial band */}
-      <div className="border-b border-white/10">
-        <div className="max-w-[1280px] mx-auto px-6 md:px-12 py-16 md:py-24 grid grid-cols-1 md:grid-cols-[1.2fr_1fr] gap-10 md:gap-16 items-end">
+      <div style={{ borderBottom: "1px solid var(--color-rule)" }}>
+        <div className="max-w-[1280px] mx-auto px-6 md:px-12 py-16 md:py-20 grid grid-cols-1 md:grid-cols-[1.2fr_1fr] gap-10 md:gap-16 items-end">
           <div>
-            <div className="ed-eyebrow text-white/55 mb-5">The List</div>
-            <h3 className="ed-footer-headline text-white max-w-[18ch]">
+            <div
+              className="mb-5 uppercase"
+              style={{
+                fontFamily: "var(--font-mono)",
+                fontSize: "11px",
+                letterSpacing: "0.22em",
+                fontWeight: 500,
+                color: "var(--color-bronze)",
+              }}
+            >
+              The List
+            </div>
+            <h3
+              className="max-w-[18ch]"
+              style={{
+                fontFamily: "var(--font-sans)",
+                fontWeight: 500,
+                fontSize: "clamp(26px, 3.2vw, 40px)",
+                letterSpacing: "-0.015em",
+                lineHeight: 1.1,
+                color: "var(--color-ink)",
+                margin: 0,
+              }}
+            >
               Quiet correspondence. Drops, dispatches, nothing else.
             </h3>
           </div>
@@ -75,7 +100,10 @@ export default function Footer() {
             className="flex flex-col gap-3 md:pb-3"
             aria-live="polite"
           >
-            <div className="flex items-stretch border-b border-white">
+            <div
+              className="flex items-stretch"
+              style={{ borderBottom: "1px solid var(--color-ink)" }}
+            >
               <input
                 type="email"
                 placeholder="Your email"
@@ -83,21 +111,37 @@ export default function Footer() {
                 onChange={(e) => setEmail(e.target.value)}
                 required
                 disabled={status === "submitting"}
-                className="flex-1 py-3.5 text-[15px] bg-transparent outline-none placeholder:text-white/40 text-white disabled:opacity-50"
+                className="flex-1 py-3.5 text-[15px] bg-transparent outline-none disabled:opacity-50"
+                style={{
+                  fontFamily: "var(--font-sans)",
+                  color: "var(--color-ink)",
+                }}
               />
               <button
                 type="submit"
                 disabled={status === "submitting"}
-                className="ed-eyebrow text-white px-3 disabled:opacity-60"
+                className="px-3 uppercase disabled:opacity-60"
+                style={{
+                  fontFamily: "var(--font-mono)",
+                  fontSize: "11px",
+                  letterSpacing: "0.22em",
+                  fontWeight: 500,
+                  color: "var(--color-ink)",
+                }}
               >
                 {status === "submitting" ? "Sending…" : "Join"}
               </button>
             </div>
             {message && (
               <p
-                className={`text-[12px] ${
-                  status === "ok" ? "text-white/85" : "text-[#e88a78]"
-                }`}
+                className="text-[12px]"
+                style={{
+                  fontFamily: "var(--font-mono)",
+                  color:
+                    status === "ok"
+                      ? "var(--color-ink-soft)"
+                      : "var(--color-oxblood)",
+                }}
               >
                 {message}
               </p>
@@ -107,66 +151,80 @@ export default function Footer() {
       </div>
 
       {/* Link columns */}
-      <div className="max-w-[1280px] mx-auto px-6 md:px-12 pt-16 pb-12 grid grid-cols-2 md:grid-cols-4 gap-10 md:gap-12">
-        <div>
-          <div className="ed-eyebrow text-white/55 mb-5">Shop</div>
-          <ul className="space-y-3">
-            {SHOP_LINKS.map((l) => (
-              <li key={l.label}>
-                <Link href={l.href} className="text-[13px] text-white/75 hover:text-white transition-colors">
-                  {l.label}
-                </Link>
-              </li>
-            ))}
-          </ul>
-        </div>
-        <div>
-          <div className="ed-eyebrow text-white/55 mb-5">House</div>
-          <ul className="space-y-3">
-            {HOUSE_LINKS.map((l) => (
-              <li key={l.label}>
-                <Link href={l.href} className="text-[13px] text-white/75 hover:text-white transition-colors">
-                  {l.label}
-                </Link>
-              </li>
-            ))}
-          </ul>
-        </div>
-        <div>
-          <div className="ed-eyebrow text-white/55 mb-5">Help</div>
-          <ul className="space-y-3">
-            {HELP_LINKS.map((l) => (
-              <li key={l.label}>
-                <Link href={l.href} className="text-[13px] text-white/75 hover:text-white transition-colors">
-                  {l.label}
-                </Link>
-              </li>
-            ))}
-          </ul>
-        </div>
-        <div>
-          <div className="ed-eyebrow text-white/55 mb-5">Follow</div>
-          <ul className="space-y-3">
-            {SOCIAL.map((s) => (
-              <li key={s.label}>
-                <Link href={s.href} className="text-[13px] text-white/75 hover:text-white transition-colors">
-                  {s.label}
-                </Link>
-              </li>
-            ))}
-          </ul>
-        </div>
+      <div className="max-w-[1280px] mx-auto px-6 md:px-12 pt-14 pb-10 grid grid-cols-2 md:grid-cols-4 gap-10 md:gap-12">
+        {[
+          { label: "Shop", items: SHOP_LINKS },
+          { label: "House", items: HOUSE_LINKS },
+          { label: "Help", items: HELP_LINKS },
+          { label: "Follow", items: SOCIAL },
+        ].map((col) => (
+          <div key={col.label}>
+            <div
+              className="mb-5 uppercase"
+              style={{
+                fontFamily: "var(--font-mono)",
+                fontSize: "11px",
+                letterSpacing: "0.22em",
+                fontWeight: 500,
+                color: "var(--color-bronze)",
+              }}
+            >
+              {col.label}
+            </div>
+            <ul className="space-y-3">
+              {col.items.map((l) => (
+                <li key={l.label}>
+                  <Link
+                    href={l.href}
+                    className="text-[13px] transition-colors hover:underline"
+                    style={{ color: "var(--color-ink-soft)" }}
+                  >
+                    {l.label}
+                  </Link>
+                </li>
+              ))}
+            </ul>
+          </div>
+        ))}
       </div>
 
       {/* Bottom utility */}
-      <div className="border-t border-white/10">
-        <div className="max-w-[1280px] mx-auto px-6 md:px-12 py-6 flex flex-col md:flex-row md:items-center md:justify-between gap-3 text-[11px] text-white/55">
-          <div className="font-serif italic text-[14px] text-white/75">
+      <div style={{ borderTop: "1px solid var(--color-rule)" }}>
+        <div
+          className="max-w-[1280px] mx-auto px-6 md:px-12 py-6 flex flex-col md:flex-row md:items-center md:justify-between gap-3"
+          style={{ color: "var(--color-ink-muted)" }}
+        >
+          <div
+            style={{
+              fontFamily: "var(--font-sans)",
+              fontStyle: "italic",
+              fontWeight: 300,
+              fontSize: "13px",
+              color: "var(--color-ink-soft)",
+            }}
+          >
             maison tanneurs · hand-stitched in marrakech
           </div>
-          <div className="flex items-center gap-5 ed-meta">
-            <Link href="/legal/privacy" className="hover:text-white transition-colors">Privacy</Link>
-            <Link href="/legal/terms" className="hover:text-white transition-colors">Terms</Link>
+          <div
+            className="flex items-center gap-5 uppercase"
+            style={{
+              fontFamily: "var(--font-mono)",
+              fontSize: "11px",
+              letterSpacing: "0.18em",
+            }}
+          >
+            <Link
+              href="/legal/privacy"
+              className="transition-colors hover:text-[color:var(--color-ink)]"
+            >
+              Privacy
+            </Link>
+            <Link
+              href="/legal/terms"
+              className="transition-colors hover:text-[color:var(--color-ink)]"
+            >
+              Terms
+            </Link>
             <span>© {new Date().getFullYear()} Maison Tanneurs</span>
           </div>
         </div>
