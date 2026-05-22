@@ -134,6 +134,13 @@ async function audit(): Promise<void> {
       continue;
     }
 
+    // Synthetic checkout fixtures (Revolut/Stripe end-to-end test SKUs) live
+    // in the DB but never reach customers. Skip from canon checks.
+    if (p.slug.startsWith("test-")) {
+      skippedDrafts++;
+      continue;
+    }
+
     const issues: Issue[] = [];
 
     if (!SLUG_REGEX.test(p.slug)) {
