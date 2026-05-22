@@ -87,11 +87,11 @@
   --color-line-soft: rgba(20, 20, 18, 0.06);
   --color-line-bone: rgba(20, 20, 18, 0.18);
 
-  /* Fonts — Switzer only */
+  /* Fonts — Switzer for display + body, system mono for SKU / spec lines */
   --font-sans: "Switzer", "Helvetica Neue", Arial, sans-serif;
   --font-serif: var(--font-sans);
   --font-display: var(--font-sans);
-  --font-mono: var(--font-sans);
+  --font-mono: "SF Mono", ui-monospace, "JetBrains Mono", "Menlo", "Consolas", monospace;
 
   --ease: cubic-bezier(0.16, 1, 0.3, 1);
   --ease-in-out: cubic-bezier(0.65, 0.05, 0.36, 1);

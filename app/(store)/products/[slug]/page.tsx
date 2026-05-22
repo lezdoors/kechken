@@ -167,6 +167,7 @@ export default async function ProductPage({
                 price={p.price}
                 image={p.images[0] || "/products/product-04.png"}
                 slug={p.slug}
+                category={p.category}
               />
             ))}
           </div>

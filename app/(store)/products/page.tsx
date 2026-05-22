@@ -162,6 +162,7 @@ export default async function ProductsPage({
                 price={product.price}
                 image={product.images[0] || "/products/product-04.png"}
                 slug={product.slug}
+                category={product.category}
                 badge={product.featured ? "One of a Kind" : undefined}
               />
             ))}

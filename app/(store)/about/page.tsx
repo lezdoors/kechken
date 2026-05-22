@@ -1,6 +1,7 @@
 import Image from "next/image";
 import Link from "next/link";
 import type { Metadata } from "next";
+import ArtisanDossier from "@/components/store/ArtisanDossier";
 
 export const metadata: Metadata = {
   title: "About Maison Tanneurs",
@@ -129,6 +130,9 @@ export default function AboutPage() {
           ))}
         </div>
       </section>
+
+      {/* Production Footprint dossier */}
+      <ArtisanDossier />
 
       {/* CTA */}
       <section className="ed-section bg-[var(--color-bg-alt)]">
