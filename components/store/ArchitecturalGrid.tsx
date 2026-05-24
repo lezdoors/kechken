@@ -125,7 +125,7 @@ function ProductCell({
               alt={product.title}
               fill
               sizes="(min-width: 1024px) 33vw, (min-width: 768px) 50vw, 100vw"
-              className="object-contain p-8 md:p-10"
+              className="object-cover"
             />
           ) : (
             <div className="absolute inset-0 flex items-center justify-center text-[#0f0f0f]/40 tech-meta">

@@ -49,33 +49,29 @@ export default async function ObjectOfTheEdition() {
       className="w-full bg-white text-[#0f0f0f] border-b border-[#e5e5e5]"
     >
       <div className="grid grid-cols-1 md:grid-cols-12 border-t border-[#e5e5e5]">
-        {/* IMAGE — left 6 cols, contained vitrine (smaller, all-white frame) */}
+        {/* IMAGE — left 6 cols, full-bleed vitrine, source-respecting */}
         <Link
           href={`/products/${p.slug}`}
-          className="md:col-span-6 bg-white flex items-center justify-center p-8 md:p-14 group"
+          className="md:col-span-6 relative bg-white block group overflow-hidden"
+          style={{ aspectRatio: "1 / 1" }}
         >
-          <div
-            className="relative bg-white w-full max-w-[520px]"
-            style={{ aspectRatio: "1 / 1" }}
-          >
-            {hero ? (
-              <Image
-                src={hero}
-                alt={p.title}
-                fill
-                priority
-                sizes="(min-width: 768px) 40vw, 80vw"
-                className="object-contain transition-transform duration-[1200ms]"
-                style={{
-                  transitionTimingFunction: "cubic-bezier(0.22,1,0.36,1)",
-                }}
-              />
-            ) : (
-              <div className="absolute inset-0 flex items-center justify-center text-[#0f0f0f]/40 tech-meta">
-                PLATE PENDING
-              </div>
-            )}
-          </div>
+          {hero ? (
+            <Image
+              src={hero}
+              alt={p.title}
+              fill
+              priority
+              sizes="(min-width: 768px) 50vw, 100vw"
+              className="object-cover transition-transform duration-[1200ms]"
+              style={{
+                transitionTimingFunction: "cubic-bezier(0.22,1,0.36,1)",
+              }}
+            />
+          ) : (
+            <div className="absolute inset-0 flex items-center justify-center text-[#0f0f0f]/40 tech-meta">
+              PLATE PENDING
+            </div>
+          )}
         </Link>
 
         {/* SPECS — right 6 cols */}
