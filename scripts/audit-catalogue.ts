@@ -121,6 +121,16 @@ async function loadProducts(): Promise<{ products: Product[]; source: string }> 
 async function audit(): Promise<void> {
   const { products, source } = await loadProducts();
 
+  // TEMP DEBUG — what statuses does the audit actually see?
+  const statusCounts: Record<string, number> = {};
+  for (const p of products) {
+    const k = String(p.status ?? "null");
+    statusCounts[k] = (statusCounts[k] ?? 0) + 1;
+  }
+  console.log("DEBUG total rows:", products.length, "status counts:", statusCounts);
+  console.log("DEBUG using key:", SUPABASE_KEY === process.env.SUPABASE_SERVICE_ROLE_KEY ? "service-role" : "anon");
+  console.log("DEBUG sample slugs/statuses:", products.slice(0, 5).map((p) => `${p.slug}=${p.status}`).join(", "));
+
   const rows: Row[] = [];
   let totalFails = 0;
   let totalWarns = 0;
