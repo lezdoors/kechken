@@ -2,9 +2,6 @@
 
 import { useEffect, useRef, useState } from "react";
 
-// Parallax scroll manifesto — large statement text translates upward as the
-// viewer scrolls past, over a still atmospheric backdrop. Aether pattern.
-
 const LINES = [
   "Made by hand,",
   "shaped by use,",
@@ -24,8 +21,12 @@ export default function ScrollManifesto() {
       if (!el) return;
       const rect = el.getBoundingClientRect();
       const vh = window.innerHeight || 1;
-      // 0 when section enters viewport from bottom, 1 when it exits at top.
-      const p = 1 - (rect.bottom - 0) / (vh + rect.height);
+      // Section is ~180vh tall and the inner content is sticky-pinned at
+      // top: 0 for one viewport. Progress = how far through the scrollable
+      // overhang we are. 0 the instant the sticky pin engages, 1 right before
+      // it releases at the bottom of the section.
+      const scrollable = Math.max(1, rect.height - vh);
+      const p = (-rect.top) / scrollable;
       setProgress(Math.min(1, Math.max(0, p)));
     };
     const onScroll = () => {
@@ -41,87 +42,95 @@ export default function ScrollManifesto() {
     };
   }, []);
 
-  // Translate text upward as user scrolls past. Max -120px over the section.
-  const translate = -progress * 120;
+  // Move text from +160px (sitting low) up through 0 to -160px as the user
+  // scrolls past. 320px total swing reads as obvious parallax against the
+  // still backdrop.
+  const translate = 160 - progress * 320;
+  const backdropTranslate = -progress * 80;
 
   return (
     <section
       ref={ref}
-      className="relative w-full overflow-hidden"
+      className="relative w-full"
       style={{
         background: "#F9F9F9",
         borderTop: "1px solid #E5E5E5",
         borderBottom: "1px solid #E5E5E5",
-        minHeight: "92svh",
+        height: "180vh",
       }}
       aria-label="House manifesto"
     >
-      {/* Backdrop image, subtle */}
       <div
-        aria-hidden
-        className="absolute inset-0"
-        style={{
-          backgroundImage: "url(/brand/hero/home-hero-1-arches.webp)",
-          backgroundSize: "cover",
-          backgroundPosition: "center 46%",
-          opacity: 0.18,
-          filter: "saturate(0.85)",
-        }}
-      />
-      <div
-        aria-hidden
-        className="absolute inset-0"
-        style={{
-          background:
-            "linear-gradient(180deg, #F9F9F9 0%, rgba(249,249,249,0.4) 50%, #F9F9F9 100%)",
-        }}
-      />
-
-      <div
-        className="relative mx-auto flex items-center"
-        style={{
-          maxWidth: "1600px",
-          paddingLeft: "clamp(24px, 5vw, 80px)",
-          paddingRight: "clamp(24px, 5vw, 80px)",
-          minHeight: "92svh",
-        }}
+        className="sticky top-0 w-full overflow-hidden"
+        style={{ height: "100vh" }}
       >
         <div
+          aria-hidden
+          className="absolute inset-0"
           style={{
-            transform: `translateY(${translate}px)`,
+            backgroundImage: "url(/brand/hero/home-hero-1-arches.webp)",
+            backgroundSize: "cover",
+            backgroundPosition: "center 46%",
+            opacity: 0.18,
+            filter: "saturate(0.85)",
+            transform: `translateY(${backdropTranslate}px) scale(1.08)`,
             willChange: "transform",
+          }}
+        />
+        <div
+          aria-hidden
+          className="absolute inset-0"
+          style={{
+            background:
+              "linear-gradient(180deg, #F9F9F9 0%, rgba(249,249,249,0.4) 50%, #F9F9F9 100%)",
+          }}
+        />
+
+        <div
+          className="relative mx-auto flex items-center h-full"
+          style={{
+            maxWidth: "1600px",
+            paddingLeft: "clamp(24px, 5vw, 80px)",
+            paddingRight: "clamp(24px, 5vw, 80px)",
           }}
         >
           <div
-            className="uppercase"
             style={{
-              fontFamily: "var(--font-mono)",
-              fontSize: "11px",
-              letterSpacing: "0.18em",
-              fontWeight: 500,
-              color: "#8C4A26",
-              marginBottom: "32px",
+              transform: `translateY(${translate}px)`,
+              willChange: "transform",
             }}
           >
-            The House
-          </div>
-          {LINES.map((line) => (
             <div
-              key={line}
+              className="uppercase"
               style={{
-                fontFamily: "var(--font-sans)",
-                fontWeight: 600,
-                fontSize: "clamp(48px, 7vw, 128px)",
-                letterSpacing: "-0.04em",
-                lineHeight: 1.0,
-                color: "#0F0F0F",
-                margin: 0,
-                whiteSpace: "nowrap",
+                fontFamily: "var(--font-mono)",
+                fontSize: "11px",
+                letterSpacing: "0.18em",
+                fontWeight: 500,
+                color: "#8C4A26",
+                marginBottom: "32px",
               }}
             >
-              {line}
+              The House
             </div>
-          ))}
+            {LINES.map((line) => (
+              <div
+                key={line}
+                style={{
+                  fontFamily: "var(--font-sans)",
+                  fontWeight: 600,
+                  fontSize: "clamp(48px, 7vw, 128px)",
+                  letterSpacing: "-0.04em",
+                  lineHeight: 1.0,
+                  color: "#0F0F0F",
+                  margin: 0,
+                  whiteSpace: "nowrap",
+                }}
+              >
+                {line}
+              </div>
+            ))}
+          </div>
         </div>
       </div>
     </section>
