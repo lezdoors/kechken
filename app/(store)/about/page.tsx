@@ -2,6 +2,7 @@ import Image from "next/image";
 import Link from "next/link";
 import type { Metadata } from "next";
 import ArtisanDossier from "@/components/store/ArtisanDossier";
+import InTheirHands from "@/components/store/InTheirHands";
 
 export const metadata: Metadata = {
   title: "About Maison Tanneurs",
@@ -57,6 +58,9 @@ export default function AboutPage() {
           </div>
         </div>
       </section>
+
+      {/* §01.5 — In Their Hands (documentary video) */}
+      <InTheirHands />
 
       {/* Story */}
       <section className="ed-section bg-[var(--color-bg)]">
