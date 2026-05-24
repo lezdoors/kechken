@@ -2,6 +2,7 @@ import Image from "next/image";
 import Link from "next/link";
 import { createServerSupabase } from "@/lib/supabase/server";
 import { STATIC_PRODUCTS } from "@/lib/products";
+import { HIDDEN_SKUS, HIDDEN_SKUS_ARRAY } from "@/lib/hidden-skus";
 import type { Product } from "@/lib/supabase/types";
 
 const GRID_LIMIT = 5;
@@ -9,22 +10,33 @@ const GRID_LIMIT = 5;
 async function loadCurrentEdition(): Promise<Product[]> {
   try {
     const supabase = await createServerSupabase();
-    if (!supabase) return STATIC_PRODUCTS.slice(0, GRID_LIMIT) as Product[];
+    if (!supabase) {
+      return (STATIC_PRODUCTS as Product[])
+        .filter((p) => !HIDDEN_SKUS.has(p.slug))
+        .slice(0, GRID_LIMIT);
+    }
+
+    const hiddenList = `(${HIDDEN_SKUS_ARRAY.join(",")})`;
 
     const { data, error } = await supabase
       .from("products")
       .select("*")
       .eq("status", "available")
       .eq("featured", true)
+      .not("slug", "in", hiddenList)
       .order("created_at", { ascending: false })
       .limit(GRID_LIMIT);
 
     if (error || !data || data.length === 0) {
-      return STATIC_PRODUCTS.slice(0, GRID_LIMIT) as Product[];
+      return (STATIC_PRODUCTS as Product[])
+        .filter((p) => !HIDDEN_SKUS.has(p.slug))
+        .slice(0, GRID_LIMIT);
     }
     return data as Product[];
   } catch {
-    return STATIC_PRODUCTS.slice(0, GRID_LIMIT) as Product[];
+    return (STATIC_PRODUCTS as Product[])
+      .filter((p) => !HIDDEN_SKUS.has(p.slug))
+      .slice(0, GRID_LIMIT);
   }
 }
 
@@ -103,14 +115,17 @@ function ProductCell({
       data-sku={skuTag}
     >
       <Link href={`/products/${product.slug}`} className="block">
-        <div className="relative bg-[#f9f9f9]" style={{ aspectRatio: "4 / 5" }}>
+        <div
+          className="relative bg-white"
+          style={{ aspectRatio: "1 / 1" }}
+        >
           {hero ? (
             <Image
               src={hero}
               alt={product.title}
               fill
               sizes="(min-width: 1024px) 33vw, (min-width: 768px) 50vw, 100vw"
-              className="object-cover"
+              className="object-contain p-8 md:p-10"
             />
           ) : (
             <div className="absolute inset-0 flex items-center justify-center text-[#0f0f0f]/40 tech-meta">
@@ -120,7 +135,14 @@ function ProductCell({
           <span className="absolute left-3 top-3 tech-meta opacity-60">
             {String(index).padStart(2, "0")} / {String(total).padStart(2, "0")}
           </span>
-          <span className="absolute right-3 top-3 border border-[#0f0f0f]/80 bg-white px-2 py-1 tech-meta">
+          <span
+            className="absolute right-3 top-3 px-2 py-1 tech-meta"
+            style={{
+              border: "1px solid rgba(15,15,15,0.8)",
+              background: "#ffffff",
+              color: "#0f0f0f",
+            }}
+          >
             AVAILABLE
           </span>
         </div>

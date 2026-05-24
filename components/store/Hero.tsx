@@ -1,27 +1,78 @@
+"use client";
+
+import { useEffect, useState } from "react";
 import Image from "next/image";
 import Link from "next/link";
 
-const HERO_SRC = "/brand/hero/home-hero-1-arches.webp";
-const HERO_ALT =
-  "Cognac full-grain leather duffle, Marrakech courtyard, late golden hour";
+type Slide = { src: string; alt: string };
+
+const SLIDES: Slide[] = [
+  {
+    src: "/brand/hero/home-hero-1-arches.webp",
+    alt: "Cognac full-grain duffle on a moroccan stone courtyard under a carved arch at sunrise",
+  },
+  {
+    src: "/brand/hero/home-hero-5-courtyard-walk.webp",
+    alt: "Brunette walking through a riad courtyard carrying a cognac handbag",
+  },
+  {
+    src: "/brand/hero/home-hero-2-couple-atelier.webp",
+    alt: "Cognac duffle inside the Marrakech atelier",
+  },
+  {
+    src: "/brand/hero/home-hero-3-woman-arches.webp",
+    alt: "Cognac duffle with a model in an arched gallery",
+  },
+  {
+    src: "/brand/hero/home-hero-4-pool-tote.webp",
+    alt: "Tobacco-leather tote at the edge of a riad pool",
+  },
+];
+
+const ROTATE_MS = 6500;
 
 export default function Hero() {
+  const [active, setActive] = useState(0);
+
+  useEffect(() => {
+    const id = window.setInterval(
+      () => setActive((i) => (i + 1) % SLIDES.length),
+      ROTATE_MS,
+    );
+    return () => window.clearInterval(id);
+  }, []);
+
   return (
     <section
       id="top"
-      className="relative w-full min-h-[100svh] bg-[#0f0f0f] text-white overflow-hidden"
+      className="relative w-full min-h-[100svh] overflow-hidden"
+      style={{ background: "#0f0f0f", color: "#ffffff" }}
       aria-label="Engineered in Marrakech"
     >
+      {/* Photo stack */}
       <div className="absolute inset-0">
-        <Image
-          src={HERO_SRC}
-          alt={HERO_ALT}
-          fill
-          priority
-          sizes="100vw"
-          className="object-cover"
-          style={{ objectPosition: "center 46%" }}
-        />
+        {SLIDES.map((s, i) => (
+          <div
+            key={s.src}
+            className="absolute inset-0 transition-opacity"
+            style={{
+              opacity: i === active ? 1 : 0,
+              transitionDuration: "1200ms",
+              transitionTimingFunction: "cubic-bezier(0.22, 1, 0.36, 1)",
+            }}
+            aria-hidden={i !== active}
+          >
+            <Image
+              src={s.src}
+              alt={s.alt}
+              fill
+              priority={i === 0}
+              sizes="100vw"
+              className="object-cover"
+              style={{ objectPosition: "center 46%" }}
+            />
+          </div>
+        ))}
         <div
           aria-hidden
           className="absolute inset-0 pointer-events-none"
@@ -32,7 +83,11 @@ export default function Hero() {
         />
       </div>
 
-      <div className="relative z-10 flex items-center justify-between px-6 pt-6 text-white/80">
+      {/* Top meta strip */}
+      <div
+        className="relative z-10 flex items-center justify-between px-6 pt-6"
+        style={{ color: "rgba(255,255,255,0.85)" }}
+      >
         <span className="tech-meta">§01 — Cinematic</span>
         <span className="tech-meta hidden md:inline">
           N 31°37′ W 7°59′ · Marrakech
@@ -43,25 +98,38 @@ export default function Hero() {
       <div className="pointer-events-none absolute inset-y-0 left-6 border-l border-white/10" />
       <div className="pointer-events-none absolute inset-y-0 right-6 border-l border-white/10" />
 
+      {/* Headline block */}
       <div className="relative z-10 flex min-h-[100svh] flex-col justify-end px-6 pb-12">
         <div className="max-w-[1400px]">
-          <div className="mb-6 flex items-center gap-4 text-white/70">
+          <div
+            className="mb-6 flex items-center gap-4"
+            style={{ color: "rgba(255,255,255,0.75)" }}
+          >
             <span className="h-px w-10 bg-white/40" />
             <span className="tech-meta">Spring Atelier — Vol. 04</span>
           </div>
 
           <h1
-            className="display-xxl text-white"
-            style={{ fontSize: "clamp(56px, 11.5vw, 200px)" }}
+            className="display-xxl"
+            style={{
+              color: "#ffffff",
+              fontSize: "clamp(56px, 11.5vw, 200px)",
+            }}
           >
             Engineered
             <br />
-            in&nbsp;Marrakech<span className="text-white/40">.</span>
+            in&nbsp;Marrakech
+            <span style={{ color: "rgba(255,255,255,0.42)" }}>.</span>
           </h1>
 
           <p
-            className="mt-8 text-white/75 leading-relaxed"
-            style={{ fontSize: "15px", letterSpacing: "-0.01em", maxWidth: "62ch" }}
+            className="mt-8 leading-relaxed"
+            style={{
+              color: "rgba(255,255,255,0.78)",
+              fontSize: "15px",
+              letterSpacing: "-0.01em",
+              maxWidth: "62ch",
+            }}
           >
             Uncompromising leather architecture. Direct from the Medina artisans.
           </p>
@@ -69,8 +137,10 @@ export default function Hero() {
           <div className="mt-10 flex flex-wrap items-center gap-3">
             <Link
               href="#collection"
-              className="inline-flex h-12 items-center justify-center bg-white px-7 text-[#0f0f0f] hover:opacity-80 transition-opacity"
+              className="inline-flex h-12 items-center justify-center px-7 hover:opacity-80 transition-opacity"
               style={{
+                background: "#ffffff",
+                color: "#0f0f0f",
                 fontSize: "12px",
                 fontWeight: 500,
                 letterSpacing: "0.22em",
@@ -81,8 +151,11 @@ export default function Hero() {
             </Link>
             <Link
               href="#atelier"
-              className="inline-flex h-12 items-center justify-center border border-white/40 px-7 text-white hover:opacity-70 transition-opacity"
+              className="inline-flex h-12 items-center justify-center px-7 hover:opacity-70 transition-opacity"
               style={{
+                background: "transparent",
+                color: "#ffffff",
+                border: "1px solid rgba(255,255,255,0.55)",
                 fontSize: "12px",
                 fontWeight: 500,
                 letterSpacing: "0.22em",
@@ -93,13 +166,44 @@ export default function Hero() {
             </Link>
           </div>
 
-          <div className="mt-16 grid grid-cols-2 md:grid-cols-4 gap-x-8 gap-y-3 border-t border-white/15 pt-5 text-white/70">
+          {/* Bottom ledger */}
+          <div
+            className="mt-16 grid grid-cols-2 md:grid-cols-4 gap-x-8 gap-y-3 border-t pt-5"
+            style={{
+              borderColor: "rgba(255,255,255,0.18)",
+              color: "rgba(255,255,255,0.72)",
+            }}
+          >
             <Ledger k="Material" v="Bovine, Vegetable-Tanned" />
             <Ledger k="Origin" v="Tannerie Chouara" />
             <Ledger k="Hands" v="07 Artisans" />
             <Ledger k="Cycle" v="14 Days / Object" />
           </div>
         </div>
+      </div>
+
+      {/* Slide dots */}
+      <div
+        className="absolute right-6 bottom-6 z-10 hidden md:flex items-center gap-2 px-3 py-2"
+        style={{
+          background: "rgba(255,255,255,0.10)",
+          border: "1px solid rgba(255,255,255,0.20)",
+        }}
+      >
+        {SLIDES.map((_, i) => (
+          <button
+            key={i}
+            type="button"
+            onClick={() => setActive(i)}
+            aria-label={`Show hero ${i + 1}`}
+            aria-current={i === active}
+            className="block w-1.5 h-1.5 transition-colors"
+            style={{
+              background:
+                i === active ? "#ffffff" : "rgba(255,255,255,0.35)",
+            }}
+          />
+        ))}
       </div>
     </section>
   );
@@ -108,8 +212,15 @@ export default function Hero() {
 function Ledger({ k, v }: { k: string; v: string }) {
   return (
     <div className="flex flex-col gap-1">
-      <span className="tech-meta opacity-60">{k}</span>
-      <span className="tech-meta">{v}</span>
+      <span
+        className="tech-meta"
+        style={{ color: "rgba(255,255,255,0.55)" }}
+      >
+        {k}
+      </span>
+      <span className="tech-meta" style={{ color: "#ffffff" }}>
+        {v}
+      </span>
     </div>
   );
 }

@@ -60,31 +60,9 @@ const AWAITING_SCALE_SHOTS = new Set<string>([
   "vintage-buckle-backpack",
 ]);
 
-// SKUs that have been demoted to draft in Postgres but PostgREST is still
-// returning a stale `status='available'` for them via the pooled REST API
-// (us-west-1 shared pooler snapshot lag, 2026-05-24). Skip them by slug here
-// so the audit doesn't block deploy on rows the storefront is also hiding.
-// Remove a slug from this set once the row genuinely has a canonical hero.
-const SKIP_AUDIT_SLUGS = new Set<string>([
-  "atlas-briefcase-vintage",
-  "atlas-kilim-duffle",
-  "atlas-kilim-rucksack",
-  "atlas-messenger-laptop",
-  "explorer-rolltop-cognac",
-  "explorer-rolltop-noir",
-  "heritage-rucksack",
-  "marrakech-tote-bordeaux",
-  "marrakech-tote-cognac",
-  "marrakech-tote-noir",
-  "medina-crossbody-cognac",
-  "medina-crossbody-envelope",
-  "medina-crossbody-tassel",
-  "medina-crossbody-tooled-walnut",
-  "medina-duffle",
-  "medina-rucksack-drawstring",
-  "vintage-buckle-backpack",
-  "vintage-satchel-light-brown",
-]);
+// Shared hidden-SKU list — also used by the storefront loaders.
+// See lib/hidden-skus.ts for why this exists.
+import { HIDDEN_SKUS as SKIP_AUDIT_SLUGS } from "../lib/hidden-skus";
 
 const SLUG_REGEX = /^[a-z0-9]+(?:-[a-z0-9]+)*$/;
 

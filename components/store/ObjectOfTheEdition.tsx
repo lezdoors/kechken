@@ -2,25 +2,36 @@ import Image from "next/image";
 import Link from "next/link";
 import { createServerSupabase } from "@/lib/supabase/server";
 import { STATIC_PRODUCTS } from "@/lib/products";
+import { HIDDEN_SKUS, HIDDEN_SKUS_ARRAY } from "@/lib/hidden-skus";
 import type { Product } from "@/lib/supabase/types";
+
+function firstVisibleStatic(): Product | null {
+  for (const p of STATIC_PRODUCTS as Product[]) {
+    if (!HIDDEN_SKUS.has(p.slug)) return p;
+  }
+  return null;
+}
 
 async function loadFeatured(): Promise<Product | null> {
   try {
     const supabase = await createServerSupabase();
-    if (!supabase) return (STATIC_PRODUCTS[0] as Product) ?? null;
+    if (!supabase) return firstVisibleStatic();
+
+    const hiddenList = `(${HIDDEN_SKUS_ARRAY.join(",")})`;
 
     const { data } = await supabase
       .from("products")
       .select("*")
       .eq("status", "available")
       .eq("featured", true)
+      .not("slug", "in", hiddenList)
       .order("created_at", { ascending: false })
       .limit(1)
       .maybeSingle();
 
-    return (data as Product) ?? (STATIC_PRODUCTS[0] as Product) ?? null;
+    return (data as Product) ?? firstVisibleStatic();
   } catch {
-    return (STATIC_PRODUCTS[0] as Product) ?? null;
+    return firstVisibleStatic();
   }
 }
 
@@ -38,31 +49,37 @@ export default async function ObjectOfTheEdition() {
       className="w-full bg-white text-[#0f0f0f] border-b border-[#e5e5e5]"
     >
       <div className="grid grid-cols-1 md:grid-cols-12 border-t border-[#e5e5e5]">
-        {/* IMAGE — left 7 cols */}
+        {/* IMAGE — left 6 cols, contained vitrine (smaller, all-white frame) */}
         <Link
           href={`/products/${p.slug}`}
-          className="md:col-span-7 relative bg-[#f9f9f9] block group overflow-hidden"
-          style={{ aspectRatio: "5 / 4" }}
+          className="md:col-span-6 bg-white flex items-center justify-center p-8 md:p-14 group"
         >
-          {hero ? (
-            <Image
-              src={hero}
-              alt={p.title}
-              fill
-              priority
-              sizes="(min-width: 768px) 58vw, 100vw"
-              className="object-cover transition-transform duration-[1200ms]"
-              style={{ transitionTimingFunction: "cubic-bezier(0.22,1,0.36,1)" }}
-            />
-          ) : (
-            <div className="absolute inset-0 flex items-center justify-center text-[#0f0f0f]/40 tech-meta">
-              PLATE PENDING
-            </div>
-          )}
+          <div
+            className="relative bg-white w-full max-w-[520px]"
+            style={{ aspectRatio: "1 / 1" }}
+          >
+            {hero ? (
+              <Image
+                src={hero}
+                alt={p.title}
+                fill
+                priority
+                sizes="(min-width: 768px) 40vw, 80vw"
+                className="object-contain transition-transform duration-[1200ms]"
+                style={{
+                  transitionTimingFunction: "cubic-bezier(0.22,1,0.36,1)",
+                }}
+              />
+            ) : (
+              <div className="absolute inset-0 flex items-center justify-center text-[#0f0f0f]/40 tech-meta">
+                PLATE PENDING
+              </div>
+            )}
+          </div>
         </Link>
 
-        {/* SPECS — right 5 cols */}
-        <div className="md:col-span-5 md:border-l border-[#e5e5e5] px-6 py-10 md:py-14 flex flex-col">
+        {/* SPECS — right 6 cols */}
+        <div className="md:col-span-6 md:border-l border-[#e5e5e5] px-6 py-10 md:py-14 flex flex-col justify-center">
           <div className="flex items-center gap-4">
             <span className="tech-label opacity-60">§02</span>
             <span className="h-px w-10 bg-[#0f0f0f]/30" />
