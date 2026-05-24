@@ -53,7 +53,7 @@ export default async function ArchitecturalGrid() {
       <div className="border-y border-[#e5e5e5]">
         <div className="px-6 py-5 flex flex-wrap items-end justify-between gap-y-4">
           <div className="flex items-end gap-6">
-            <span className="tech-label opacity-60">§02</span>
+            <span className="tech-label opacity-60">§04</span>
             <h2
               className="leading-none font-medium"
               style={{

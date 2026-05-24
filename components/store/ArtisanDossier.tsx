@@ -24,7 +24,7 @@ export default function ArtisanDossier() {
       <div className="border-y border-[#e5e5e5]">
         <div className="px-6 py-5 flex items-end justify-between">
           <div className="flex items-end gap-6">
-            <span className="tech-label opacity-60">§03</span>
+            <span className="tech-label opacity-60">§06</span>
             <h2
               className="leading-none font-medium"
               style={{

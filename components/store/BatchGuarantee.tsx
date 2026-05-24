@@ -24,7 +24,7 @@ export default function BatchGuarantee() {
         {/* THE BATCH */}
         <article className="md:border-r border-[#e5e5e5] border-b md:border-b-0 px-6 py-14 md:py-20">
           <div className="flex items-center gap-4 mb-8">
-            <span className="tech-label opacity-50">§04.A</span>
+            <span className="tech-label opacity-50">§07.A</span>
             <span className="h-px w-10 bg-[#0f0f0f]/30" />
             <span className="tech-label">The Batch</span>
           </div>
@@ -58,7 +58,7 @@ export default function BatchGuarantee() {
         {/* THE GUARANTEE */}
         <article className="bg-[#0f0f0f] text-white px-6 py-14 md:py-20">
           <div className="flex items-center gap-4 mb-8 text-white/70">
-            <span className="tech-label opacity-60">§04.B</span>
+            <span className="tech-label opacity-60">§07.B</span>
             <span className="h-px w-10 bg-white/30" />
             <span className="tech-label">The Guarantee</span>
           </div>

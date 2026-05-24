@@ -32,7 +32,7 @@ export default function NewsletterSignup() {
     >
       <div className="grid grid-cols-1 md:grid-cols-12 px-6 py-14 md:py-20 gap-y-10">
         <div className="md:col-span-5">
-          <span className="tech-label opacity-60">§05</span>
+          <span className="tech-label opacity-60">§09</span>
           <h3
             className="display-xxl mt-5"
             style={{ fontSize: "clamp(40px, 5vw, 80px)" }}
