@@ -1,7 +1,7 @@
 import Image from "next/image";
 import Link from "next/link";
 import { createServerSupabase } from "@/lib/supabase/server";
-import { STATIC_PRODUCTS } from "@/lib/products";
+import { STATIC_PRODUCTS, mergeWithStatic } from "@/lib/products";
 import { HIDDEN_SKUS, HIDDEN_SKUS_ARRAY } from "@/lib/hidden-skus";
 import type { Product } from "@/lib/supabase/types";
 
@@ -12,7 +12,7 @@ async function loadCurrentEdition(): Promise<Product[]> {
     const supabase = await createServerSupabase();
     if (!supabase) {
       return (STATIC_PRODUCTS as Product[])
-        .filter((p) => !HIDDEN_SKUS.has(p.slug))
+        .filter((p) => !HIDDEN_SKUS.has(p.slug) && p.status === "available")
         .slice(0, GRID_LIMIT);
     }
 
@@ -24,18 +24,22 @@ async function loadCurrentEdition(): Promise<Product[]> {
       .eq("status", "available")
       .eq("featured", true)
       .not("slug", "in", hiddenList)
-      .order("created_at", { ascending: false })
-      .limit(GRID_LIMIT);
+      .order("created_at", { ascending: false });
 
     if (error || !data || data.length === 0) {
       return (STATIC_PRODUCTS as Product[])
-        .filter((p) => !HIDDEN_SKUS.has(p.slug))
+        .filter((p) => !HIDDEN_SKUS.has(p.slug) && p.status === "available")
         .slice(0, GRID_LIMIT);
     }
-    return data as Product[];
+    // Merge in any STATIC SKUs not yet in Supabase (e.g. Drop 02 batch).
+    // Take newest Supabase first, then fill with static supplement up to the limit.
+    const merged = mergeWithStatic(data as Product[]).filter(
+      (p) => !HIDDEN_SKUS.has(p.slug),
+    );
+    return merged.slice(0, GRID_LIMIT);
   } catch {
     return (STATIC_PRODUCTS as Product[])
-      .filter((p) => !HIDDEN_SKUS.has(p.slug))
+      .filter((p) => !HIDDEN_SKUS.has(p.slug) && p.status === "available")
       .slice(0, GRID_LIMIT);
   }
 }

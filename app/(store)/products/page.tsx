@@ -2,7 +2,7 @@ import { Suspense } from "react";
 import type { Metadata } from "next";
 import { createServerSupabase } from "@/lib/supabase/server";
 import { Product } from "@/lib/supabase/types";
-import { STATIC_PRODUCTS, LIGHTING_DB_CATEGORIES } from "@/lib/products";
+import { STATIC_PRODUCTS, LIGHTING_DB_CATEGORIES, mergeWithStatic } from "@/lib/products";
 import ProductCard from "@/components/store/ProductCard";
 import CategoryFilter from "@/components/store/CategoryFilter";
 
@@ -78,7 +78,6 @@ async function getProducts(category?: string, q?: string): Promise<Product[]> {
 
     if (error || !data) {
       // Fall back to static products only if Supabase truly errored.
-      // An empty result (no matches for the query) should stay empty, not fall back.
       let products = STATIC_PRODUCTS;
       if (category && category !== "all") {
         const r = resolveCategoryFilter(category);
@@ -93,7 +92,21 @@ async function getProducts(category?: string, q?: string): Promise<Product[]> {
       return products as Product[];
     }
 
-    return data as Product[];
+    // Merge Supabase results with STATIC supplement (Drop 02 SKUs not yet
+    // in Supabase). Then re-apply category/query filters to the merged set
+    // so STATIC entries with correct categories surface.
+    let products = mergeWithStatic(data as Product[]);
+    if (category && category !== "all") {
+      const r = resolveCategoryFilter(category);
+      if (r.in) {
+        const allowed = new Set(r.in);
+        products = products.filter((p) => allowed.has(p.category));
+      } else if (r.eq) {
+        products = products.filter((p) => p.category === r.eq);
+      }
+    }
+    if (q) products = products.filter((p) => matchesQuery(p as Product, q));
+    return products;
   } catch {
     let products = STATIC_PRODUCTS;
     if (category && category !== "all") {

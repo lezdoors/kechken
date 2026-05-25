@@ -596,6 +596,18 @@ export const STATIC_PRODUCTS: Product[] = [
   },
 ];
 
+// Merge a Supabase product list with STATIC_PRODUCTS: any STATIC entry whose
+// slug isn't already in the Supabase result gets appended. Lets the new
+// Drop 02 SKUs surface on the live site immediately, even before the
+// Supabase migration runs. Drops STATIC entries that aren't available.
+export function mergeWithStatic(supabaseProducts: Product[]): Product[] {
+  const seen = new Set(supabaseProducts.map((p) => p.slug));
+  const supplement = STATIC_PRODUCTS.filter(
+    (p) => !seen.has(p.slug) && p.status === "available",
+  );
+  return [...supabaseProducts, ...supplement];
+}
+
 export const CATEGORIES = ["All", "Backpack", "Crossbody", "Tote", "Weekender", "Satchel"] as const;
 
 export type Category = (typeof CATEGORIES)[number];
