@@ -4,55 +4,91 @@ import { useEffect, useRef, useState } from "react";
 import Image from "next/image";
 import Link from "next/link";
 
-// Two-clip cinematic hero (Marrakech dunes → leather macro → Paris cobblestones).
-// S1 plays first (6s, ends on macro of leather grain), cross-fades into S2
-// at the macro cut (5.0s), S2 loops back to S1 when it ends. Photo poster
-// shows immediately for fast first paint.
+// Mixed-media hero rotation. Photos hold for ~6s each, videos play in full.
+// Sequence opens warm (Mediterranean woman), goes through Maison casting,
+// then to the two-clip cinematic (Dunes → Paris). Loops back to slide 0.
+//
+// Six narrative beats:
+//  0. photo — Mediterranean woman, luxury maison register
+//  1. photo — French chestnut-hair, Catherine Deneuve-tier
+//  2. photo — Tall Black woman in cream caftan
+//  3. video — Dunes (Marrakech, warm, ends on leather macro)
+//  4. video — Paris cobblestone (cool, model with bag)
+//  5. photo — Black man in noir leather, Pelermo register
 
-const VIDEO_1 = "/videos/hero-cinematic-1-dunes.mp4";
-const VIDEO_2 = "/videos/hero-cinematic-2-paris.mp4";
-const POSTER = "/brand/hero/home-hero-1-arches.webp";
-const CROSSFADE_AT = 5.0; // start fade ~1s before S1 ends
-const SCENE_DURATION = 6.0;
+type Photo = { kind: "photo"; src: string; alt: string; objectPos?: string };
+type Video = { kind: "video"; src: string; alt: string };
+type Slide = Photo | Video;
+
+const SLIDES: Slide[] = [
+  {
+    kind: "photo",
+    src: "/brand/hero/home-hero-mediterranean-woman-maison.webp",
+    alt: "Mediterranean woman with cognac bag in a luxury maison interior",
+  },
+  {
+    kind: "photo",
+    src: "/brand/hero/home-hero-french-woman-chestnut.webp",
+    alt: "French woman with chestnut hair, soft window light, hand-stitched leather satchel",
+  },
+  {
+    kind: "photo",
+    src: "/brand/hero/home-hero-black-woman-caftan.webp",
+    alt: "Tall Black woman in cream caftan with cognac duffle, golden-hour Marrakech",
+  },
+  {
+    kind: "video",
+    src: "/videos/hero-cinematic-1-dunes.mp4",
+    alt: "Cognac bag on Marrakech dunes, golden hour",
+  },
+  {
+    kind: "video",
+    src: "/videos/hero-cinematic-2-paris.mp4",
+    alt: "Model with bag walking Parisian cobblestones at blue hour",
+  },
+  {
+    kind: "photo",
+    src: "/brand/hero/home-hero-black-man-leaning.webp",
+    alt: "Black man in tailored cream, noir-leather bag, editorial light",
+  },
+];
+
+const PHOTO_HOLD_MS = 6500;
 
 export default function Hero() {
-  const v1Ref = useRef<HTMLVideoElement | null>(null);
-  const v2Ref = useRef<HTMLVideoElement | null>(null);
-  const [activeScene, setActiveScene] = useState<1 | 2>(1);
+  const [idx, setIdx] = useState(0);
+  const videoRefs = useRef<(HTMLVideoElement | null)[]>([]);
+  const timer = useRef<number | null>(null);
 
+  // Advance based on slide type — photos use a timer, videos use 'ended'.
   useEffect(() => {
-    const v1 = v1Ref.current;
-    const v2 = v2Ref.current;
-    if (!v1 || !v2) return;
-    v1.muted = v2.muted = true;
-    v1.playsInline = v2.playsInline = true;
-
-    const onTimeS1 = () => {
-      if (!v1 || !v2) return;
-      if (v1.currentTime >= CROSSFADE_AT && activeScene === 1) {
-        v2.currentTime = 0;
-        v2.play().catch(() => undefined);
-        setActiveScene(2);
-      }
-    };
-    const onTimeS2 = () => {
-      if (!v2 || !v1) return;
-      if (v2.currentTime >= CROSSFADE_AT && activeScene === 2) {
-        v1.currentTime = 0;
-        v1.play().catch(() => undefined);
-        setActiveScene(1);
-      }
-    };
-
-    v1.addEventListener("timeupdate", onTimeS1);
-    v2.addEventListener("timeupdate", onTimeS2);
-    v1.play().catch(() => undefined);
-
-    return () => {
-      v1.removeEventListener("timeupdate", onTimeS1);
-      v2.removeEventListener("timeupdate", onTimeS2);
-    };
-  }, [activeScene]);
+    const slide = SLIDES[idx];
+    if (slide.kind === "photo") {
+      timer.current = window.setTimeout(
+        () => setIdx((i) => (i + 1) % SLIDES.length),
+        PHOTO_HOLD_MS,
+      );
+      return () => {
+        if (timer.current) window.clearTimeout(timer.current);
+      };
+    }
+    // Video: play, advance on ended.
+    const v = videoRefs.current[idx];
+    if (v) {
+      v.currentTime = 0;
+      v.muted = true;
+      v.playsInline = true;
+      v.play().catch(() => undefined);
+      const onEnd = () => setIdx((i) => (i + 1) % SLIDES.length);
+      v.addEventListener("ended", onEnd);
+      // Hard safety: if video stalls or doesn't fire 'ended', advance after 10s.
+      timer.current = window.setTimeout(() => onEnd(), 10_000);
+      return () => {
+        v.removeEventListener("ended", onEnd);
+        if (timer.current) window.clearTimeout(timer.current);
+      };
+    }
+  }, [idx]);
 
   return (
     <section
@@ -61,33 +97,44 @@ export default function Hero() {
       style={{ background: "var(--color-warm-black)", color: "#ffffff" }}
       aria-label="Maison Tanneurs — hand-stitched leather, Marrakech to Paris"
     >
-      {/* Video stack */}
+      {/* Media stack — all slides mounted, only active opacity:1 */}
       <div className="absolute inset-0">
-        <video
-          ref={v1Ref}
-          className="absolute inset-0 w-full h-full object-cover transition-opacity"
-          style={{
-            opacity: activeScene === 1 ? 1 : 0,
-            transitionDuration: "1100ms",
-            transitionTimingFunction: "cubic-bezier(0.22, 1, 0.36, 1)",
-          }}
-          src={VIDEO_1}
-          poster={POSTER}
-          preload="auto"
-          aria-hidden
-        />
-        <video
-          ref={v2Ref}
-          className="absolute inset-0 w-full h-full object-cover transition-opacity"
-          style={{
-            opacity: activeScene === 2 ? 1 : 0,
-            transitionDuration: "1100ms",
-            transitionTimingFunction: "cubic-bezier(0.22, 1, 0.36, 1)",
-          }}
-          src={VIDEO_2}
-          preload="auto"
-          aria-hidden
-        />
+        {SLIDES.map((s, i) => (
+          <div
+            key={s.src}
+            className="absolute inset-0 transition-opacity"
+            style={{
+              opacity: i === idx ? 1 : 0,
+              transitionDuration: "1100ms",
+              transitionTimingFunction: "cubic-bezier(0.22, 1, 0.36, 1)",
+            }}
+            aria-hidden={i !== idx}
+          >
+            {s.kind === "photo" ? (
+              <Image
+                src={s.src}
+                alt={s.alt}
+                fill
+                priority={i === 0}
+                sizes="100vw"
+                className="object-cover"
+                style={{ objectPosition: s.objectPos ?? "center 46%" }}
+              />
+            ) : (
+              <video
+                ref={(el) => {
+                  videoRefs.current[i] = el;
+                }}
+                className="absolute inset-0 w-full h-full object-cover"
+                src={s.src}
+                preload="auto"
+                playsInline
+                muted
+                aria-hidden
+              />
+            )}
+          </div>
+        ))}
         <div
           aria-hidden
           className="absolute inset-0 pointer-events-none"
@@ -98,7 +145,7 @@ export default function Hero() {
         />
       </div>
 
-      {/* Headline block — bottom-left, no top meta strip, no border rules */}
+      {/* Headline block — bottom-left */}
       <div className="relative z-10 flex min-h-[100svh] flex-col justify-end px-6 md:px-12 pb-14 md:pb-20">
         <div className="max-w-[1400px]">
           <p
@@ -176,6 +223,24 @@ export default function Hero() {
             </Link>
           </div>
         </div>
+      </div>
+
+      {/* Slide indicators — bottom right, tiny bars */}
+      <div
+        className="absolute right-8 bottom-8 z-10 hidden md:flex items-center gap-1.5"
+        aria-hidden
+      >
+        {SLIDES.map((_, i) => (
+          <span
+            key={i}
+            className="block h-px transition-all"
+            style={{
+              width: i === idx ? "24px" : "12px",
+              background: i === idx ? "#ffffff" : "rgba(255,255,255,0.4)",
+              transitionDuration: "500ms",
+            }}
+          />
+        ))}
       </div>
     </section>
   );

@@ -12,6 +12,10 @@ import type { Product } from "@/lib/supabase/types";
 // (120px row-gap), 4:5 portrait frames, F5F5F5 plate.
 
 const GRID_LIMIT = 6;
+// Skip the newest-featured slug — it's already showcased above by
+// ObjectOfTheEdition, so re-rendering it here is the duplicate the user
+// flagged. Fetch one extra so we still get GRID_LIMIT cells after the drop.
+const FETCH_LIMIT = GRID_LIMIT + 1;
 
 async function loadCurrentEdition(): Promise<Product[]> {
   try {
@@ -19,7 +23,7 @@ async function loadCurrentEdition(): Promise<Product[]> {
     if (!supabase) {
       return (STATIC_PRODUCTS as Product[])
         .filter((p) => !HIDDEN_SKUS.has(p.slug) && p.status === "available")
-        .slice(0, GRID_LIMIT);
+        .slice(1, FETCH_LIMIT);
     }
     const hiddenList = `(${HIDDEN_SKUS_ARRAY.join(",")})`;
     const { data, error } = await supabase
@@ -28,20 +32,22 @@ async function loadCurrentEdition(): Promise<Product[]> {
       .eq("status", "available")
       .eq("featured", true)
       .not("slug", "in", hiddenList)
-      .order("created_at", { ascending: false });
+      .order("created_at", { ascending: false })
+      .limit(FETCH_LIMIT);
     if (error || !data || data.length === 0) {
       return (STATIC_PRODUCTS as Product[])
         .filter((p) => !HIDDEN_SKUS.has(p.slug) && p.status === "available")
-        .slice(0, GRID_LIMIT);
+        .slice(1, FETCH_LIMIT);
     }
     const merged = mergeWithStatic(data as Product[]).filter(
       (p) => !HIDDEN_SKUS.has(p.slug),
     );
-    return merged.slice(0, GRID_LIMIT);
+    // Drop slot 0 (= the ObjectOfTheEdition feature), keep next GRID_LIMIT.
+    return merged.slice(1, FETCH_LIMIT);
   } catch {
     return (STATIC_PRODUCTS as Product[])
       .filter((p) => !HIDDEN_SKUS.has(p.slug) && p.status === "available")
-      .slice(0, GRID_LIMIT);
+      .slice(1, FETCH_LIMIT);
   }
 }
 
