@@ -1,6 +1,6 @@
 # Product Images — Canonical Manifest
 
-_Generated: 2026-05-25 16:38 by `scripts/build-images-manifest.py`_
+_Generated: 2026-05-25 16:57 by `scripts/build-images-manifest.py`_
 
 Single source of truth for **every Maison Tanneurs product image**: what's in Supabase Storage, what's on Drive, what's wired to `products.images[]` on the live site, and what state each SKU is in.
 
@@ -46,7 +46,7 @@ Hero priority order applied by the manifest builder:
 
 | Status | Count | Meaning |
 |---|---|---|
-| READY | 12 | Live on site, canonical hero + ≥3 gallery shots |
+| READY | 18 | Live on site, canonical hero + ≥3 gallery shots |
 | PARTIAL | 1 | Live but thin gallery (≤3 shots) — generate more HF shots |
 | NO-HERO | 9 | Hidden by `lib/hidden-skus.ts` — only supplier raws, needs HF run |
 
@@ -89,6 +89,24 @@ Wired to `products.images[]`:
 7. `drop-02/atlas-messenger-laptop-pdp-01.webp`
 8. `drop-02/atlas-messenger-laptop-pdp-02.webp`
 
+### `atlas-weekender-cognac`
+
+- **Storage files:** 9 (9 usable, 0 supplier-raw / banned)
+- **Hero:** `atlas-weekender-cognac-pdp-white.webp`
+- **Drive source:** `usable product pics/atlas-weekender-cognac/`
+
+Wired to `products.images[]`:
+
+0. `drop-02/atlas-weekender-cognac-pdp-white.webp`
+1. `drop-02/atlas-weekender-cognac-pdp-04.webp`
+2. `drop-02/atlas-weekender-cognac-pdp-05.webp`
+3. `drop-02/atlas-weekender-cognac-pdp-06.webp`
+4. `drop-02/atlas-weekender-cognac-pdp-07.webp`
+5. `drop-02/atlas-weekender-cognac-pdp-08.webp`
+6. `drop-02/atlas-weekender-cognac-pdp-01.webp`
+7. `drop-02/atlas-weekender-cognac-pdp-02.webp`
+8. `drop-02/atlas-weekender-cognac-pdp-03.webp`
+
 ### `black-stitched-backpack`
 
 - **Storage files:** 5 (5 usable, 0 supplier-raw / banned)
@@ -124,6 +142,42 @@ Wired to `products.images[]`:
 0. `drop-01/cognac-brogue-backpack-pdp-white.webp`
 1. `drop-01/cognac-brogue-backpack-archive-1.webp`
 2. `drop-01/cognac-brogue-backpack-archive-2.webp`
+
+### `expedition-rolltop-cognac`
+
+- **Storage files:** 9 (9 usable, 0 supplier-raw / banned)
+- **Hero:** `expedition-rolltop-cognac-pdp-white.webp`
+- **Drive source:** `usable product pics/expedition-rolltop-cognac/`
+
+Wired to `products.images[]`:
+
+0. `drop-02/expedition-rolltop-cognac-pdp-white.webp`
+1. `drop-02/expedition-rolltop-cognac-pdp-04.webp`
+2. `drop-02/expedition-rolltop-cognac-pdp-05.webp`
+3. `drop-02/expedition-rolltop-cognac-pdp-06.webp`
+4. `drop-02/expedition-rolltop-cognac-pdp-07.webp`
+5. `drop-02/expedition-rolltop-cognac-pdp-08.webp`
+6. `drop-02/expedition-rolltop-cognac-pdp-01.webp`
+7. `drop-02/expedition-rolltop-cognac-pdp-02.webp`
+8. `drop-02/expedition-rolltop-cognac-pdp-03.webp`
+
+### `expedition-rolltop-noir`
+
+- **Storage files:** 9 (9 usable, 0 supplier-raw / banned)
+- **Hero:** `expedition-rolltop-noir-pdp-white.webp`
+- **Drive source:** `usable product pics/expedition-rolltop-noir/`
+
+Wired to `products.images[]`:
+
+0. `drop-02/expedition-rolltop-noir-pdp-white.webp`
+1. `drop-02/expedition-rolltop-noir-pdp-04.webp`
+2. `drop-02/expedition-rolltop-noir-pdp-05.webp`
+3. `drop-02/expedition-rolltop-noir-pdp-06.webp`
+4. `drop-02/expedition-rolltop-noir-pdp-07.webp`
+5. `drop-02/expedition-rolltop-noir-pdp-08.webp`
+6. `drop-02/expedition-rolltop-noir-pdp-01.webp`
+7. `drop-02/expedition-rolltop-noir-pdp-02.webp`
+8. `drop-02/expedition-rolltop-noir-pdp-03.webp`
 
 ### `explorer-rolltop-cognac`
 
@@ -232,6 +286,60 @@ Wired to `products.images[]`:
 6. `drop-02/medina-rucksack-drawstring-pdp-08.webp`
 7. `drop-02/medina-rucksack-drawstring-pdp-09.webp`
 8. `drop-02/medina-rucksack-drawstring-pdp-01.webp`
+
+### `medina-rucksack-flap-chocolate`
+
+- **Storage files:** 9 (9 usable, 0 supplier-raw / banned)
+- **Hero:** `medina-rucksack-flap-chocolate-pdp-white.webp`
+- **Drive source:** `usable product pics/medina-rucksack-flap-chocolate/`
+
+Wired to `products.images[]`:
+
+0. `drop-02/medina-rucksack-flap-chocolate-pdp-white.webp`
+1. `drop-02/medina-rucksack-flap-chocolate-pdp-04.webp`
+2. `drop-02/medina-rucksack-flap-chocolate-pdp-05.webp`
+3. `drop-02/medina-rucksack-flap-chocolate-pdp-06.webp`
+4. `drop-02/medina-rucksack-flap-chocolate-pdp-07.webp`
+5. `drop-02/medina-rucksack-flap-chocolate-pdp-08.webp`
+6. `drop-02/medina-rucksack-flap-chocolate-pdp-01.webp`
+7. `drop-02/medina-rucksack-flap-chocolate-pdp-02.webp`
+8. `drop-02/medina-rucksack-flap-chocolate-pdp-03.webp`
+
+### `medina-saddlebag-tooled-cognac`
+
+- **Storage files:** 9 (9 usable, 0 supplier-raw / banned)
+- **Hero:** `medina-saddlebag-tooled-cognac-pdp-white.webp`
+- **Drive source:** `usable product pics/medina-saddlebag-tooled-cognac/`
+
+Wired to `products.images[]`:
+
+0. `drop-02/medina-saddlebag-tooled-cognac-pdp-white.webp`
+1. `drop-02/medina-saddlebag-tooled-cognac-pdp-04.webp`
+2. `drop-02/medina-saddlebag-tooled-cognac-pdp-05.webp`
+3. `drop-02/medina-saddlebag-tooled-cognac-pdp-06.webp`
+4. `drop-02/medina-saddlebag-tooled-cognac-pdp-07.webp`
+5. `drop-02/medina-saddlebag-tooled-cognac-pdp-08.webp`
+6. `drop-02/medina-saddlebag-tooled-cognac-pdp-01.webp`
+7. `drop-02/medina-saddlebag-tooled-cognac-pdp-02.webp`
+8. `drop-02/medina-saddlebag-tooled-cognac-pdp-03.webp`
+
+### `oasis-weekender-oxblood`
+
+- **Storage files:** 9 (9 usable, 0 supplier-raw / banned)
+- **Hero:** `oasis-weekender-oxblood-pdp-white.webp`
+- **Drive source:** `usable product pics/oasis-weekender-oxblood/`
+
+Wired to `products.images[]`:
+
+0. `drop-02/oasis-weekender-oxblood-pdp-white.webp`
+1. `drop-02/oasis-weekender-oxblood-pdp-04.webp`
+2. `drop-02/oasis-weekender-oxblood-pdp-05.webp`
+3. `drop-02/oasis-weekender-oxblood-pdp-06.webp`
+4. `drop-02/oasis-weekender-oxblood-pdp-07.webp`
+5. `drop-02/oasis-weekender-oxblood-pdp-08.webp`
+6. `drop-02/oasis-weekender-oxblood-pdp-01.webp`
+7. `drop-02/oasis-weekender-oxblood-pdp-02.webp`
+8. `drop-02/oasis-weekender-oxblood-pdp-03.webp`
 
 ### `vintage-buckle-backpack`
 

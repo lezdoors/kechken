@@ -30,6 +30,10 @@ HIDDEN = [
 LIVE = [
     'black-stitched-backpack', 'classic-cognac-satchel', 'cognac-brogue-backpack',
     'woven-leather-backpack',
+    # 2026-05-25 — Drop 03 (storyboard rename + Drive push)
+    'expedition-rolltop-cognac', 'expedition-rolltop-noir',
+    'oasis-weekender-oxblood', 'atlas-weekender-cognac',
+    'medina-saddlebag-tooled-cognac', 'medina-rucksack-flap-chocolate',
 ]
 ALL = sorted(set(HIDDEN + LIVE))
 
