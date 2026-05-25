@@ -15,23 +15,17 @@
 // -pdp-white.webp hero AND a clean build confirms the audit re-evaluates it.
 
 export const HIDDEN_SKUS: ReadonlySet<string> = new Set([
+  // Kept hidden because Storage has only supplier-raw files (no canonical
+  // pdp-white / scale / hero / pdp-04). To bring online: generate HF Shots,
+  // upload to drop-02/<slug>-pdp-white.webp, re-run the manifest builder
+  // (scripts/build-images-manifest.py), then remove the slug from this set.
+  // See docs/PRODUCT-IMAGES-MANIFEST.md for canonical inventory.
   "atlas-briefcase-vintage",
-  "atlas-kilim-duffle",
   "atlas-kilim-rucksack",
-  "atlas-messenger-laptop",
-  "explorer-rolltop-cognac",
-  "explorer-rolltop-noir",
-  "heritage-rucksack",
   "marrakech-tote-bordeaux",
-  "marrakech-tote-cognac",
   "marrakech-tote-noir",
   "medina-crossbody-cognac",
-  "medina-crossbody-envelope",
   "medina-crossbody-tassel",
-  "medina-crossbody-tooled-walnut",
-  "medina-duffle",
-  "medina-rucksack-drawstring",
-  "vintage-buckle-backpack",
   "vintage-satchel-light-brown",
 ]);
 
