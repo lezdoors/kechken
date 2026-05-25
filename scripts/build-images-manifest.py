@@ -79,12 +79,13 @@ BANNED = ('-supplier-', '-pdp-hero', '-scale-hero', '-benisouk-', '-dealer-',
 def banned(name):
     return any(b in name for b in BANNED) or name.endswith('-pdp-hero.webp') or name.endswith('-scale-hero.webp')
 
-# Priority for HERO selection. Macros are last-resort heroes — they're meant
-# for gallery position 2-3 but if a SKU has nothing else, a macro-04 beats
-# leaving the product hidden.
+# Priority for HERO selection.
+# Macros are NEVER picked as hero — the audit (scripts/audit-catalogue.ts,
+# rule "hero-not-canonical") rejects images[0] unless it ends -scale.webp or
+# -pdp-white.webp. A SKU with only macros must stay hidden until a real
+# hero lands. Don't add macro-* entries to this list — it'll fail the build.
 HERO_PRIORITY = ['pdp-white', 'pdp-hero', 'scale-hero', 'scale', 'hero',
-                 'pdp-04', 'scale-04', 'pdp-01', 'scale-01',
-                 'macro-04', 'macro-01', 'archive-1']
+                 'pdp-04', 'scale-04', 'pdp-01', 'scale-01', 'archive-1']
 
 # Priority for gallery (after hero)
 def gallery_score(rest):

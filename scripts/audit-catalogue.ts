@@ -58,6 +58,10 @@ const AWAITING_SCALE_SHOTS = new Set<string>([
   "classic-cognac-satchel",
   "woven-leather-backpack",
   "vintage-buckle-backpack",
+  // Added 2026-05-25 — wired via Storage manifest, have pdp-white but no
+  // -scale.webp yet. Lifestyle gens pending in HF pipeline.
+  "atlas-kilim-duffle",
+  "medina-crossbody-envelope",
 ]);
 
 // Shared hidden-SKU list — also used by the storefront loaders.

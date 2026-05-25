@@ -1,6 +1,6 @@
 # Product Images — Canonical Manifest
 
-_Generated: 2026-05-25 07:33 by `scripts/build-images-manifest.py`_
+_Generated: 2026-05-25 07:45 by `scripts/build-images-manifest.py`_
 
 Single source of truth for **every Maison Tanneurs product image**: what's in Supabase Storage, what's on Drive, what's wired to `products.images[]` on the live site, and what state each SKU is in.
 
@@ -46,9 +46,9 @@ Hero priority order applied by the manifest builder:
 
 | Status | Count | Meaning |
 |---|---|---|
-| READY | 14 | Live on site, canonical hero + ≥3 gallery shots |
+| READY | 12 | Live on site, canonical hero + ≥3 gallery shots |
 | PARTIAL | 1 | Live but thin gallery (≤3 shots) — generate more HF shots |
-| NO-HERO | 7 | Hidden by `lib/hidden-skus.ts` — only supplier raws, needs HF run |
+| NO-HERO | 9 | Hidden by `lib/hidden-skus.ts` — only supplier raws, needs HF run |
 
 ---
 
@@ -143,24 +143,6 @@ Wired to `products.images[]`:
 7. `drop-02/explorer-rolltop-cognac-pdp-09.webp`
 8. `drop-02/explorer-rolltop-cognac-pdp-01.webp`
 
-### `explorer-rolltop-noir`
-
-- **Storage files:** 13 (11 usable, 2 supplier-raw / banned)
-- **Hero:** `explorer-rolltop-noir-macro-04.webp`
-- **Drive source:** `usable product pics/explorer-rolltop-noir-macro/`
-
-Wired to `products.images[]`:
-
-0. `drop-02/explorer-rolltop-noir-macro-04.webp`
-1. `drop-02/explorer-rolltop-noir-macro-05.webp`
-2. `drop-02/explorer-rolltop-noir-macro-06.webp`
-3. `drop-02/explorer-rolltop-noir-macro-07.webp`
-4. `drop-02/explorer-rolltop-noir-macro-08.webp`
-5. `drop-02/explorer-rolltop-noir-macro-09.webp`
-6. `drop-02/explorer-rolltop-noir-macro-01.webp`
-7. `drop-02/explorer-rolltop-noir-macro-02.webp`
-8. `drop-02/explorer-rolltop-noir-macro-03.webp`
-
 ### `heritage-rucksack`
 
 - **Storage files:** 17 (15 usable, 2 supplier-raw / banned)
@@ -214,24 +196,6 @@ Wired to `products.images[]`:
 6. `drop-02/medina-crossbody-envelope-pdp-09.webp`
 7. `drop-02/medina-crossbody-envelope-pdp-01.webp`
 8. `drop-02/medina-crossbody-envelope-pdp-02.webp`
-
-### `medina-crossbody-tooled-walnut`
-
-- **Storage files:** 25 (22 usable, 3 supplier-raw / banned)
-- **Hero:** `medina-crossbody-tooled-walnut-macro-04.webp`
-- **Drive source:** `usable product pics/medina-crossbody-tooled-walnut-macro/`
-
-Wired to `products.images[]`:
-
-0. `drop-02/medina-crossbody-tooled-walnut-macro-04.webp`
-1. `drop-02/medina-crossbody-tooled-walnut-macro-05.webp`
-2. `drop-02/medina-crossbody-tooled-walnut-macro-06.webp`
-3. `drop-02/medina-crossbody-tooled-walnut-macro-07.webp`
-4. `drop-02/medina-crossbody-tooled-walnut-macro-08.webp`
-5. `drop-02/medina-crossbody-tooled-walnut-macro-09.webp`
-6. `drop-02/medina-crossbody-tooled-walnut-macro-01.webp`
-7. `drop-02/medina-crossbody-tooled-walnut-macro-02.webp`
-8. `drop-02/medina-crossbody-tooled-walnut-macro-03.webp`
 
 ### `medina-duffle`
 
@@ -311,6 +275,12 @@ Wired to `products.images[]`:
 - **Storage files:** 1 (0 usable, 1 supplier-raw / banned)
 - **Hero:** _none — needs HF generation_
 
+### `explorer-rolltop-noir`
+
+- **Storage files:** 13 (11 usable, 2 supplier-raw / banned)
+- **Hero:** _none — needs HF generation_
+- **Drive source:** `usable product pics/explorer-rolltop-noir-macro/`
+
 ### `marrakech-tote-bordeaux`
 
 - **Storage files:** 2 (0 usable, 2 supplier-raw / banned)
@@ -330,6 +300,12 @@ Wired to `products.images[]`:
 
 - **Storage files:** 1 (0 usable, 1 supplier-raw / banned)
 - **Hero:** _none — needs HF generation_
+
+### `medina-crossbody-tooled-walnut`
+
+- **Storage files:** 25 (22 usable, 3 supplier-raw / banned)
+- **Hero:** _none — needs HF generation_
+- **Drive source:** `usable product pics/medina-crossbody-tooled-walnut-macro/`
 
 ### `vintage-satchel-light-brown`
 
