@@ -138,7 +138,7 @@ export default function Hero() {
 
           <div className="mt-10 flex flex-wrap items-center gap-3">
             <Link
-              href="#collection"
+              href="/products"
               className="inline-flex h-12 items-center justify-center px-7 hover:opacity-80 transition-opacity"
               style={{
                 background: "#ffffff",
@@ -152,7 +152,7 @@ export default function Hero() {
               View the Collection
             </Link>
             <Link
-              href="#atelier"
+              href="/about"
               className="inline-flex h-12 items-center justify-center px-7 hover:opacity-70 transition-opacity"
               style={{
                 background: "transparent",

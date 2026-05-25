@@ -122,7 +122,7 @@ export default async function ObjectOfTheEdition() {
               Acquire →
             </Link>
             <Link
-              href="#atelier"
+              href="/about"
               className="inline-flex h-12 items-center justify-center border border-[#0f0f0f] px-7 text-[#0f0f0f] hover:opacity-60"
               style={{
                 fontSize: "12px",

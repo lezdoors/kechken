@@ -148,10 +148,10 @@ function ProductCell({
         </div>
 
         <div className="px-5 pt-4 pb-6">
-          <div className="tech-meta opacity-70">
+          <div className="hidden md:block tech-meta opacity-70">
             FAMILY: {family} &nbsp;·&nbsp; SKU: {skuTag}
           </div>
-          <div className="mt-2 flex items-end justify-between gap-4">
+          <div className="mt-0 md:mt-2 flex items-end justify-between gap-4">
             <h3
               className="font-medium leading-tight"
               style={{ fontSize: "20px", letterSpacing: "-0.015em" }}
@@ -162,11 +162,11 @@ function ProductCell({
               ED. 04 / {String(product.available_quantity).padStart(3, "0")}
             </span>
           </div>
-          <div className="mt-4 flex items-center justify-between border-t border-[#e5e5e5] pt-3">
-            <span className="tech-meta opacity-70">
+          <div className="mt-4 flex items-center justify-between gap-3 border-t border-[#e5e5e5] pt-3">
+            <span className="hidden md:inline tech-meta opacity-70">
               {(product.materials ?? [])[0] ?? "Full-Grain Bovine"}
             </span>
-            <span className="tech-label opacity-80 group-hover:opacity-100 group-hover:underline underline-offset-4">
+            <span className="tech-label opacity-80 group-hover:opacity-100 group-hover:underline underline-offset-4 ml-auto md:ml-0">
               Specimen →
             </span>
           </div>
@@ -200,7 +200,7 @@ function TrailingCell() {
             A new architecture of carry. Reserve before the cycle closes.
           </p>
           <Link
-            href="#atelier"
+            href="/contact"
             className="mt-6 inline-flex h-10 items-center border border-white/40 px-5 tech-label hover:opacity-70"
           >
             Join the Atelier List

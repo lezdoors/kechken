@@ -9,6 +9,7 @@
      ============================================================ */
 
   /* Core palette */
+  --color-white: #ffffff;          /* restore default white token so text-white/bg-white render under Tailwind 4 @theme */
   --color-paper: #ffffff;          /* default page bg — pure white (Aether-tier) */
   --color-paper-alt: #fafaf9;      /* alt section bg, barely tinted */
   --color-paper-soft: #f1f0ec;     /* subtle bands */

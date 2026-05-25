@@ -67,7 +67,7 @@ function FamilyCell({ family }: { family: Family }) {
         >
           {family.name}
         </h3>
-        <div className="mt-5 flex items-center justify-between border-t border-[#e5e5e5] pt-3">
+        <div className="mt-5 flex items-center justify-between gap-3 border-t border-[#e5e5e5] pt-3">
           <span className="tech-meta opacity-70">{family.count}</span>
           <span className="tech-label opacity-80 group-hover:opacity-100 group-hover:underline underline-offset-4">
             Browse →
