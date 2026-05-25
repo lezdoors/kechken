@@ -19,6 +19,8 @@ const mono = JetBrains_Mono({
   display: "swap",
 });
 
+// Kept for selective display use (section headings, Volume/Dossier framing)
+// even though the /luxury preview is gone — see Hero / ObjectOfTheEdition.
 const playfair = Playfair_Display({
   subsets: ["latin"],
   variable: "--font-display",
