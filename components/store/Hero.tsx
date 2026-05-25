@@ -22,21 +22,6 @@ type Slide = Photo | Video;
 
 const SLIDES: Slide[] = [
   {
-    kind: "photo",
-    src: "/brand/hero/home-hero-model-red-kilim.webp",
-    alt: "Model with red kilim leather bag, Maison Tanneurs signature",
-  },
-  {
-    kind: "photo",
-    src: "/brand/hero/home-hero-french-woman-chestnut.webp",
-    alt: "French woman with chestnut hair, soft window light, hand-stitched leather satchel",
-  },
-  {
-    kind: "photo",
-    src: "/brand/hero/home-hero-black-woman-caftan.webp",
-    alt: "Tall Black woman in cream caftan with cognac duffle, golden-hour Marrakech",
-  },
-  {
     kind: "video",
     src: "/videos/hero-cinematic-1-dunes.mp4",
     alt: "Cognac bag on Marrakech dunes, golden hour",
@@ -45,6 +30,16 @@ const SLIDES: Slide[] = [
     kind: "video",
     src: "/videos/hero-cinematic-2-paris.mp4",
     alt: "Model with bag walking Parisian cobblestones at blue hour",
+  },
+  {
+    kind: "photo",
+    src: "/brand/hero/home-hero-model-red-kilim.webp",
+    alt: "Model with red kilim leather bag, Maison Tanneurs signature",
+  },
+  {
+    kind: "photo",
+    src: "/brand/hero/home-hero-black-woman-caftan.webp",
+    alt: "Tall Black woman in cream caftan with cognac duffle, golden-hour Marrakech",
   },
   {
     kind: "photo",
