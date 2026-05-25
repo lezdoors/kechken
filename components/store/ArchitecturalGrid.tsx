@@ -136,18 +136,8 @@ function ProductCell({
               IMAGE PENDING
             </div>
           )}
-          <span className="absolute left-3 top-3 tech-meta opacity-60">
+          <span className="absolute left-3 top-3 tech-meta opacity-50">
             {String(index).padStart(2, "0")} / {String(total).padStart(2, "0")}
-          </span>
-          <span
-            className="absolute right-3 top-3 px-2 py-1 tech-meta"
-            style={{
-              border: "1px solid rgba(15,15,15,0.8)",
-              background: "#ffffff",
-              color: "#0f0f0f",
-            }}
-          >
-            AVAILABLE
           </span>
         </div>
 

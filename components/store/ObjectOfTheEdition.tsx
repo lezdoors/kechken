@@ -98,7 +98,10 @@ export default async function ObjectOfTheEdition() {
               "The cornerstone of the current edition. Hand-cut, saddle-stitched, edge-burnished in the Marrakech Medina. Numbered, signed, never restocked."}
           </p>
 
-          <dl className="mt-10 border-y border-[#e5e5e5] divide-y divide-[#e5e5e5]">
+          {/* Aether-style spec block: single inset hairline top + bottom,
+              breathing space between rows instead of dividers. */}
+          <dl className="mt-10 relative">
+            <div className="h-px bg-[#e5e5e5] mx-2" aria-hidden />
             <SpecRow k="SKU" v={skuTag} />
             <SpecRow k="Material" v={material} />
             <SpecRow
@@ -106,6 +109,7 @@ export default async function ObjectOfTheEdition() {
               v={`04 / ${String(p.available_quantity).padStart(3, "0")}`}
             />
             <SpecRow k="Cycle" v="14 Days / Object" />
+            <div className="h-px bg-[#e5e5e5] mx-2" aria-hidden />
           </dl>
 
           <div className="mt-10 flex flex-wrap items-center gap-3">
