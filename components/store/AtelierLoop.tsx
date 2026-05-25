@@ -36,11 +36,10 @@ export default function AtelierLoop() {
             loop
             playsInline
             preload="metadata"
-            poster="/brand/hero/home-hero-3-woman-arches.webp"
+            poster="/brand/section/atelier-bw.webp"
             className="absolute inset-0 w-full h-full object-cover"
           >
-            <source src="/videos/atelier-loop.webm" type="video/webm" />
-            <source src="/videos/atelier-loop.mp4" type="video/mp4" />
+            <source src="/videos/maison-film-colonnade-walk.mp4" type="video/mp4" />
           </video>
         </div>
 

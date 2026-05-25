@@ -6,26 +6,28 @@ import Link from "next/link";
 
 type Slide = { src: string; alt: string };
 
+// HD hero rotation — diverse casting, three continents, three time-of-days.
+// Frame 1 establishes brand identity (Marrakech twilight). 5 narrative beats.
 const SLIDES: Slide[] = [
   {
-    src: "/brand/hero/home-hero-1-arches.webp",
-    alt: "Cognac full-grain duffle on a moroccan stone courtyard under a carved arch at sunrise",
+    src: "/brand/hero/home-hero-medina-night.webp",
+    alt: "Cognac satchel on a Marrakech medina rooftop at blue-hour twilight",
   },
   {
-    src: "/brand/hero/home-hero-5-courtyard-walk.webp",
-    alt: "Brunette walking through a riad courtyard carrying a cognac handbag",
+    src: "/brand/hero/home-hero-cedar-forest.webp",
+    alt: "Cognac duffle in the Atlas cedar forest at golden hour",
   },
   {
-    src: "/brand/hero/home-hero-2-couple-atelier.webp",
-    alt: "Cognac duffle inside the Marrakech atelier",
+    src: "/brand/hero/home-hero-colonnade.webp",
+    alt: "Model walking through a sun-washed limestone colonnade",
   },
   {
-    src: "/brand/hero/home-hero-3-woman-arches.webp",
-    alt: "Cognac duffle with a model in an arched gallery",
+    src: "/brand/hero/home-hero-paris-quay.webp",
+    alt: "Cognac duffle on a Paris quay at night, Notre Dame in the distance",
   },
   {
-    src: "/brand/hero/home-hero-4-pool-tote.webp",
-    alt: "Tobacco-leather tote at the edge of a riad pool",
+    src: "/brand/hero/home-hero-coastal-sunset.webp",
+    alt: "Cognac satchel on a Mediterranean coastal cliff at sunset",
   },
 ];
 
