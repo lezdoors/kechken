@@ -23,8 +23,8 @@ type Slide = Photo | Video;
 const SLIDES: Slide[] = [
   {
     kind: "photo",
-    src: "/brand/hero/home-hero-mediterranean-woman-maison.webp",
-    alt: "Mediterranean woman with cognac bag in a luxury maison interior",
+    src: "/brand/hero/home-hero-model-red-kilim.webp",
+    alt: "Model with red kilim leather bag, Maison Tanneurs signature",
   },
   {
     kind: "photo",
