@@ -30,12 +30,14 @@ export function productToCartItem(
   product: Product,
   quantity: number = 1,
 ): CartItem {
+  const primaryImage = Array.isArray(product.images) ? (product.images[0] ?? "") : "";
+
   return {
     product_id: product.id,
     title: product.title,
     price: product.price,
     quantity,
-    image: product.images[0] || "",
+    image: primaryImage,
     slug: product.slug,
   };
 }

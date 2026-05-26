@@ -35,9 +35,9 @@ export default function CraftStory({ craftsman, materials }: CraftStoryProps) {
               extraordinary precision.
             </p>
             <p className="body-copy max-w-[52ch]">
-              The result is furniture that carries the warmth and imperfection of
+              The result is a piece that carries the warmth and imperfection of
               the human hand -- subtle variations that no machine could replicate
-              and that make each piece genuinely one of a kind.
+              and that make each creation genuinely one of a kind.
             </p>
 
             {craftsman?.bio && (
