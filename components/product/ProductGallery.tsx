@@ -21,7 +21,7 @@ export default function ProductGallery({ images, title }: ProductGalleryProps) {
           alt={`${title}${gallery.length > 1 ? ` — view ${active + 1}` : ""}`}
           fill
           sizes="(max-width: 768px) 100vw, 55vw"
-          className="object-cover"
+          className="object-cover mt-product-img-trim"
           priority
         />
       </div>
@@ -48,7 +48,7 @@ export default function ProductGallery({ images, title }: ProductGalleryProps) {
                   alt=""
                   fill
                   sizes="120px"
-                  className="object-cover"
+                  className="object-cover mt-product-img-trim"
                 />
               </button>
             );
