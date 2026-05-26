@@ -135,26 +135,22 @@ export default function CartDrawer() {
                 {formatPrice(total)}
               </span>
             </div>
-            <p className="text-[11px] font-sans font-light text-mineral leading-relaxed mb-5">
-              White-glove delivery and customs duties calculated at checkout.
-              Lead time 8-14 weeks, by sea.
+            <p className="text-[11px] font-sans font-light text-mineral leading-relaxed mb-4">
+              Complimentary delivery and duties shown at checkout.
             </p>
-            <div className="flex gap-3">
-              <button
-                onClick={() => closeCart()}
-                className="rb-cta-outline flex-1"
-                style={{ fontSize: 12, fontWeight: 500, letterSpacing: "0.14em", padding: "16px 18px" }}
-              >
-                Continue Shopping
-              </button>
-              <button
-                onClick={handleCheckout}
-                className="rb-cta flex-1"
-                style={{ fontSize: 12, fontWeight: 600, letterSpacing: "0.14em", padding: "16px 18px" }}
-              >
-                Proceed to Checkout
-              </button>
-            </div>
+            <button
+              onClick={handleCheckout}
+              className="rb-cta w-full"
+              style={{ fontSize: 12, fontWeight: 600, letterSpacing: "0.16em", padding: "16px 18px" }}
+            >
+              Proceed to Checkout
+            </button>
+            <button
+              onClick={() => closeCart()}
+              className="mt-3 w-full text-center text-[10px] font-mono tracking-[0.16em] uppercase text-graphite hover:text-ink transition-colors"
+            >
+              Continue Shopping
+            </button>
           </div>
         )}
       </aside>

@@ -77,11 +77,12 @@ export default function ProductDetails({ product }: ProductDetailsProps) {
   }
 
   const sku = `MT-${product.id.slice(0, 6).toUpperCase().padStart(6, "0")}`;
+  const displayPrice = formatPrice(product.price);
 
   return (
     <>
       <div className="lg:sticky lg:top-0 lg:self-start lg:max-h-screen lg:overflow-y-auto">
-        <div className="px-5 sm:px-8 lg:px-[40px] pt-8 sm:pt-10 lg:pt-[clamp(48px,8vw,96px)] pb-12 sm:pb-16 lg:pb-[120px]">
+        <div className="px-5 sm:px-8 lg:px-[40px] pt-8 sm:pt-10 lg:pt-[clamp(48px,8vw,96px)] pb-32 sm:pb-20 lg:pb-[120px]">
           <div className="flex flex-col gap-7 sm:gap-8 lg:gap-10">
           {/* Breadcrumbs */}
           <nav className="font-mono text-[10px] tracking-[0.16em] uppercase text-mineral">
@@ -163,7 +164,7 @@ export default function ProductDetails({ product }: ProductDetailsProps) {
             )}
 
           {/* Add to Cart */}
-          <div className="space-y-3 pt-1 sm:pt-2">
+          <div className="space-y-3 pt-1 sm:pt-2 hidden md:block">
             <button
               onClick={handleAddToCart}
               className="rb-cta w-full"
@@ -171,6 +172,9 @@ export default function ProductDetails({ product }: ProductDetailsProps) {
             >
               Add to Cart
             </button>
+            <p className="text-[11px] font-sans text-mineral leading-relaxed">
+              Complimentary delivery in 3–5 days. 30-day returns.
+            </p>
             <div className="min-h-5">
               {justAdded && (
                 <button
@@ -224,8 +228,27 @@ export default function ProductDetails({ product }: ProductDetailsProps) {
       </div>
     </div>
 
+      <div className="md:hidden fixed inset-x-0 bottom-0 z-[68] border-t border-stone/40 bg-white/95 backdrop-blur px-4 pt-2.5 pb-[max(10px,env(safe-area-inset-bottom))]">
+        <div className="flex items-center gap-3">
+          <div className="min-w-0">
+            <p className="font-mono text-[10px] tracking-[0.16em] uppercase text-mineral">Ready to order</p>
+            <p className="font-serif italic text-[17px] text-ink leading-none mt-1">{displayPrice}</p>
+          </div>
+          <button
+            onClick={handleAddToCart}
+            className="rb-cta flex-1"
+            style={{ fontSize: 12, fontWeight: 600, letterSpacing: "0.16em", padding: "14px 16px" }}
+          >
+            Add to Cart
+          </button>
+        </div>
+        <p className="mt-2 text-[10px] font-sans text-mineral leading-relaxed">
+          Complimentary delivery in 3–5 days · 30-day returns
+        </p>
+      </div>
+
       <div
-        className={`fixed left-1/2 -translate-x-1/2 bottom-5 z-[70] px-4 py-2.5 bg-ink text-white border border-white/20 shadow-[0_10px_30px_rgba(0,0,0,0.35)] transition-all duration-300 ${
+        className={`fixed left-1/2 -translate-x-1/2 bottom-[88px] md:bottom-5 z-[70] px-4 py-2.5 bg-ink text-white border border-white/20 shadow-[0_10px_30px_rgba(0,0,0,0.35)] transition-all duration-300 ${
           justAdded
             ? "opacity-100 translate-y-0 pointer-events-auto"
             : "opacity-0 translate-y-2 pointer-events-none"
