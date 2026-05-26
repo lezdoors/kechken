@@ -1,6 +1,7 @@
 import Image from "next/image";
 import Link from "next/link";
 import { formatPrice } from "@/lib/utils";
+import { bust } from "@/lib/image-url";
 
 interface ProductCardProps {
   title: string;
@@ -55,12 +56,13 @@ export default function ProductCard({
       {/* Image plate — F9F9F9 admin surface */}
       <div className="relative aspect-[4/5] overflow-hidden bg-[color:var(--color-plate)]">
         <Image
-          src={image}
+          src={bust(image)}
           alt={title}
           fill
           sizes="(max-width: 768px) 100vw, 33vw"
-          className="object-cover transition-transform duration-[1200ms] ease-out group-hover:scale-[1.025]"
+          className="object-cover mt-product-img-trim transition-transform duration-[1200ms] ease-out group-hover:scale-[1.025]"
         />
+        <div className="pointer-events-none absolute inset-0 ring-1 ring-[color:var(--color-plate)]" />
       </div>
 
       {/* Admin / dossier register info block */}
