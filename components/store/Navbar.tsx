@@ -4,15 +4,21 @@ import { useEffect, useRef, useState } from "react";
 import Link from "next/link";
 import { useRouter } from "next/navigation";
 import { useCart } from "@/components/store/CartProvider";
+import { LOCALES, LOCALE_LABELS } from "@/lib/i18n";
+import { useLocale, useLocalizedHref, useSwitchLocaleHref, useT } from "@/lib/i18n-client";
 
 const NAV_LEFT = [
-  { label: "Collection", href: "/products" },
-  { label: "Atelier", href: "/about" },
-  { label: "Care", href: "/legal/care" },
+  { labelKey: "nav.collection", href: "/products" },
+  { labelKey: "nav.atelier", href: "/about" },
+  { labelKey: "nav.care", href: "/legal/care" },
 ];
 
 export default function Navbar() {
   const router = useRouter();
+  const locale = useLocale();
+  const t = useT();
+  const href = useLocalizedHref();
+  const switchLocaleHref = useSwitchLocaleHref();
   const { items, openCart } = useCart();
   const [searchOpen, setSearchOpen] = useState(false);
   const [searchValue, setSearchValue] = useState("");
@@ -47,15 +53,29 @@ export default function Navbar() {
     const q = searchValue.trim();
     setSearchOpen(false);
     setSearchValue("");
-    router.push(q ? `/products?q=${encodeURIComponent(q)}` : "/products");
+    router.push(href(q ? `/products?q=${encodeURIComponent(q)}` : "/products"));
   }
 
   return (
     <header className="sticky top-0 z-50 w-full bg-white border-b border-[#e5e5e5]">
       <div className="hidden md:flex h-7 items-center justify-between px-6 border-b border-[#e5e5e5] text-[#0f0f0f]/70">
-        <span className="tech-meta">SHIPPING WORLDWIDE — FROM MARRAKECH</span>
-        <span className="tech-meta">EN · FR · AR</span>
-        <span className="tech-meta">EDITION 04 / SPRING 2026</span>
+        <span className="tech-meta">{t("nav.shipping")}</span>
+        <span className="tech-meta flex items-center gap-2" aria-label="Language selector">
+          {LOCALES.map((l, i) => (
+            <span key={l} className="inline-flex items-center gap-2">
+              {i > 0 && <span aria-hidden>·</span>}
+              <Link
+                href={switchLocaleHref(l)}
+                hrefLang={l}
+                className={l === locale ? "text-[#0f0f0f]" : "hover:text-[#0f0f0f]"}
+                aria-current={l === locale ? "true" : undefined}
+              >
+                {LOCALE_LABELS[l]}
+              </Link>
+            </span>
+          ))}
+        </span>
+        <span className="tech-meta">{t("nav.edition")}</span>
       </div>
 
       <div className="grid grid-cols-3 items-center h-14 px-5 md:px-6">
@@ -81,7 +101,7 @@ export default function Navbar() {
           </button>
 
           <Link
-            href="/"
+            href={href("/")}
             aria-label="Maison Tanneurs"
             className="flex h-6 w-6 items-center justify-center border border-[#0f0f0f]"
           >
@@ -91,11 +111,11 @@ export default function Navbar() {
           <div className="hidden md:flex items-center gap-8">
             {NAV_LEFT.map((l) => (
               <Link
-                key={l.label}
-                href={l.href}
+                key={l.labelKey}
+                href={href(l.href)}
                 className="tech-label hover:opacity-60"
               >
-                {l.label}
+                {t(l.labelKey)}
               </Link>
             ))}
           </div>
@@ -103,7 +123,7 @@ export default function Navbar() {
 
         <div className="flex justify-center">
           <Link
-            href="/"
+            href={href("/")}
             aria-label="Maison Tanneurs home"
             className="font-medium"
             style={{
@@ -120,18 +140,18 @@ export default function Navbar() {
           <button
             type="button"
             onClick={() => setSearchOpen((v) => !v)}
-            aria-label="Search"
+            aria-label={t("nav.search")}
             className="hidden md:inline-flex tech-label hover:opacity-60"
           >
-            Search
+            {t("nav.search")}
           </button>
           <button
             type="button"
             onClick={openCart}
-            aria-label="Bag"
+            aria-label={t("nav.bag")}
             className="tech-label inline-flex items-center gap-2 hover:opacity-60"
           >
-            <span>Bag</span>
+            <span>{t("nav.bag")}</span>
             <span
               className={`inline-flex min-w-5 h-5 px-1.5 items-center justify-center rounded-full border border-[#0f0f0f]/15 text-[10px] leading-none transition-transform duration-200 ${
                 cartPulse ? "scale-110" : "scale-100"
@@ -152,14 +172,14 @@ export default function Navbar() {
             <input
               autoFocus
               type="search"
-              placeholder="Search objects, drops, dossiers"
+              placeholder={t("search.placeholder")}
               value={searchValue}
               onChange={(e) => setSearchValue(e.target.value)}
               className="flex-1 py-3 text-[15px] bg-transparent outline-none text-[#0f0f0f] placeholder:text-[#6b6b6b]"
               style={{ letterSpacing: "-0.01em" }}
             />
             <button type="submit" className="tech-label px-4 text-[#0f0f0f]">
-              Search
+              {t("nav.search")}
             </button>
           </form>
         </div>
@@ -176,10 +196,10 @@ export default function Navbar() {
             className="md:hidden fixed left-0 top-0 bottom-0 w-[300px] z-50 bg-white border-r border-[#e5e5e5] overflow-y-auto"
           >
             <div className="flex items-center justify-between px-6 py-4 border-b border-[#e5e5e5]">
-              <span className="tech-label opacity-60">Menu</span>
+              <span className="tech-label opacity-60">{t("nav.menu")}</span>
               <button
                 onClick={() => setDrawer(false)}
-                aria-label="Close menu"
+                aria-label={t("nav.closeMenu")}
                 className="text-[#0f0f0f]"
               >
                 <svg
@@ -198,35 +218,35 @@ export default function Navbar() {
             <nav className="px-6 py-8 flex flex-col gap-6">
               {NAV_LEFT.map((l) => (
                 <Link
-                  key={l.label}
-                  href={l.href}
+                  key={l.labelKey}
+                  href={href(l.href)}
                   onClick={() => setDrawer(false)}
                   className="tech-label text-[#0f0f0f] text-[13px]"
                 >
-                  {l.label}
+                  {t(l.labelKey)}
                 </Link>
               ))}
               <div className="h-px bg-[#e5e5e5] my-2" />
               <Link
-                href="/legal/care"
+                href={href("/legal/care")}
                 onClick={() => setDrawer(false)}
                 className="tech-meta text-[#0f0f0f]/70"
               >
-                Care Guide
+                {t("nav.careGuide")}
               </Link>
               <Link
-                href="/legal/shipping"
+                href={href("/legal/shipping")}
                 onClick={() => setDrawer(false)}
                 className="tech-meta text-[#0f0f0f]/70"
               >
-                Shipping
+                {t("footer.shipping")}
               </Link>
               <Link
-                href="/legal/returns"
+                href={href("/legal/returns")}
                 onClick={() => setDrawer(false)}
                 className="tech-meta text-[#0f0f0f]/70"
               >
-                Returns
+                {t("footer.returns")}
               </Link>
             </nav>
           </aside>

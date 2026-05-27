@@ -157,9 +157,9 @@ function ProductCell({ product, index }: { product: Product; index: number }) {
       href={`/products/${product.slug}`}
       className="group block cursor-pointer"
     >
-      {/* Frame — F5F5F5 plate, 4:5 portrait, no borders, no chrome */}
+      {/* Frame — pure-white plate, 4:5 portrait, sharp corners, no chrome */}
       <div
-        className="relative overflow-hidden rounded-[4px]"
+        className="relative overflow-hidden"
         style={{
           background: "var(--color-plate)",
           aspectRatio: "4 / 5",
@@ -171,7 +171,7 @@ function ProductCell({ product, index }: { product: Product; index: number }) {
             alt={product.title}
             fill
             sizes="(min-width: 1024px) 33vw, (min-width: 640px) 50vw, 100vw"
-            className="object-contain p-[7%] mt-product-img-trim transition-transform duration-[1200ms]"
+            className="object-contain p-0 mt-product-img-trim transition-transform duration-[1200ms]"
             style={{
               transitionTimingFunction: "cubic-bezier(0.22, 1, 0.36, 1)",
             }}

@@ -1,8 +1,10 @@
 "use client";
 
 import { useState } from "react";
+import { useT } from "@/lib/i18n-client";
 
 export default function NewsletterSignup() {
+  const t = useT();
   const [email, setEmail] = useState("");
   const [state, setState] = useState<"idle" | "sending" | "sent" | "error">(
     "idle",
@@ -37,16 +39,18 @@ export default function NewsletterSignup() {
             className="display-xxl mt-5"
             style={{ fontSize: "clamp(40px, 5vw, 80px)" }}
           >
-            Join the
-            <br />
-            Atelier<span className="opacity-40">.</span>
+            {t("newsletter.title").split("\n").map((line, index) => (
+              <span key={line}>
+                {line}
+                {index === 0 && <br />}
+              </span>
+            ))}
           </h3>
           <p
             className="mt-6 leading-relaxed text-[#0f0f0f]/70"
             style={{ fontSize: "14px", letterSpacing: "-0.01em", maxWidth: "44ch" }}
           >
-            One dispatch per edition. Allocation windows, atelier notes, and
-            first access to the next 200 objects. No marketing noise.
+            {t("newsletter.copy")}
           </p>
         </div>
 
@@ -58,7 +62,7 @@ export default function NewsletterSignup() {
             <input
               type="email"
               required
-              placeholder="your@email.com"
+              placeholder={t("newsletter.placeholder")}
               value={email}
               onChange={(e) => setEmail(e.target.value)}
               disabled={state === "sending" || state === "sent"}
@@ -72,18 +76,18 @@ export default function NewsletterSignup() {
               className="tech-label px-5 text-[#0f0f0f] hover:opacity-60 disabled:opacity-40"
             >
               {state === "sending"
-                ? "Filing…"
+                ? t("newsletter.sending")
                 : state === "sent"
-                  ? "Filed ✓"
-                  : "Subscribe →"}
+                  ? t("newsletter.sent")
+                  : t("newsletter.subscribe")}
             </button>
           </form>
           <div className="mt-4 tech-meta opacity-60">
             {state === "error"
-              ? "Submission failed. Email hello@maisontanneurs.com instead."
+              ? t("newsletter.error")
               : state === "sent"
-                ? "Added to the dispatch list."
-                : "By subscribing you agree to receive periodic dispatches. Unsubscribe in one click."}
+                ? t("newsletter.success")
+                : t("newsletter.legal")}
           </div>
         </div>
       </div>

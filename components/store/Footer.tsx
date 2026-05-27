@@ -1,65 +1,61 @@
+"use client";
+
 import Link from "next/link";
 import NewsletterSignup from "@/components/store/NewsletterSignup";
+import { useLocalizedHref, useT } from "@/lib/i18n-client";
 
-type ColumnDef = { title: string; links: { label: string; href: string }[] };
+type ColumnDef = { titleKey: string; links: { labelKey: string; href: string }[] };
 
 const COLUMNS: ColumnDef[] = [
   {
-    title: "Collection",
+    titleKey: "footer.collection",
     links: [
-      { label: "All Objects", href: "/products" },
-      { label: "Backpacks", href: "/products?category=Backpack" },
-      { label: "Crossbody", href: "/products?category=Crossbody" },
-      { label: "Totes", href: "/products?category=Tote" },
-      { label: "Weekenders", href: "/products?category=Weekender" },
+      { labelKey: "footer.allObjects", href: "/products" },
+      { labelKey: "footer.backpacks", href: "/products?category=Backpack" },
+      { labelKey: "footer.crossbody", href: "/products?category=Crossbody" },
+      { labelKey: "footer.totes", href: "/products?category=Tote" },
+      { labelKey: "footer.weekenders", href: "/products?category=Weekender" },
     ],
   },
   {
-    title: "Atelier",
+    titleKey: "footer.atelier",
     links: [
-      { label: "The Story", href: "/about" },
-      { label: "Production Footprint", href: "/about" },
-      { label: "Materials & Care", href: "/legal/care" },
+      { labelKey: "footer.story", href: "/about" },
+      { labelKey: "footer.production", href: "/about" },
+      { labelKey: "footer.materialsCare", href: "/legal/care" },
     ],
   },
   {
-    title: "Support",
+    titleKey: "footer.support",
     links: [
-      { label: "Care Guide", href: "/legal/care" },
-      { label: "Shipping", href: "/legal/shipping" },
-      { label: "Returns", href: "/legal/returns" },
-      { label: "FAQ", href: "/legal/faq" },
-      { label: "Contact", href: "/contact" },
+      { labelKey: "nav.careGuide", href: "/legal/care" },
+      { labelKey: "footer.shipping", href: "/legal/shipping" },
+      { labelKey: "footer.returns", href: "/legal/returns" },
+      { labelKey: "footer.faq", href: "/legal/faq" },
+      { labelKey: "footer.contact", href: "/contact" },
     ],
   },
   {
-    title: "Connect",
+    titleKey: "footer.connect",
     links: [
-      { label: "Instagram", href: "https://instagram.com/maisontanneurs" },
-      {
-        label: "Atelier List",
-        href: "mailto:hello@maisontanneurs.com?subject=Atelier%20List",
-      },
-      {
-        label: "Trade Inquiries",
-        href: "mailto:hello@maisontanneurs.com?subject=Trade",
-      },
-      {
-        label: "Repair Request",
-        href: "mailto:repair@maisontanneurs.com?subject=Repair%20Request",
-      },
+      { labelKey: "footer.instagram", href: "https://instagram.com/maisontanneurs" },
+      { labelKey: "footer.atelierList", href: "mailto:hello@maisontanneurs.com?subject=Atelier%20List" },
+      { labelKey: "footer.trade", href: "mailto:hello@maisontanneurs.com?subject=Trade" },
+      { labelKey: "footer.repair", href: "mailto:repair@maisontanneurs.com?subject=Repair%20Request" },
     ],
   },
 ];
 
 export default function Footer() {
+  const t = useT();
+  const href = useLocalizedHref();
   return (
     <footer className="w-full bg-white text-[#0f0f0f] border-t border-[#e5e5e5]">
       <NewsletterSignup />
 
       <div className="grid grid-cols-2 md:grid-cols-4 gap-y-10 gap-x-6 px-6 pt-14 pb-10">
         {COLUMNS.map((c) => (
-          <Column key={c.title} {...c} />
+          <Column key={c.titleKey} {...c} />
         ))}
       </div>
 
@@ -78,24 +74,14 @@ export default function Footer() {
 
       <div className="border-t border-[#e5e5e5]">
         <div className="px-6 py-6 flex flex-col md:flex-row md:items-center md:justify-between gap-4">
-          <span className="tech-meta opacity-70">
-            Filed in Marrakech — Carried Anywhere.
-          </span>
-          <span className="tech-meta opacity-70">
-            © 2026 Maison Tanneurs · All Rights Reserved
-          </span>
+          <span className="tech-meta opacity-70">{t("footer.tagline")}</span>
+          <span className="tech-meta opacity-70">{t("footer.rights")}</span>
           <div className="flex items-center gap-6 tech-meta opacity-70">
-            <Link
-              href="/legal/privacy"
-              className="hover:underline underline-offset-4"
-            >
-              Privacy
+            <Link href={href("/legal/privacy")} className="hover:underline underline-offset-4">
+              {t("footer.privacy")}
             </Link>
-            <Link
-              href="/legal/terms"
-              className="hover:underline underline-offset-4"
-            >
-              Terms
+            <Link href={href("/legal/terms")} className="hover:underline underline-offset-4">
+              {t("footer.terms")}
             </Link>
           </div>
         </div>
@@ -104,23 +90,22 @@ export default function Footer() {
   );
 }
 
-function Column({ title, links }: ColumnDef) {
+function Column({ titleKey, links }: ColumnDef) {
+  const t = useT();
+  const href = useLocalizedHref();
   return (
     <div>
-      <h4
-        className="font-medium"
-        style={{ fontSize: "15px", letterSpacing: "-0.015em" }}
-      >
-        {title}
+      <h4 className="font-medium" style={{ fontSize: "15px", letterSpacing: "-0.015em" }}>
+        {t(titleKey)}
       </h4>
       <ul className="mt-5 flex flex-col gap-2.5">
         {links.map((l) => (
-          <li key={l.label}>
+          <li key={l.labelKey}>
             <Link
-              href={l.href}
+              href={href(l.href)}
               className="tech-meta opacity-75 hover:opacity-100 hover:underline underline-offset-4"
             >
-              {l.label}
+              {t(l.labelKey)}
             </Link>
           </li>
         ))}

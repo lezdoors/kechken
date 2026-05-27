@@ -1,11 +1,12 @@
 import type { Metadata } from "next";
 import Script from "next/script";
-import { Inter, JetBrains_Mono, Playfair_Display } from "next/font/google";
+import { Inter, JetBrains_Mono, Noto_Naskh_Arabic, Playfair_Display } from "next/font/google";
 import "./globals.css";
 import CookieBanner from "@/components/store/CookieBanner";
 import ConsentedClarity from "@/components/store/ConsentedClarity";
 import MetaPixel from "@/components/store/MetaPixel";
 import GA4 from "@/components/store/GA4";
+import { getRequestDir, getRequestLocale } from "@/lib/i18n-server";
 
 const inter = Inter({
   subsets: ["latin"],
@@ -26,6 +27,13 @@ const playfair = Playfair_Display({
   variable: "--font-display",
   display: "swap",
   weight: ["400", "500"],
+});
+
+const arabic = Noto_Naskh_Arabic({
+  subsets: ["arabic"],
+  variable: "--font-arabic",
+  display: "swap",
+  weight: ["400", "500", "600", "700"],
 });
 
 export const metadata: Metadata = {
@@ -63,6 +71,12 @@ export const metadata: Metadata = {
   },
   alternates: {
     canonical: "/",
+    languages: {
+      en: "/",
+      fr: "/fr",
+      ar: "/ar",
+      "x-default": "/",
+    },
   },
 };
 
@@ -80,13 +94,15 @@ const ORGANIZATION_LD = {
 const CLARITY_PROJECT_ID =
   process.env.NEXT_PUBLIC_CLARITY_PROJECT_ID || "wrj9fbl8n9";
 
-export default function RootLayout({
+export default async function RootLayout({
   children,
 }: {
   children: React.ReactNode;
 }) {
+  const locale = await getRequestLocale();
+  const dir = await getRequestDir();
   return (
-    <html lang="en" className={`${inter.variable} ${mono.variable} ${playfair.variable}`}>
+    <html lang={locale} dir={dir} className={`${inter.variable} ${mono.variable} ${playfair.variable} ${arabic.variable}`}>
       <body>
         <Script
           id="organization-ld"

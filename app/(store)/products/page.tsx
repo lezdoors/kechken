@@ -6,6 +6,8 @@ import { STATIC_PRODUCTS, LIGHTING_DB_CATEGORIES, mergeWithStatic } from "@/lib/
 import { HIDDEN_SKUS, HIDDEN_SKUS_ARRAY } from "@/lib/hidden-skus";
 import ProductCard from "@/components/store/ProductCard";
 import CategoryFilter from "@/components/store/CategoryFilter";
+import { getRequestLocale } from "@/lib/i18n-server";
+import { t } from "@/lib/i18n";
 
 // Normalize a URL category param into the stored DB category form. Handles:
 // - Decoded spaces (?category=Wall%20Plates → "Wall Plates")
@@ -128,6 +130,7 @@ export default async function ProductsPage({
   searchParams: Promise<{ [key: string]: string | string[] | undefined }>;
 }) {
   const params = await searchParams;
+  const locale = await getRequestLocale();
   const category =
     typeof params.category === "string" ? params.category : undefined;
   const q = typeof params.q === "string" ? params.q : undefined;
@@ -139,12 +142,10 @@ export default async function ProductsPage({
       <section className="pt-[180px] px-[clamp(24px,4vw,72px)] pb-0">
         <div className="grid grid-cols-1 lg:grid-cols-[2fr_1fr] gap-8 lg:gap-16 items-end pb-10 border-b border-stone">
           <h1 className="disp text-[clamp(56px,8vw,112px)] max-w-[14ch]">
-            Drops
+            {t(locale, "products.title")}
           </h1>
           <p className="font-serif italic text-[18px] leading-[1.55] text-graphite max-w-[44ch]">
-            Hand-stitched leather from a small Marrakech atelier. Each drop
-            is a tight edition — released, sold, restocked only when the
-            leather is right.
+            {t(locale, "products.copy")}
           </p>
         </div>
       </section>

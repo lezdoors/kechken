@@ -3,6 +3,7 @@
 import { useRouter, useSearchParams } from "next/navigation";
 import { CATEGORIES } from "@/lib/products";
 import { cn } from "@/lib/utils";
+import { useLocalizedHref, useT } from "@/lib/i18n-client";
 
 interface CategoryFilterProps {
   productCount: number;
@@ -10,15 +11,17 @@ interface CategoryFilterProps {
 
 export default function CategoryFilter({ productCount }: CategoryFilterProps) {
   const router = useRouter();
+  const t = useT();
+  const href = useLocalizedHref();
   const searchParams = useSearchParams();
   const activeCategory = searchParams.get("category") || "All";
 
   function handleClick(category: string) {
     if (category === "All") {
-      router.push("/products", { scroll: false });
+      router.push(href("/products"), { scroll: false });
     } else {
       router.push(
-        `/products?category=${encodeURIComponent(category.toLowerCase())}`,
+        href(`/products?category=${encodeURIComponent(category.toLowerCase())}`),
         { scroll: false },
       );
     }
@@ -46,7 +49,7 @@ export default function CategoryFilter({ productCount }: CategoryFilterProps) {
                     : "text-mineral hover:text-graphite",
                 )}
               >
-                {category}
+                {category === "All" ? t("products.all") : category}
               </button>
             );
           })}
@@ -54,7 +57,7 @@ export default function CategoryFilter({ productCount }: CategoryFilterProps) {
 
         {/* Product count */}
         <span className="font-mono text-[11px] tracking-[0.16em] text-mineral whitespace-nowrap ml-6">
-          {productCount} {productCount === 1 ? "piece" : "pieces"}
+          {productCount} {t("products.pieces")}
         </span>
       </div>
     </div>

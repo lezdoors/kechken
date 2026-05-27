@@ -4,6 +4,7 @@ import { useEffect, useState } from "react";
 import Link from "next/link";
 import { formatPrice } from "@/lib/utils";
 import { useCart } from "@/components/store/CartProvider";
+import { useLocalizedHref, useT } from "@/lib/i18n-client";
 import { productToCartItem } from "@/lib/cart";
 import { trackGA4Event } from "@/components/store/GA4";
 import { trackPixelEvent } from "@/components/store/MetaPixel";
@@ -15,6 +16,8 @@ interface ProductDetailsProps {
 
 export default function ProductDetails({ product }: ProductDetailsProps) {
   const { addItem, openCart } = useCart();
+  const t = useT();
+  const href = useLocalizedHref();
   const [justAdded, setJustAdded] = useState(false);
 
   // GA4 + Pixel: view_item / ViewContent on PDP mount
@@ -86,12 +89,12 @@ export default function ProductDetails({ product }: ProductDetailsProps) {
           <div className="flex flex-col gap-6 sm:gap-7 lg:gap-6">
           {/* Breadcrumbs */}
           <nav className="font-mono text-[10px] tracking-[0.16em] uppercase text-mineral">
-            <Link href="/" className="hover:text-graphite transition-colors">
+            <Link href={href("/")} className="hover:text-graphite transition-colors">
               Home
             </Link>
             <span className="mx-2">/</span>
             <Link
-              href={`/products?category=${product.category.toLowerCase()}`}
+              href={href(`/products?category=${product.category.toLowerCase()}`)}
               className="hover:text-graphite transition-colors"
             >
               {product.category}
@@ -127,10 +130,10 @@ export default function ProductDetails({ product }: ProductDetailsProps) {
               className="rb-cta w-full"
               style={{ fontSize: 13, fontWeight: 600, letterSpacing: "0.18em", padding: "17px 24px" }}
             >
-              Add to Cart
+              {t("product.addToCart")}
             </button>
             <p className="text-[11px] font-sans text-mineral leading-relaxed">
-              Complimentary delivery in 3–5 days. 30-day returns.
+              {t("product.delivery")}
             </p>
             <div className="min-h-5">
               {justAdded && (
@@ -139,7 +142,7 @@ export default function ProductDetails({ product }: ProductDetailsProps) {
                   onClick={openCart}
                   className="font-mono text-[10px] tracking-[0.14em] uppercase text-graphite hover:text-ink transition-colors"
                 >
-                  Added to bag — view selection
+                  {t("product.added")}
                 </button>
               )}
             </div>
@@ -149,7 +152,7 @@ export default function ProductDetails({ product }: ProductDetailsProps) {
           {product.materials.length > 0 && (
             <div>
               <span className="font-mono text-[10px] tracking-[0.16em] uppercase text-mineral block mb-3">
-                Materials
+                {t("product.materials")}
               </span>
               <div className="flex flex-wrap gap-2">
                 {product.materials.map((material) => (
@@ -169,7 +172,7 @@ export default function ProductDetails({ product }: ProductDetailsProps) {
             Object.keys(product.dimensions).length > 0 && (
               <div>
                 <span className="font-mono text-[10px] tracking-[0.16em] uppercase text-mineral block mb-3">
-                  Dimensions
+                  {t("product.dimensions")}
                 </span>
                 <table className="w-full">
                   <tbody>
@@ -190,9 +193,9 @@ export default function ProductDetails({ product }: ProductDetailsProps) {
 
           {/* Trust strip */}
           <div className="grid grid-cols-1 sm:grid-cols-3 gap-2 border-y border-stone/40 py-4">
-            <span className="font-mono text-[10px] tracking-[0.14em] uppercase text-graphite">Secure Checkout</span>
-            <span className="font-mono text-[10px] tracking-[0.14em] uppercase text-graphite">30-Day Returns</span>
-            <span className="font-mono text-[10px] tracking-[0.14em] uppercase text-graphite">Worldwide Shipping</span>
+            <span className="font-mono text-[10px] tracking-[0.14em] uppercase text-graphite">{t("product.secure")}</span>
+            <span className="font-mono text-[10px] tracking-[0.14em] uppercase text-graphite">{t("product.returns")}</span>
+            <span className="font-mono text-[10px] tracking-[0.14em] uppercase text-graphite">{t("product.worldwide")}</span>
           </div>
 
           {/* Shipping + care note */}
@@ -203,24 +206,24 @@ export default function ProductDetails({ product }: ProductDetailsProps) {
           {/* Care + sizing links */}
           <div className="border-t border-stone/40 pt-6 flex flex-col gap-2.5">
             <Link
-              href="/legal/care"
+              href={href("/legal/care")}
               className="font-mono text-[10px] tracking-[0.18em] uppercase text-graphite hover:text-ink transition-colors flex items-center justify-between"
             >
-              <span>How it&apos;s cared for</span>
+              <span>{t("product.care").replace(" →", "")}</span>
               <span className="text-mineral">→</span>
             </Link>
             <Link
-              href="/legal/shipping"
+              href={href("/legal/shipping")}
               className="font-mono text-[10px] tracking-[0.18em] uppercase text-graphite hover:text-ink transition-colors flex items-center justify-between"
             >
-              <span>Shipping &amp; delivery</span>
+              <span>{t("product.shipping").replace(" →", "")}</span>
               <span className="text-mineral">→</span>
             </Link>
             <Link
-              href="/legal/returns"
+              href={href("/legal/returns")}
               className="font-mono text-[10px] tracking-[0.18em] uppercase text-graphite hover:text-ink transition-colors flex items-center justify-between"
             >
-              <span>30-day returns</span>
+              <span>{t("product.returnsLink").replace(" →", "")}</span>
               <span className="text-mineral">→</span>
             </Link>
           </div>
@@ -239,11 +242,11 @@ export default function ProductDetails({ product }: ProductDetailsProps) {
             className="rb-cta flex-1"
             style={{ fontSize: 12, fontWeight: 600, letterSpacing: "0.16em", padding: "14px 16px" }}
           >
-            Add to Cart
+            {t("product.addToCart")}
           </button>
         </div>
         <p className="mt-2 text-[10px] font-sans text-mineral leading-relaxed">
-          Complimentary delivery in 3–5 days · 30-day returns
+          {t("product.delivery")}
         </p>
       </div>
 
@@ -259,7 +262,7 @@ export default function ProductDetails({ product }: ProductDetailsProps) {
           onClick={openCart}
           className="font-mono text-[10px] tracking-[0.14em] uppercase"
         >
-          Added to cart — view bag
+          {t("product.added")}
         </button>
       </div>
     </>

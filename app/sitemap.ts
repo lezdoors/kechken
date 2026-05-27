@@ -1,8 +1,22 @@
 import type { MetadataRoute } from "next";
 import { createServerSupabase } from "@/lib/supabase/server";
 import { HIDDEN_SKUS, HIDDEN_SKUS_ARRAY } from "@/lib/hidden-skus";
+import { LOCALES, withLocale } from "@/lib/i18n";
 
 const SITE = process.env.NEXT_PUBLIC_SITE_URL || "https://www.maisontanneurs.com";
+
+function localizedUrl(path: string, locale: (typeof LOCALES)[number]) {
+  return `${SITE}${withLocale(path, locale)}`;
+}
+
+function localizeEntries(entries: MetadataRoute.Sitemap): MetadataRoute.Sitemap {
+  return entries.flatMap((entry) =>
+    LOCALES.map((locale) => ({
+      ...entry,
+      url: localizedUrl(new URL(entry.url).pathname, locale),
+    })),
+  );
+}
 
 export const revalidate = 86400;
 
@@ -46,5 +60,5 @@ export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
     // Fall back to static paths only if Supabase fails
   }
 
-  return [...staticPaths, ...productPaths];
+  return localizeEntries([...staticPaths, ...productPaths]);
 }

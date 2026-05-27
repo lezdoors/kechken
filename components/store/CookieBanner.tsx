@@ -2,6 +2,7 @@
 
 import { useEffect, useState } from "react";
 import { usePathname } from "next/navigation";
+import { useLocalizedHref, useT } from "@/lib/i18n-client";
 
 // Consent state shape:
 //   "all"  — analytics + marketing pixels enabled
@@ -27,6 +28,8 @@ function setConsent(choice: ConsentChoice) {
 export default function CookieBanner() {
   const [visible, setVisible] = useState(false);
   const pathname = usePathname();
+  const t = useT();
+  const href = useLocalizedHref();
   const pinLeft = pathname.startsWith("/products/");
 
   useEffect(() => {
@@ -94,18 +97,16 @@ export default function CookieBanner() {
             maxWidth: 720,
           }}
         >
-          We use cookies to improve your experience, measure how the site is used,
-          and personalise advertising. You can accept or decline non-essential
-          cookies. Essential cookies (cart, checkout) are always on.{" "}
+          {t("cookie.copy")}{" "}
           <a
-            href="/legal/privacy"
+            href={href("/legal/privacy")}
             style={{
               color: "var(--color-ivory, #f5efe6)",
               textDecoration: "underline",
               textUnderlineOffset: 4,
             }}
           >
-            Privacy policy
+            {t("cookie.privacy")}
           </a>
           .
         </p>
@@ -133,7 +134,7 @@ export default function CookieBanner() {
                 "rgba(245, 239, 230, 0.55)";
             }}
           >
-            Decline
+            {t("cookie.decline")}
           </button>
           <button
             onClick={accept}
@@ -159,7 +160,7 @@ export default function CookieBanner() {
               (e.currentTarget as HTMLButtonElement).style.color = "#141210";
             }}
           >
-            Accept all
+            {t("cookie.accept")}
           </button>
         </div>
       </div>

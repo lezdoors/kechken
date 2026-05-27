@@ -1,7 +1,10 @@
+"use client";
+
 import Image from "next/image";
 import Link from "next/link";
 import { formatPrice } from "@/lib/utils";
 import { bust } from "@/lib/image-url";
+import { useLocalizedHref, useT } from "@/lib/i18n-client";
 
 interface ProductCardProps {
   title: string;
@@ -72,22 +75,24 @@ export default function ProductCard({
   slug,
   category,
 }: ProductCardProps) {
+  const t = useT();
+  const href = useLocalizedHref();
   const showPrice = category ? SHOW_PRICE_CATEGORIES.has(category) : false;
   const family = deriveFamily(slug);
 
   return (
     <Link
-      href={`/products/${slug}`}
+      href={href(`/products/${slug}`)}
       className="group block border border-[color:var(--color-rule)] bg-[color:var(--color-paper)] transition-colors hover:border-[color:var(--color-ink)]/35"
     >
-      {/* Image plate — F9F9F9 admin surface */}
+      {/* Image plate — pure-white studio surface */}
       <div className="relative aspect-[4/5] overflow-hidden bg-[color:var(--color-plate)]">
         <Image
           src={bust(image)}
           alt={title}
           fill
           sizes="(max-width: 768px) 100vw, 33vw"
-          className="object-contain p-[7%] mt-product-img-trim transition-transform duration-[1200ms] ease-out group-hover:scale-[1.025]"
+          className="object-contain p-0 mt-product-img-trim transition-transform duration-[1200ms] ease-out group-hover:scale-[1.01]"
         />
         <div className="pointer-events-none absolute inset-0 ring-1 ring-[color:var(--color-plate)]" />
       </div>
@@ -135,7 +140,7 @@ export default function ProductCard({
             <span>{formatPrice(price)}</span>
           ) : (
             <span className="opacity-85 group-hover:opacity-100 transition-opacity">
-              View Specifications →
+              {t("product.viewSpecs")}
             </span>
           )}
         </div>

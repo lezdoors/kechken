@@ -24,20 +24,15 @@ export const HIDDEN_SKUS: ReadonlySet<string> = new Set([
   // (scripts/build-images-manifest.py), then remove the slug from this set.
   // See docs/PRODUCT-IMAGES-MANIFEST.md for canonical inventory.
 
-  // Group A — only supplier-raw files in Storage:
-  "atlas-briefcase-vintage",
-  "atlas-kilim-rucksack",
+  // Still hidden because Storage has no canonical hero (pdp-white / scale).
   "marrakech-tote-bordeaux",
   "marrakech-tote-noir",
-  "medina-crossbody-cognac",
   "medina-crossbody-tassel",
-  "vintage-satchel-light-brown",
 
   // Group B — only macro shots in Storage, no canonical hero. Macros are
   // gallery-only per Turbo's convention; audit rejects them as images[0].
   // Stay hidden until a pdp-white or scale shot lands.
   "explorer-rolltop-noir",
-  "medina-crossbody-tooled-walnut",
 ]);
 
 export const HIDDEN_SKUS_ARRAY: readonly string[] = Array.from(HIDDEN_SKUS);

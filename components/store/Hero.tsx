@@ -3,6 +3,7 @@
 import { useEffect, useRef, useState } from "react";
 import Image from "next/image";
 import Link from "next/link";
+import { useLocalizedHref, useT } from "@/lib/i18n-client";
 
 // Mixed-media hero rotation. Photos hold for ~6s each, videos play in full.
 // Sequence opens warm (Mediterranean woman), goes through Maison casting,
@@ -51,6 +52,8 @@ const SLIDES: Slide[] = [
 const PHOTO_HOLD_MS = 6500;
 
 export default function Hero() {
+  const t = useT();
+  const href = useLocalizedHref();
   const [idx, setIdx] = useState(0);
   const videoRefs = useRef<(HTMLVideoElement | null)[]>([]);
   const timer = useRef<number | null>(null);
@@ -153,7 +156,7 @@ export default function Hero() {
               textTransform: "uppercase",
             }}
           >
-            Spring / Été · MMXXVI
+            {t("hero.kicker")}
           </p>
 
           <h1
@@ -183,12 +186,12 @@ export default function Hero() {
               maxWidth: "56ch",
             }}
           >
-            Hand-cut in a small Marrakech atelier. Carried from Paris to anywhere.
+            {t("hero.copy")}
           </p>
 
           <div className="mt-10 flex flex-wrap items-center gap-3">
             <Link
-              href="/products"
+              href={href("/products")}
               className="inline-flex items-center gap-3 transition-opacity hover:opacity-85"
               style={{
                 background: "#ffffff",
@@ -200,10 +203,10 @@ export default function Hero() {
                 letterSpacing: "0.02em",
               }}
             >
-              Discover the Collection
+              {t("hero.primary")}
             </Link>
             <Link
-              href="/about"
+              href={href("/about")}
               className="inline-flex items-center gap-3 transition-opacity hover:opacity-70"
               style={{
                 color: "#ffffff",
@@ -214,7 +217,7 @@ export default function Hero() {
                 borderBottom: "1px solid rgba(255,255,255,0.55)",
               }}
             >
-              Inside the Atelier
+              {t("hero.secondary")}
             </Link>
           </div>
         </div>
