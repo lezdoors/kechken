@@ -103,9 +103,16 @@ export default function Navbar() {
           <Link
             href={href("/")}
             aria-label="Maison Tanneurs"
-            className="flex h-6 w-6 items-center justify-center border border-[#0f0f0f]"
+            className="flex h-9 w-9 items-center justify-center"
           >
-            <span className="tech-label text-[#0f0f0f]">MT</span>
+            <img
+              src="/brand/logos/mt-monogram.png"
+              alt=""
+              aria-hidden="true"
+              className="h-8 w-8 object-contain"
+              width={32}
+              height={32}
+            />
           </Link>
 
           <div className="hidden md:flex items-center gap-8">

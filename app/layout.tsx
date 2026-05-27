@@ -85,7 +85,7 @@ const ORGANIZATION_LD = {
   "@type": "Organization",
   name: "Maison Tanneurs",
   url: "https://www.maisontanneurs.com",
-  logo: "https://www.maisontanneurs.com/icon.svg",
+  logo: "https://www.maisontanneurs.com/brand/logos/mt-arched-badge.png",
   description:
     "Hand-stitched leather wearables sourced direct from a Marrakech atelier. Full-grain leather, editorial silhouettes.",
   email: "hello@maisontanneurs.com",
