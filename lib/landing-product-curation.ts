@@ -20,6 +20,7 @@ const LIST_IMAGE_OVERRIDES: Record<string, string> = {
   "medina-saddlebag-tooled-cognac": "/products/landing/medina-saddlebag-tooled-cognac-landing.webp",
   "expedition-rolltop-noir": "/products/landing/expedition-rolltop-noir-landing.webp",
   "atlas-kilim-duffle": "/products/landing/atlas-kilim-duffle-landing.webp",
+  "marrakech-tote-cognac": "/products/landing/marrakech-tote-cognac-landing.webp",
   "expedition-rolltop-cognac": "expedition-rolltop-cognac-pdp-05.webp",
 };
 
