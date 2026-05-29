@@ -6,7 +6,6 @@ const LANDING_FEATURED_ORDER = [
   "medina-saddlebag-tooled-cognac",
   "expedition-rolltop-noir",
   "atlas-kilim-duffle",
-  "medina-duffle",
   "marrakech-tote-cognac",
 ];
 
@@ -21,7 +20,6 @@ const LIST_IMAGE_OVERRIDES: Record<string, string> = {
   "medina-saddlebag-tooled-cognac": "/products/landing/medina-saddlebag-tooled-cognac-landing.webp",
   "expedition-rolltop-noir": "/products/landing/expedition-rolltop-noir-landing.webp",
   "atlas-kilim-duffle": "/products/landing/atlas-kilim-duffle-landing.webp",
-  "medina-duffle": "/products/landing/medina-duffle-landing.webp",
   "expedition-rolltop-cognac": "expedition-rolltop-cognac-pdp-05.webp",
 };
 

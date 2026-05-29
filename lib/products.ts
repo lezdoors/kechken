@@ -246,10 +246,15 @@ export const STATIC_PRODUCTS: Product[] = [
     "slug": "classic-cognac-satchel",
     "price": 28500,
     "images": [
-      "https://xbtabpurfavngwmwtawc.supabase.co/storage/v1/object/public/products/drop-01/classic-cognac-satchel-pdp-white.webp",
-      "https://xbtabpurfavngwmwtawc.supabase.co/storage/v1/object/public/products/drop-01/classic-cognac-satchel-archive-1.webp",
-      "https://xbtabpurfavngwmwtawc.supabase.co/storage/v1/object/public/products/drop-01/classic-cognac-satchel-archive-2.webp",
-      "https://xbtabpurfavngwmwtawc.supabase.co/storage/v1/object/public/products/drop-01/classic-cognac-satchel-archive-3.webp"
+      "https://xbtabpurfavngwmwtawc.supabase.co/storage/v1/object/public/products/drop-02/classic-cognac-satchel-pdp-white.webp",
+      "https://xbtabpurfavngwmwtawc.supabase.co/storage/v1/object/public/products/drop-02/classic-cognac-satchel-pdp-02.webp",
+      "https://xbtabpurfavngwmwtawc.supabase.co/storage/v1/object/public/products/drop-02/classic-cognac-satchel-pdp-03.webp",
+      "https://xbtabpurfavngwmwtawc.supabase.co/storage/v1/object/public/products/drop-02/classic-cognac-satchel-pdp-04.webp",
+      "https://xbtabpurfavngwmwtawc.supabase.co/storage/v1/object/public/products/drop-02/classic-cognac-satchel-pdp-05.webp",
+      "https://xbtabpurfavngwmwtawc.supabase.co/storage/v1/object/public/products/drop-02/classic-cognac-satchel-pdp-06.webp",
+      "https://xbtabpurfavngwmwtawc.supabase.co/storage/v1/object/public/products/drop-02/classic-cognac-satchel-pdp-07.webp",
+      "https://xbtabpurfavngwmwtawc.supabase.co/storage/v1/object/public/products/drop-02/classic-cognac-satchel-pdp-08.webp",
+      "https://xbtabpurfavngwmwtawc.supabase.co/storage/v1/object/public/products/drop-02/classic-cognac-satchel-pdp-09.webp"
     ],
     "category": "Satchel",
     "status": "available",
@@ -582,8 +587,8 @@ export const STATIC_PRODUCTS: Product[] = [
       "https://xbtabpurfavngwmwtawc.supabase.co/storage/v1/object/public/products/drop-02/medina-duffle-pdp-02.webp"
     ],
     "category": "Duffle",
-    "status": "available",
-    "featured": true,
+    "status": "reserved",
+    "featured": false,
     "materials": [
       "Full-grain Moroccan leather",
       "Solid brass zipper and hardware",

@@ -29,6 +29,9 @@ export const HIDDEN_SKUS: ReadonlySet<string> = new Set([
   "marrakech-tote-bordeaux",
   "marrakech-tote-noir",
   "medina-crossbody-tassel",
+  // Duplicate/scope suppression: the patterned leather + textile duffle belongs
+  // to the Kilim family, so keep this duplicate commercial SKU off launch.
+  "medina-duffle",
 
   // Group B — only macro shots in Storage, no canonical hero. Macros are
   // gallery-only per Turbo's convention; audit rejects them as images[0].

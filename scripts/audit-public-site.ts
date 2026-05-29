@@ -21,6 +21,7 @@ const HIDDEN_PRODUCT_ROUTES = [
   "/products/marrakech-tote-bordeaux",
   "/products/marrakech-tote-noir",
   "/products/medina-crossbody-tassel",
+  "/products/medina-duffle",
   "/products/explorer-rolltop-noir",
 ];
 
@@ -39,6 +40,7 @@ const BAD_PUBLIC_PATTERNS = [
   /marrakech-tote-bordeaux/i,
   /marrakech-tote-noir/i,
   /medina-crossbody-tassel/i,
+  /medina-duffle/i,
   /explorer-rolltop-noir/i,
   /jacket|outerwear|clothes|clothing|wearables/i,
   /Tannerie Chouara/i,

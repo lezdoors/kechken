@@ -22,7 +22,6 @@ const NEEDS_FINISHED_HF_EXPORT = new Set([
 
 const LIVE_GALLERY_ACCEPTABLE = new Set([
   "black-stitched-backpack",
-  "classic-cognac-satchel",
 ]);
 
 type FolderEvidence = {
