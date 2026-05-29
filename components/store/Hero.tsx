@@ -6,30 +6,23 @@ import Link from "next/link";
 import { useLocalizedHref, useT } from "@/lib/i18n-client";
 
 // Mixed-media hero rotation. Photos hold for ~6s each, videos play in full.
-// Sequence opens warm (Mediterranean woman), goes through Maison casting,
-// then to the two-clip cinematic (Dunes → Paris). Loops back to slide 0.
-//
-// Six narrative beats:
-//  0. photo — Mediterranean woman, luxury maison register
-//  1. photo — French chestnut-hair, Catherine Deneuve-tier
-//  2. photo — Tall Black woman in cream caftan
-//  3. video — Dunes (Marrakech, warm, ends on leather macro)
-//  4. video — Paris cobblestone (cool, model with bag)
-//  5. photo — Black man in noir leather, Pelermo register
+// Sequence opens cinematic, then moves through model-led editorial stills.
 
 type Photo = { kind: "photo"; src: string; alt: string; objectPos?: string };
-type Video = { kind: "video"; src: string; alt: string };
+type Video = { kind: "video"; src: string; alt: string; poster: string };
 type Slide = Photo | Video;
 
 const SLIDES: Slide[] = [
   {
     kind: "video",
     src: "/videos/hero-cinematic-1-dunes.mp4",
+    poster: "/brand/editorial/cinematic-bag-still.webp",
     alt: "Cognac bag on Marrakech dunes, golden hour",
   },
   {
     kind: "video",
     src: "/videos/hero-cinematic-2-paris.mp4",
+    poster: "/brand/editorial/model-paris-night.webp",
     alt: "Model with bag walking Parisian cobblestones at blue hour",
   },
   {
@@ -55,11 +48,21 @@ export default function Hero() {
   const t = useT();
   const href = useLocalizedHref();
   const [idx, setIdx] = useState(0);
+  const [reducedMotion, setReducedMotion] = useState<boolean | null>(null);
   const videoRefs = useRef<(HTMLVideoElement | null)[]>([]);
   const timer = useRef<number | null>(null);
 
+  useEffect(() => {
+    const mediaQuery = window.matchMedia("(prefers-reduced-motion: reduce)");
+    const updateReducedMotion = () => setReducedMotion(mediaQuery.matches);
+    updateReducedMotion();
+    mediaQuery.addEventListener("change", updateReducedMotion);
+    return () => mediaQuery.removeEventListener("change", updateReducedMotion);
+  }, []);
+
   // Advance based on slide type — photos use a timer, videos use 'ended'.
   useEffect(() => {
+    if (reducedMotion !== false) return;
     const slide = SLIDES[idx];
     if (slide.kind === "photo") {
       timer.current = window.setTimeout(
@@ -86,7 +89,7 @@ export default function Hero() {
         if (timer.current) window.clearTimeout(timer.current);
       };
     }
-  }, [idx]);
+  }, [idx, reducedMotion]);
 
   return (
     <section
@@ -125,7 +128,8 @@ export default function Hero() {
                 }}
                 className="absolute inset-0 w-full h-full object-cover"
                 src={s.src}
-                preload="auto"
+                preload={i === idx ? "metadata" : "none"}
+                poster={s.poster}
                 playsInline
                 muted
                 aria-hidden
@@ -144,7 +148,7 @@ export default function Hero() {
       </div>
 
       {/* Headline block — bottom-left */}
-      <div className="relative z-10 flex min-h-[100svh] flex-col justify-end px-6 md:px-12 pb-14 md:pb-20">
+      <div className="relative z-10 flex min-h-[100svh] flex-col justify-end px-6 md:px-12 pb-36 sm:pb-28 md:pb-20">
         <div className="max-w-[1400px]">
           <p
             className="mb-8"
@@ -164,14 +168,17 @@ export default function Hero() {
               color: "#ffffff",
               fontFamily: "var(--font-display)",
               fontWeight: 400,
-              fontSize: "clamp(56px, 10vw, 160px)",
+              fontSize: "clamp(40px, 10.5vw, 160px)",
               letterSpacing: "-0.02em",
               lineHeight: 0.95,
               margin: 0,
               textWrap: "balance",
             }}
           >
-            Maison Tanneurs<span style={{ opacity: 0.45 }}>.</span>
+            Maison
+            <br className="sm:hidden" />
+            <span className="hidden sm:inline"> </span>
+            Tanneurs<span style={{ opacity: 0.45 }}>.</span>
           </h1>
 
           <p
@@ -196,7 +203,7 @@ export default function Hero() {
               style={{
                 background: "#ffffff",
                 color: "var(--color-ink)",
-                borderRadius: "999px",
+                borderRadius: 0,
                 padding: "16px 32px",
                 fontFamily: "var(--font-sans)",
                 fontSize: "13px",

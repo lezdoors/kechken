@@ -1,6 +1,6 @@
 # Maison Tanneurs
 
-Hand-stitched leather wearables from a small Marrakech atelier. Full-grain leather, solid brass hardware, contrast saddle-stitch. Ready to ship from Morocco via DHL or FedEx — 3–5 days worldwide.
+Hand-stitched leather bags and small leather goods from a small Marrakech atelier. Full-grain leather, solid brass hardware, contrast saddle-stitch. Ready to ship from Morocco via DHL or FedEx — 3–5 days worldwide.
 
 Sister brand to **Maison Izem** (home & interior) and **Maison Chapuis** (ceramics, tagines, glassware), all under Akal Digital Services Ltd.
 
@@ -20,7 +20,7 @@ Site runs at http://localhost:3000.
 | Layer | Tech |
 |---|---|
 | Frontend | Next.js 16 App Router, React 19, Tailwind 4 |
-| Commerce | Stripe Payment Element (on-domain, no redirect) |
+| Commerce | Revolut Checkout / Acquiring |
 | Data | Supabase (Postgres + Storage) |
 | Email | Resend (transactional) |
 | Fulfillment | Direct ship from the Marrakech atelier via DHL / FedEx business accounts |
@@ -53,4 +53,4 @@ Maison Tanneurs sits alongside two sister brands under Akal Digital Services Ltd
 - **Maison Chapuis** — Ceramics, tagines, glassware, Berber textiles. [maison-chapuis.com](https://maison-chapuis.com)
 - **Maison Tanneurs** — Hand-stitched leather. *(this repo)*
 
-Each brand operates under its own forming entity with its own bank + Stripe acquirer per the Akal blast-radius isolation strategy.
+Each brand operates under its own forming entity with its own bank + payment acquirer per the Akal blast-radius isolation strategy.

@@ -1,5 +1,21 @@
 @import "tailwindcss";
 
+@font-face {
+  font-family: "Switzer";
+  src: url("/fonts/switzer/Switzer-Variable.woff2") format("woff2");
+  font-weight: 100 900;
+  font-style: normal;
+  font-display: swap;
+}
+
+@font-face {
+  font-family: "Switzer";
+  src: url("/fonts/switzer/Switzer-VariableItalic.woff2") format("woff2");
+  font-weight: 100 900;
+  font-style: italic;
+  font-display: swap;
+}
+
 @theme {
   /* ============================================================
      MAISON TANNEURS · Moroccan luxury × Parisian quiet
@@ -14,7 +30,7 @@
   --color-paper: #ffffff;          /* default page bg — Maison Tanneurs pure white */
   --color-paper-alt: #ebe9e4;      /* alt section bg, warm stone */
   --color-paper-soft: #e2dfd8;     /* subtle bands */
-  --color-plate: #ffffff;          /* product tile plate — match studio product exports */
+  --color-plate: #f8f7f4;          /* product tile plate — quiet warm-white studio surface */
   --color-near-black: #2c2a28;     /* warm charcoal — primary type (never pure black) */
   --color-warm-black: #1f1d1b;     /* warm dark for hero zones + footer */
   --color-warm-black-soft: #2c2a28;
@@ -650,11 +666,40 @@ button { font: inherit; color: inherit; background: none; border: 0; cursor: poi
 .ed-card:hover .ed-card-img,
 .rb-product-card:hover .rb-card-img { transform: scale(1.05); }
 
-/* Trim 1px-ish dark fringes present on some source exports (Supabase files)
-   without changing composition noticeably. */
-.mt-product-img-trim {
-  transform: none;
+/* Maison Tanneurs product-image contract:
+   every listing/PDP frame uses the same warm-white plate, inner breathing
+   room, and contain-first composition so raw source dimensions cannot make
+   the storefront feel accidental. */
+.mt-product-frame {
+  position: relative;
+  overflow: hidden;
+  background: #ffffff;
+  border: 0;
 }
+
+.mt-product-frame::after {
+  content: none;
+}
+
+.mt-product-frame--hero {
+  background: #ffffff;
+}
+
+.mt-product-img-standard {
+  padding: clamp(18px, 5.5%, 38px);
+  object-position: center center;
+  transform: scale(1.035);
+  transition: transform 900ms var(--ease);
+}
+
+.group:hover .mt-product-img-standard {
+  transform: scale(1.045);
+}
+
+.mt-product-img-edge-trim {
+  clip-path: inset(2px 10px 10px 2px);
+}
+
 .rb-scroll-x { scrollbar-width: none; -ms-overflow-style: none; }
 .rb-scroll-x::-webkit-scrollbar { display: none; }
 .rb-promo-wordmark {

@@ -17,7 +17,7 @@ const resend = new Resend(key);
 
 async function main() {
   const { data, error } = await resend.emails.send({
-    from: "Kechken <orders@maisontanneurs.com>",
+    from: "Maison Tanneurs <orders@maisontanneurs.com>",
     to: "haddaoui.ops@outlook.com",
     subject: "Resend sanity test — production config live",
     html: `

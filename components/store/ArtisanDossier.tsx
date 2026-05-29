@@ -4,7 +4,7 @@ type Spec = { k: string; v: string; note?: string };
 
 const SPECS: Spec[] = [
   { k: "07", v: "Dedicated Artisans", note: "Master tanners & stitchers" },
-  { k: "Sourcing", v: "Marrakech Medina", note: "Tannerie Chouara — 16th c." },
+  { k: "Sourcing", v: "Morocco", note: "Fez tanning heritage · Marrakech atelier" },
   { k: "Method", v: "Vegetable-Tanned", note: "Mimosa & oak bark, 21-day vats" },
   { k: "Material", v: "100% Bovine", note: "Full-grain, single-origin hides" },
   { k: "Cycle", v: "14 Days / Object", note: "From hide to final stitch" },
@@ -36,7 +36,7 @@ export default function ArtisanDossier() {
             </h2>
           </div>
           <span className="tech-meta opacity-70 hidden md:inline">
-            Dossier — Filed 03.2026
+            Dossier — Marrakech Atelier
           </span>
         </div>
       </div>
@@ -60,8 +60,8 @@ export default function ArtisanDossier() {
               style={{ fontSize: "14px", letterSpacing: "-0.01em", maxWidth: "62ch" }}
             >
               Every object is the cumulative record of fourteen days, seven hands,
-              and one Medina. We do not scale. We do not season. We file the
-              dossier, then we build.
+              and one atelier. We do not scale the run. We do not outsource the
+              finish. We file the dossier, then we build.
             </p>
 
             <div className="mt-10 border-t border-[#e5e5e5] pt-6">
@@ -78,7 +78,7 @@ export default function ArtisanDossier() {
                 />
               </div>
               <p className="mt-3 tech-meta opacity-60">
-                Plate 01 — Tannerie Chouara, Marrakech.
+                Plate 01 — Moroccan leatherwork, finished in Marrakech.
               </p>
             </div>
           </div>
@@ -124,7 +124,7 @@ export default function ArtisanDossier() {
               >
                 Y. Berrada — Atelier Director
                 <br />
-                <span className="opacity-60">Marrakech, MA</span>
+                <span className="opacity-60">Marrakech, Morocco</span>
               </p>
             </div>
             <div className="col-span-12 md:col-span-7 flex md:justify-end items-end">

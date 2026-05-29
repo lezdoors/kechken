@@ -12,13 +12,14 @@ export default function InTheirHands() {
   useEffect(() => {
     const el = ref.current;
     if (!el) return;
+    const mediaQuery = window.matchMedia("(prefers-reduced-motion: reduce)");
     el.muted = true;
     el.playsInline = true;
     el.loop = true;
     const tryPlay = () => {
+      if (mediaQuery.matches) return;
       el.play().catch(() => undefined);
     };
-    tryPlay();
     const io = new IntersectionObserver(
       (entries) => {
         for (const e of entries) {
@@ -29,7 +30,15 @@ export default function InTheirHands() {
       { threshold: 0.25 },
     );
     io.observe(el);
-    return () => io.disconnect();
+    const onMotionChange = () => {
+      if (mediaQuery.matches) el.pause();
+      else if (el.getBoundingClientRect().top < window.innerHeight) tryPlay();
+    };
+    mediaQuery.addEventListener("change", onMotionChange);
+    return () => {
+      io.disconnect();
+      mediaQuery.removeEventListener("change", onMotionChange);
+    };
   }, []);
 
   return (
@@ -84,7 +93,7 @@ export default function InTheirHands() {
           </p>
 
           <ul className="mt-10 divide-y divide-[#e5e5e5] border-y border-[#e5e5e5]">
-            <Row k="Filmed" v="Marrakech Medina · 04.2026" />
+            <Row k="Filmed" v="Marrakech Medina · atelier record" />
             <Row k="Format" v="Phone · 9:16 · 60fps · No Audio" />
             <Row k="Subjects" v="3 of our 7 artisans" />
             <Row k="Edits" v="None" />
@@ -116,7 +125,7 @@ export default function InTheirHands() {
             <video
               ref={ref}
               className="absolute inset-0 w-full h-full object-cover"
-              preload="metadata"
+              preload="none"
               poster={POSTER}
               aria-hidden
             >

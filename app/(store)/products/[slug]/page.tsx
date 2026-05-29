@@ -5,6 +5,7 @@ import { createServerSupabase } from "@/lib/supabase/server";
 import { Product } from "@/lib/supabase/types";
 import { STATIC_PRODUCTS } from "@/lib/products";
 import { HIDDEN_SKUS, HIDDEN_SKUS_ARRAY } from "@/lib/hidden-skus";
+import { normalizeProductFamilies, withProductFamily } from "@/lib/product-taxonomy";
 import { formatPrice } from "@/lib/utils";
 import ProductGallery from "@/components/product/ProductGallery";
 import ProductDetails from "@/components/product/ProductDetails";
@@ -25,18 +26,19 @@ async function getProduct(slug: string): Promise<Product | null> {
         .eq("status", "available")
         .single();
 
-      if (!error && data) return data as Product;
+      if (!error && data) return withProductFamily(data as Product);
     }
   } catch {
     // Supabase unavailable
   }
 
   // Fallback to static
-  return (
+  const fallback =
     STATIC_PRODUCTS.find(
       (p) => p.slug === slug && p.status === "available" && !HIDDEN_SKUS.has(p.slug),
-    ) || null
-  );
+    ) || null;
+
+  return fallback ? withProductFamily(fallback as Product) : null;
 }
 
 async function getRelatedProducts(
@@ -52,20 +54,23 @@ async function getRelatedProducts(
         .from("products")
         .select("*")
         .eq("status", "available")
-        .eq("category", category)
         .neq("slug", excludeSlug)
         .not("slug", "in", hiddenList)
         .order("created_at", { ascending: false })
-        .limit(3);
+        .limit(24);
 
-      if (!error && data && data.length > 0) return data as Product[];
+      if (!error && data && data.length > 0) {
+        return normalizeProductFamilies(data as Product[])
+          .filter((p) => p.category === category)
+          .slice(0, 3);
+      }
     }
   } catch {
     // Supabase unavailable
   }
 
   // Fallback to static
-  return STATIC_PRODUCTS.filter(
+  return normalizeProductFamilies(STATIC_PRODUCTS as Product[]).filter(
     (p) =>
       p.category === category &&
       p.slug !== excludeSlug &&
@@ -92,9 +97,13 @@ export async function generateMetadata({
     description:
       product.description ||
       `${product.title}. Handcrafted in Marrakech. ${formatPrice(product.price)}.`,
+    alternates: {
+      canonical: `/products/${product.slug}`,
+    },
     openGraph: {
       title: product.title,
       description: product.description || `${product.title}. Handcrafted in Marrakech.`,
+      url: `/products/${product.slug}`,
       images: product.images?.[0] ? [product.images[0]] : [],
     },
   };
@@ -153,7 +162,7 @@ export default async function ProductPage({
         {JSON.stringify(productLd)}
       </Script>
       {/* Product layout: gallery + details */}
-      <div className="grid grid-cols-1 lg:grid-cols-[1.15fr_1fr] pt-[120px]">
+      <div className="grid grid-cols-1 lg:grid-cols-[1.15fr_1fr] pt-[clamp(88px,10vw,116px)]">
         {/* Gallery — left */}
         <ProductGallery images={product.images} title={product.title} />
 

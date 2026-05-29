@@ -94,7 +94,7 @@ export default function ProductDetails({ product }: ProductDetailsProps) {
             </Link>
             <span className="mx-2">/</span>
             <Link
-              href={href(`/products?category=${product.category.toLowerCase()}`)}
+              href={href(`/products?category=${encodeURIComponent(product.category.toLowerCase())}`)}
               className="hover:text-graphite transition-colors"
             >
               {product.category}
@@ -256,6 +256,8 @@ export default function ProductDetails({ product }: ProductDetailsProps) {
             ? "opacity-100 translate-y-0 pointer-events-auto"
             : "opacity-0 translate-y-2 pointer-events-none"
         }`}
+        aria-hidden={!justAdded}
+        inert={!justAdded}
       >
         <button
           type="button"

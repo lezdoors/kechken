@@ -8,6 +8,12 @@
     "start": "next start",
     "lint": "eslint",
     "audit:catalogue": "tsx scripts/audit-catalogue.ts",
+    "audit:sources": "tsx scripts/audit-product-source-folders.ts",
+    "audit:public": "tsx scripts/audit-public-site.ts",
+    "audit:links": "tsx scripts/audit-public-links.ts",
+    "audit:launch": "tsx scripts/audit-launch-readiness.ts",
+    "audit:media": "tsx scripts/audit-media-sources.ts",
+    "audit:drive-sets": "tsx scripts/audit-drive-product-sets.ts",
     "prebuild": "tsx scripts/audit-catalogue.ts"
   },
   "dependencies": {

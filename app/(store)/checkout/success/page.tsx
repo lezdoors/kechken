@@ -66,7 +66,7 @@ export default async function CheckoutSuccessPage({
   }
 
   const items = parseItemsFromMetadata(order.metadata);
-  let customerName = order.customer?.full_name || "Friend";
+  let customerName = order.customer?.full_name || "";
   let customerEmail = order.customer?.email || "";
   const total = order.amount;
 

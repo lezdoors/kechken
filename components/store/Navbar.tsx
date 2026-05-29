@@ -2,19 +2,20 @@
 
 import { useEffect, useRef, useState } from "react";
 import Link from "next/link";
-import { useRouter } from "next/navigation";
+import { usePathname, useRouter } from "next/navigation";
 import { useCart } from "@/components/store/CartProvider";
 import { LOCALES, LOCALE_LABELS } from "@/lib/i18n";
 import { useLocale, useLocalizedHref, useSwitchLocaleHref, useT } from "@/lib/i18n-client";
 
 const NAV_LEFT = [
   { labelKey: "nav.collection", href: "/products" },
-  { labelKey: "nav.atelier", href: "/about" },
-  { labelKey: "nav.care", href: "/legal/care" },
+  { labelKey: "nav.savoirFaire", href: "/about#atelier" },
+  { labelKey: "nav.contact", href: "/contact" },
 ];
 
 export default function Navbar() {
   const router = useRouter();
+  const pathname = usePathname();
   const locale = useLocale();
   const t = useT();
   const href = useLocalizedHref();
@@ -24,8 +25,14 @@ export default function Navbar() {
   const [searchValue, setSearchValue] = useState("");
   const [drawer, setDrawer] = useState(false);
   const [cartPulse, setCartPulse] = useState(false);
+  const [scrolled, setScrolled] = useState(false);
   const cartCount = items.reduce((s, i) => s + i.quantity, 0);
   const prevCartCountRef = useRef(cartCount);
+  const isHome = pathname === "/" || LOCALES.some((l) => pathname === `/${l}`);
+  const onHero = isHome && !scrolled && !drawer && !searchOpen;
+  const navInk = onHero ? "text-white" : "text-[#0f0f0f]";
+  const navMuted = onHero ? "text-white/72" : "text-[#0f0f0f]/70";
+  const navRule = onHero ? "border-white/20" : "border-[#e5e5e5]";
 
   useEffect(() => {
     if (!drawer) return;
@@ -35,6 +42,23 @@ export default function Navbar() {
     window.addEventListener("keydown", onKey);
     return () => window.removeEventListener("keydown", onKey);
   }, [drawer]);
+
+  useEffect(() => {
+    const update = () => setScrolled(window.scrollY > 32 || window.location.hash.length > 0);
+    update();
+    const raf = window.requestAnimationFrame(update);
+    const timer = window.setTimeout(update, 250);
+    window.addEventListener("scroll", update, { passive: true });
+    window.addEventListener("resize", update, { passive: true });
+    window.addEventListener("hashchange", update);
+    return () => {
+      window.cancelAnimationFrame(raf);
+      window.clearTimeout(timer);
+      window.removeEventListener("scroll", update);
+      window.removeEventListener("resize", update);
+      window.removeEventListener("hashchange", update);
+    };
+  }, []);
 
   useEffect(() => {
     if (cartCount <= prevCartCountRef.current) {
@@ -57,8 +81,12 @@ export default function Navbar() {
   }
 
   return (
-    <header className="sticky top-0 z-50 w-full bg-white border-b border-[#e5e5e5]">
-      <div className="hidden md:flex h-7 items-center justify-between px-6 border-b border-[#e5e5e5] text-[#0f0f0f]/70">
+    <header
+      className={`fixed top-0 z-50 w-full border-b transition-colors duration-500 ${
+        onHero ? "bg-transparent text-white border-white/20" : "bg-white/95 text-[#0f0f0f] border-[#e5e5e5] backdrop-blur"
+      }`}
+    >
+      <div className={`hidden md:flex h-7 items-center justify-between px-6 border-b ${navRule} ${navMuted}`}>
         <span className="tech-meta">{t("nav.shipping")}</span>
         <span className="tech-meta flex items-center gap-2" aria-label="Language selector">
           {LOCALES.map((l, i) => (
@@ -67,7 +95,7 @@ export default function Navbar() {
               <Link
                 href={switchLocaleHref(l)}
                 hrefLang={l}
-                className={l === locale ? "text-[#0f0f0f]" : "hover:text-[#0f0f0f]"}
+                className={l === locale ? navInk : "hover:opacity-70"}
                 aria-current={l === locale ? "true" : undefined}
               >
                 {LOCALE_LABELS[l]}
@@ -78,14 +106,14 @@ export default function Navbar() {
         <span className="tech-meta">{t("nav.edition")}</span>
       </div>
 
-      <div className="grid grid-cols-3 items-center h-14 px-5 md:px-6">
+      <div className={`grid grid-cols-3 items-center px-5 md:px-6 transition-[height] duration-500 ${scrolled ? "h-12" : "h-14"}`}>
         <nav className="flex items-center gap-5 md:gap-8">
           <button
             type="button"
             onClick={() => setDrawer((v) => !v)}
             aria-label="Open menu"
             aria-expanded={drawer}
-            className="md:hidden inline-flex items-center text-[#0f0f0f]"
+            className={`md:hidden inline-flex items-center ${navInk}`}
           >
             <svg
               width="22"
@@ -103,13 +131,13 @@ export default function Navbar() {
           <Link
             href={href("/")}
             aria-label="Maison Tanneurs"
-            className="flex h-9 w-9 items-center justify-center"
+            className="hidden md:flex h-9 w-9 items-center justify-center"
           >
             <img
               src="/brand/logos/mt-monogram.png"
               alt=""
               aria-hidden="true"
-              className="h-8 w-8 object-contain"
+              className={`h-8 w-8 object-contain transition-[filter] duration-500 ${onHero ? "invert" : ""}`}
               width={32}
               height={32}
             />
@@ -120,7 +148,7 @@ export default function Navbar() {
               <Link
                 key={l.labelKey}
                 href={href(l.href)}
-                className="tech-label hover:opacity-60"
+              className="tech-label hover:opacity-60"
               >
                 {t(l.labelKey)}
               </Link>
@@ -136,7 +164,7 @@ export default function Navbar() {
             style={{
               fontFamily: "var(--font-sans)",
               fontSize: "clamp(14px, 1.4vw, 18px)",
-              letterSpacing: "0.34em",
+              letterSpacing: "clamp(0.2em, 1vw, 0.34em)",
             }}
           >
             MAISON&nbsp;&nbsp;TANNEURS
@@ -160,9 +188,9 @@ export default function Navbar() {
           >
             <span>{t("nav.bag")}</span>
             <span
-              className={`inline-flex min-w-5 h-5 px-1.5 items-center justify-center rounded-full border border-[#0f0f0f]/15 text-[10px] leading-none transition-transform duration-200 ${
+              className={`inline-flex min-w-5 h-5 px-1.5 items-center justify-center rounded-full border text-[10px] leading-none transition-transform duration-200 ${
                 cartPulse ? "scale-110" : "scale-100"
-              } ${cartCount > 0 ? "bg-[#0f0f0f] text-white" : "bg-white text-[#0f0f0f]"}`}
+              } ${cartCount > 0 ? "bg-[#0f0f0f] text-white border-[#0f0f0f]" : onHero ? "bg-white/10 text-white border-white/35" : "bg-white text-[#0f0f0f] border-[#0f0f0f]/15"}`}
             >
               {cartCount}
             </span>

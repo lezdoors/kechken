@@ -4,6 +4,8 @@ import { createServerSupabase } from "@/lib/supabase/server";
 import { STATIC_PRODUCTS, mergeWithStatic } from "@/lib/products";
 import { HIDDEN_SKUS, HIDDEN_SKUS_ARRAY } from "@/lib/hidden-skus";
 import { bust } from "@/lib/image-url";
+import { productImageClass } from "@/lib/product-image-presentation";
+import { curateLandingProducts, productListImage } from "@/lib/landing-product-curation";
 import type { Product } from "@/lib/supabase/types";
 
 // Polène / Les-Tanneurs-v2 register: stripped product cells, no borders, no
@@ -12,18 +14,18 @@ import type { Product } from "@/lib/supabase/types";
 // (120px row-gap), 4:5 portrait frames, F5F5F5 plate.
 
 const GRID_LIMIT = 6;
-// Skip the newest-featured slug — it's already showcased above by
-// ObjectOfTheEdition, so re-rendering it here is the duplicate the user
-// flagged. Fetch one extra so we still get GRID_LIMIT cells after the drop.
-const FETCH_LIMIT = GRID_LIMIT + 1;
+const FETCH_LIMIT = 24;
 
 async function loadCurrentEdition(): Promise<Product[]> {
   try {
     const supabase = await createServerSupabase();
     if (!supabase) {
-      return (STATIC_PRODUCTS as Product[])
-        .filter((p) => !HIDDEN_SKUS.has(p.slug) && p.status === "available")
-        .slice(1, FETCH_LIMIT);
+      return curateLandingProducts(
+        (STATIC_PRODUCTS as Product[]).filter(
+          (p) => !HIDDEN_SKUS.has(p.slug) && p.status === "available",
+        ),
+        GRID_LIMIT,
+      );
     }
     const hiddenList = `(${HIDDEN_SKUS_ARRAY.join(",")})`;
     const { data, error } = await supabase
@@ -35,19 +37,24 @@ async function loadCurrentEdition(): Promise<Product[]> {
       .order("created_at", { ascending: false })
       .limit(FETCH_LIMIT);
     if (error || !data || data.length === 0) {
-      return (STATIC_PRODUCTS as Product[])
-        .filter((p) => !HIDDEN_SKUS.has(p.slug) && p.status === "available")
-        .slice(1, FETCH_LIMIT);
+      return curateLandingProducts(
+        (STATIC_PRODUCTS as Product[]).filter(
+          (p) => !HIDDEN_SKUS.has(p.slug) && p.status === "available",
+        ),
+        GRID_LIMIT,
+      );
     }
     const merged = mergeWithStatic(data as Product[]).filter(
       (p) => !HIDDEN_SKUS.has(p.slug) && p.status === "available",
     );
-    // Drop slot 0 (= the ObjectOfTheEdition feature), keep next GRID_LIMIT.
-    return merged.slice(1, FETCH_LIMIT);
+    return curateLandingProducts(merged, GRID_LIMIT);
   } catch {
-    return (STATIC_PRODUCTS as Product[])
-      .filter((p) => !HIDDEN_SKUS.has(p.slug) && p.status === "available")
-      .slice(1, FETCH_LIMIT);
+    return curateLandingProducts(
+      (STATIC_PRODUCTS as Product[]).filter(
+        (p) => !HIDDEN_SKUS.has(p.slug) && p.status === "available",
+      ),
+      GRID_LIMIT,
+    );
   }
 }
 
@@ -118,7 +125,7 @@ export default async function ArchitecturalGrid() {
         style={{
           padding: "40px clamp(24px,8vw,80px) clamp(120px,16vw,200px)",
           columnGap: "clamp(40px, 6vw, 90px)",
-          rowGap: "clamp(80px, 10vw, 120px)",
+          rowGap: "clamp(58px, 8vw, 96px)",
         }}
       >
         {products.map((p, i) => (
@@ -149,7 +156,7 @@ export default async function ArchitecturalGrid() {
 }
 
 function ProductCell({ product, index }: { product: Product; index: number }) {
-  const hero = product.images?.[0];
+  const hero = productListImage(product);
   const color = colorFor(product);
 
   return (
@@ -157,11 +164,10 @@ function ProductCell({ product, index }: { product: Product; index: number }) {
       href={`/products/${product.slug}`}
       className="group block cursor-pointer"
     >
-      {/* Frame — pure-white plate, 4:5 portrait, sharp corners, no chrome */}
+      {/* Frame — consistent product plate, 4:5 portrait, sharp corners. */}
       <div
-        className="relative overflow-hidden"
+        className="mt-product-frame relative"
         style={{
-          background: "var(--color-plate)",
           aspectRatio: "4 / 5",
         }}
       >
@@ -171,7 +177,7 @@ function ProductCell({ product, index }: { product: Product; index: number }) {
             alt={product.title}
             fill
             sizes="(min-width: 1024px) 33vw, (min-width: 640px) 50vw, 100vw"
-            className="object-contain p-0 mt-product-img-trim transition-transform duration-[1200ms]"
+            className={productImageClass(hero)}
             style={{
               transitionTimingFunction: "cubic-bezier(0.22, 1, 0.36, 1)",
             }}

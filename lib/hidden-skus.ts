@@ -19,7 +19,8 @@ export const HIDDEN_SKUS: ReadonlySet<string> = new Set([
   "test-e2e",
 
   // Kept hidden because Storage has no canonical hero (pdp-white / scale /
-  // pdp-hero / scale-hero). To bring online: generate HF Shots, upload to
+  // pdp-hero / scale-hero). To bring online: first find/download the finished
+  // HF/Drive product set; generate only after visual search fails. Upload to
   // drop-02/<slug>-pdp-white.webp, re-run the manifest builder
   // (scripts/build-images-manifest.py), then remove the slug from this set.
   // See docs/PRODUCT-IMAGES-MANIFEST.md for canonical inventory.

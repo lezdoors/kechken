@@ -1,599 +1,839 @@
 import { Product } from "@/lib/supabase/types";
 
-// Fallback catalogue when Supabase is unreachable. Mirror of the live
-// products table — keep in sync with supabase/migrations/*.sql seeds.
-// Hidden SKUs (featured=false) stay accessible by slug but never list.
+// Offline/static fallback for local QA, feeds, and checkout validation when
+// Supabase environment variables are absent. This mirrors the visible live
+// storefront catalogue scraped from maisontanneurs.com on 2026-05-28.
 //
-// File-naming canon (enforced by scripts/audit-catalogue.ts):
-//   <slug>-scale.webp       ← lifestyle hero (position [0] if present)
-//   <slug>-pdp-white.webp   ← cyclorama hero (position [0] fallback)
-//   <slug>-archive-N.webp   ← supplier raws, gallery, alts (position [2+])
-
-const STORAGE = "https://xbtabpurfavngwmwtawc.supabase.co/storage/v1/object/public/products/drop-01";
+// Production listings still come from Supabase. Do not add draft/test SKUs
+// here unless they should be visible in local storefront fallback mode.
 
 export const STATIC_PRODUCTS: Product[] = [
   {
-    id: "1",
-    title: "Heritage Rucksack",
-    slug: "heritage-rucksack",
-    price: 32500,
-    images: [
-      "/products/heritage-rucksack/heritage-rucksack-pdp-white.webp",
-      `${STORAGE}/heritage-rucksack-scale.webp`,
-      `${STORAGE}/heritage-rucksack-archive-1.webp`,
+    "id": "static-01-atlas-briefcase-vintage",
+    "title": "Atlas Briefcase · Vintage",
+    "slug": "atlas-briefcase-vintage",
+    "price": 38500,
+    "images": [
+      "https://xbtabpurfavngwmwtawc.supabase.co/storage/v1/object/public/products/drop-02/atlas-briefcase-vintage-pdp-white.webp",
+      "https://xbtabpurfavngwmwtawc.supabase.co/storage/v1/object/public/products/drop-02/atlas-briefcase-vintage-scale.webp"
     ],
-    category: "Backpack",
-    status: "available",
-    featured: true,
-    materials: ["Full-grain Moroccan leather", "Solid brass hardware", "Hand-stitched in Marrakech"],
-    dimensions: { size: "45cm × 32cm × 18cm · multi-pocket" },
-    description:
-      "Full-grain cognac leather rucksack with three buckled exterior pockets and a roll-top main compartment. Hand-stitched and brass-fitted by Marrakech leather artisans. Patinas with wear.",
-    available_quantity: 30,
-    weight_lbs: 3,
-    craftsman_id: null,
-    created_at: "",
-    updated_at: "",
-  },
-  {
-    id: "2",
-    title: "Roll-Top Daypack",
-    slug: "rolltop-daypack",
-    price: 24500,
-    // Original heroes (supplier-pile + souk-worn raws) failed the catalogue
-    // audit. Demoted to `reserved` with no images until clean white-bg
-    // PDP + scale shots land via HF. The audit skips reserved+zero-images
-    // SKUs by design. Re-publish by flipping back to "available" with a
-    // real images[] once -pdp-white.webp + -scale.webp arrive.
-    images: [],
-    category: "Backpack",
-    status: "reserved",
-    featured: false,
-    materials: ["Full-grain Moroccan leather", "Solid brass hardware", "Hand-stitched in Marrakech"],
-    dimensions: { size: "42cm × 30cm × 14cm · single-pocket" },
-    description:
-      "Cleaner cousin to the Heritage Rucksack. Single front pocket, X-strap closure, soft Moroccan tan leather that softens into the body with use. Built for daily carry.",
-    available_quantity: 30,
-    weight_lbs: 2.5,
-    craftsman_id: null,
-    created_at: "",
-    updated_at: "",
-  },
-  {
-    id: "3",
-    title: "Black Stitched Backpack",
-    slug: "black-stitched-backpack",
-    price: 24500,
-    images: [
-      `${STORAGE}/black-stitched-backpack-pdp-white.webp`,
-      `${STORAGE}/black-stitched-backpack-archive-1.webp`,
-      `${STORAGE}/black-stitched-backpack-archive-2.webp`,
-      `${STORAGE}/black-stitched-backpack-archive-3.webp`,
-      `${STORAGE}/black-stitched-backpack-archive-4.webp`,
-    ],
-    category: "Backpack",
-    status: "available",
-    featured: true,
-    materials: ["Full-grain Moroccan leather", "Cream contrast zigzag stitching", "Solid brass buckle", "Tan-finished interior", "Hand-stitched in Marrakech"],
-    dimensions: { size: "40cm × 28cm × 12cm · single-buckle flap" },
-    description:
-      "Boxy square-cut backpack in deep black full-grain leather, framed by a cream zigzag stitch border. Single brass buckle closure, internal zip pocket, dual adjustable shoulder straps. Editorial silhouette, daily-carry size.",
-    available_quantity: 20,
-    weight_lbs: 2.5,
-    craftsman_id: null,
-    created_at: "",
-    updated_at: "",
-  },
-  {
-    id: "4",
-    title: "Cognac Brogue Backpack",
-    slug: "cognac-brogue-backpack",
-    price: 26500,
-    images: [
-      `${STORAGE}/cognac-brogue-backpack-pdp-white.webp`,
-      `${STORAGE}/cognac-brogue-backpack-archive-1.webp`,
-      `${STORAGE}/cognac-brogue-backpack-archive-2.webp`,
-    ],
-    category: "Backpack",
-    status: "available",
-    featured: true,
-    materials: ["Full-grain Moroccan leather", "Brogue-style edge stitching", "Brass buckle hardware", "Hand-stitched in Marrakech"],
-    dimensions: { size: "38cm × 30cm × 12cm · single front pocket" },
-    description:
-      "Cognac full-grain backpack with brogue-style scallop stitching framing each panel. Long flap with single buckle, external front pocket, leather top handle plus adjustable shoulder straps. Patinas warm with wear.",
-    available_quantity: 20,
-    weight_lbs: 2.5,
-    craftsman_id: null,
-    created_at: "",
-    updated_at: "",
-  },
-  {
-    id: "5",
-    title: "Classic Cognac Satchel",
-    slug: "classic-cognac-satchel",
-    price: 28500,
-    images: [
-      `${STORAGE}/classic-cognac-satchel-pdp-white.webp`,
-      `${STORAGE}/classic-cognac-satchel-archive-1.webp`,
-      `${STORAGE}/classic-cognac-satchel-archive-2.webp`,
-      `${STORAGE}/classic-cognac-satchel-archive-3.webp`,
-    ],
-    category: "Satchel",
-    status: "available",
-    featured: true,
-    materials: ["Full-grain Moroccan leather", "Dual brass buckle closures", "Top carry handle + crossbody strap", "Cream contrast saddle-stitch", "Hand-stitched in Marrakech"],
-    dimensions: { size: "40cm × 30cm × 12cm · briefcase silhouette" },
-    description:
-      "Classic briefcase satchel in rich cognac full-grain leather. Dual brass buckle closures, sturdy top handle plus removable crossbody strap. Cream saddle-stitch edges throughout. Carries a 14\" laptop. Heirloom-grade.",
-    available_quantity: 20,
-    weight_lbs: 3,
-    craftsman_id: null,
-    created_at: "",
-    updated_at: "",
-  },
-  {
-    id: "6",
-    title: "Woven Leather Backpack",
-    slug: "woven-leather-backpack",
-    price: 29500,
-    images: [
-      `${STORAGE}/woven-leather-backpack-pdp-white.webp`,
-      `${STORAGE}/woven-leather-backpack-archive-1.webp`,
-    ],
-    category: "Backpack",
-    status: "available",
-    featured: true,
-    materials: ["Full-grain Moroccan leather", "Hand-woven leather panels", "Brass-finished buckle", "Drawstring closure", "Hand-stitched in Marrakech"],
-    dimensions: { size: "36cm × 28cm · drawstring + flap" },
-    description:
-      "Dark-chocolate full-grain leather woven by hand into a diamond lattice across the body and flap. Drawstring inner closure under the buckled flap. Smooth saddle leather base and shoulder straps. The most labour-intensive bag in the drop.",
-    available_quantity: 15,
-    weight_lbs: 2.5,
-    craftsman_id: null,
-    created_at: "",
-    updated_at: "",
-  },
-  {
-    id: "7",
-    title: "Vintage Buckle Backpack",
-    slug: "vintage-buckle-backpack",
-    price: 22500,
-    images: [
-      `${STORAGE}/vintage-buckle-backpack-pdp-white.webp`,
-      `${STORAGE}/vintage-buckle-backpack-archive-1.webp`,
-    ],
-    category: "Backpack",
-    status: "available",
-    featured: true,
-    materials: ["Full-grain Moroccan leather", "Aged brass hardware", "Three external pockets", "Drawstring inner closure", "Hand-stitched in Marrakech"],
-    dimensions: { size: "38cm × 30cm × 14cm · drawstring + 3 pockets" },
-    description:
-      "Safari-classic silhouette in cognac full-grain leather. Buckled flap over a drawstring inner closure, plus three exterior buckled pockets (one front, two side). Patinas to a deep tobacco with daily wear.",
-    available_quantity: 25,
-    weight_lbs: 2.5,
-    craftsman_id: null,
-    created_at: "",
-    updated_at: "",
-  },
-  {
-    id: "8",
-    title: "Atlas Kilim Duffle",
-    slug: "atlas-kilim-duffle",
-    price: 44500,
-    images: [
-      "/products/atlas-kilim-duffle/atlas-kilim-duffle-pdp-white.webp",
-    ],
-    category: "Weekender",
-    status: "available",
-    featured: true,
-    materials: [
+    "category": "Briefcase",
+    "status": "available",
+    "featured": true,
+    "materials": [
       "Full-grain Moroccan leather",
-      "Handwoven kilim wool panels (Atlas Mountains)",
-      "Solid antique brass middle strap buckle",
-      "Hand saddle-stitched in Marrakech",
+      "Solid brass hardware",
+      "Hand-finished in Marrakech"
     ],
-    dimensions: { size: "50cm × 28cm × 26cm · weekender with kilim panel inserts" },
-    description:
-      "Travel weekender in saddle cognac leather framing handwoven kilim wool panels sourced from Atlas weavers. Brass middle strap, dual rolled handles. The signature Morocco-meets-luxury anchor of the maison.",
-    available_quantity: 12,
-    weight_lbs: 3.5,
-    craftsman_id: null,
-    created_at: "",
-    updated_at: "",
+    "dimensions": {
+      "size": "See product page for current dimensions"
+    },
+    "description": "Vintage-register briefcase in deep cognac leather. Dual buckle closures, sturdy top handle, removable crossbody strap. Designed for daily commute with documents and a 14\" laptop.",
+    "available_quantity": 10,
+    "weight_lbs": null,
+    "craftsman_id": null,
+    "created_at": "",
+    "updated_at": ""
   },
   {
-    id: "9",
-    title: "Explorer Rolltop · Cognac",
-    slug: "explorer-rolltop-cognac",
-    price: 28500,
-    images: [
-      "/products/explorer-rolltop-cognac/explorer-rolltop-cognac-pdp-white.webp",
+    "id": "static-atlas-field-briefcase",
+    "title": "Atlas Field Briefcase",
+    "slug": "atlas-field-briefcase",
+    "price": 38500,
+    "images": [
+      "https://xbtabpurfavngwmwtawc.supabase.co/storage/v1/object/public/products/drop-02/atlas-field-briefcase-pdp-white.webp",
+      "https://xbtabpurfavngwmwtawc.supabase.co/storage/v1/object/public/products/drop-02/atlas-field-briefcase-pdp-01.webp",
+      "https://xbtabpurfavngwmwtawc.supabase.co/storage/v1/object/public/products/drop-02/atlas-field-briefcase-pdp-02.webp",
+      "https://xbtabpurfavngwmwtawc.supabase.co/storage/v1/object/public/products/drop-02/atlas-field-briefcase-pdp-03.webp",
+      "https://xbtabpurfavngwmwtawc.supabase.co/storage/v1/object/public/products/drop-02/atlas-field-briefcase-pdp-05.webp",
+      "https://xbtabpurfavngwmwtawc.supabase.co/storage/v1/object/public/products/drop-02/atlas-field-briefcase-pdp-06.webp",
+      "https://xbtabpurfavngwmwtawc.supabase.co/storage/v1/object/public/products/drop-02/atlas-field-briefcase-pdp-07.webp",
+      "https://xbtabpurfavngwmwtawc.supabase.co/storage/v1/object/public/products/drop-02/atlas-field-briefcase-pdp-08.webp",
+      "https://xbtabpurfavngwmwtawc.supabase.co/storage/v1/object/public/products/drop-02/atlas-field-briefcase-pdp-09.webp"
     ],
-    category: "Backpack",
-    status: "available",
-    featured: true,
-    materials: [
+    "category": "Briefcase",
+    "status": "available",
+    "featured": true,
+    "materials": [
       "Full-grain Moroccan leather",
-      "Solid antique brass center buckle",
-      "Brass YKK zip front panel",
-      "Adjustable dual shoulder straps",
-      "Hand saddle-stitched in Marrakech",
+      "Solid brass hardware",
+      "Hand-finished in Marrakech"
     ],
-    dimensions: { size: "44cm × 30cm × 16cm · rolltop with brass center buckle" },
-    description:
-      "Modern rolltop rucksack in deep saddle cognac. Brass center buckle closes a full-bleed roll-down panel; a brass zip pocket runs the vertical centerline. Patinas warm and softens at the corners with daily carry.",
-    available_quantity: 18,
-    weight_lbs: 2.5,
-    craftsman_id: null,
-    created_at: "",
-    updated_at: "",
+    "dimensions": {
+      "size": "See product page for current dimensions"
+    },
+    "description": "Utility briefcase in full-grain cognac leather with a wide flap, side buckle straps, twin front pockets, and a stitched top handle. Built for documents, travel, and daily carry with field-bag practicality.",
+    "available_quantity": 10,
+    "weight_lbs": null,
+    "craftsman_id": null,
+    "created_at": "",
+    "updated_at": ""
   },
   {
-    id: "10",
-    title: "Medina Envelope Crossbody",
-    slug: "medina-crossbody-envelope",
-    price: 18500,
-    images: [
-      "/products/medina-crossbody-envelope/medina-crossbody-envelope-pdp-white.webp",
+    "id": "static-02-atlas-kilim-duffle",
+    "title": "Atlas Kilim Duffle",
+    "slug": "atlas-kilim-duffle",
+    "price": 44500,
+    "images": [
+      "https://xbtabpurfavngwmwtawc.supabase.co/storage/v1/object/public/products/drop-02/atlas-kilim-duffle-pdp-white.webp",
+      "https://xbtabpurfavngwmwtawc.supabase.co/storage/v1/object/public/products/drop-02/atlas-kilim-duffle-pdp-04.webp",
+      "https://xbtabpurfavngwmwtawc.supabase.co/storage/v1/object/public/products/drop-02/atlas-kilim-duffle-pdp-05.webp",
+      "https://xbtabpurfavngwmwtawc.supabase.co/storage/v1/object/public/products/drop-02/atlas-kilim-duffle-pdp-06.webp",
+      "https://xbtabpurfavngwmwtawc.supabase.co/storage/v1/object/public/products/drop-02/atlas-kilim-duffle-pdp-07.webp",
+      "https://xbtabpurfavngwmwtawc.supabase.co/storage/v1/object/public/products/drop-02/atlas-kilim-duffle-pdp-08.webp",
+      "https://xbtabpurfavngwmwtawc.supabase.co/storage/v1/object/public/products/drop-02/atlas-kilim-duffle-pdp-09.webp",
+      "https://xbtabpurfavngwmwtawc.supabase.co/storage/v1/object/public/products/drop-02/atlas-kilim-duffle-pdp-01.webp",
+      "https://xbtabpurfavngwmwtawc.supabase.co/storage/v1/object/public/products/drop-02/atlas-kilim-duffle-pdp-02.webp"
     ],
-    category: "Crossbody",
-    status: "available",
-    featured: true,
-    materials: [
+    "category": "Duffle",
+    "status": "available",
+    "featured": true,
+    "materials": [
       "Full-grain Moroccan leather",
-      "Solid antique brass turn-lock",
-      "Adjustable shoulder strap",
-      "Hand saddle-stitched in Marrakech",
+      "Handwoven Atlas kilim wool panels",
+      "Solid brass hardware",
+      "Hand-finished in Marrakech"
     ],
-    dimensions: { size: "24cm × 18cm × 4cm · envelope flap" },
-    description:
-      "Compact envelope crossbody in deep walnut leather, finished with a single brass turn-lock and an adjustable saddle strap. Quiet enough for evening, structured enough for daily carry.",
-    available_quantity: 25,
-    weight_lbs: 0.7,
-    craftsman_id: null,
-    created_at: "",
-    updated_at: "",
+    "dimensions": {
+      "size": "See product page for current dimensions"
+    },
+    "description": "Travel weekender in saddle cognac leather framing handwoven kilim wool panels sourced from Atlas weavers. Brass middle strap, dual rolled handles. The signature Morocco-meets-luxury anchor of the maison.",
+    "available_quantity": 10,
+    "weight_lbs": null,
+    "craftsman_id": null,
+    "created_at": "",
+    "updated_at": ""
   },
   {
-    id: "11",
-    title: "Medina Drawstring Rucksack",
-    slug: "medina-rucksack-drawstring",
-    price: 25500,
-    images: [
-      "/products/medina-rucksack-drawstring/medina-rucksack-drawstring-pdp-white.webp",
+    "id": "static-03-atlas-kilim-rucksack",
+    "title": "Atlas Kilim Rucksack",
+    "slug": "atlas-kilim-rucksack",
+    "price": 39500,
+    "images": [
+      "https://xbtabpurfavngwmwtawc.supabase.co/storage/v1/object/public/products/drop-02/atlas-kilim-rucksack-pdp-white.webp",
+      "https://xbtabpurfavngwmwtawc.supabase.co/storage/v1/object/public/products/drop-02/atlas-kilim-rucksack-scale.webp",
+      "https://xbtabpurfavngwmwtawc.supabase.co/storage/v1/object/public/products/drop-02/atlas-kilim-rucksack-pdp-01.webp",
+      "https://xbtabpurfavngwmwtawc.supabase.co/storage/v1/object/public/products/drop-02/atlas-kilim-rucksack-pdp-02.webp",
+      "https://xbtabpurfavngwmwtawc.supabase.co/storage/v1/object/public/products/drop-02/atlas-kilim-rucksack-pdp-03.webp",
+      "https://xbtabpurfavngwmwtawc.supabase.co/storage/v1/object/public/products/drop-02/atlas-kilim-rucksack-pdp-04.webp",
+      "https://xbtabpurfavngwmwtawc.supabase.co/storage/v1/object/public/products/drop-02/atlas-kilim-rucksack-pdp-05.webp",
+      "https://xbtabpurfavngwmwtawc.supabase.co/storage/v1/object/public/products/drop-02/atlas-kilim-rucksack-pdp-06.webp",
+      "https://xbtabpurfavngwmwtawc.supabase.co/storage/v1/object/public/products/drop-02/atlas-kilim-rucksack-pdp-07.webp",
+      "https://xbtabpurfavngwmwtawc.supabase.co/storage/v1/object/public/products/drop-02/atlas-kilim-rucksack-pdp-08.webp",
+      "https://xbtabpurfavngwmwtawc.supabase.co/storage/v1/object/public/products/drop-02/atlas-kilim-rucksack-pdp-09.webp"
     ],
-    category: "Backpack",
-    status: "available",
-    featured: true,
-    materials: [
+    "category": "Backpack",
+    "status": "available",
+    "featured": true,
+    "materials": [
       "Full-grain Moroccan leather",
-      "Solid antique brass front buckle",
-      "Drawstring closure",
-      "Adjustable single shoulder strap",
-      "Hand saddle-stitched in Marrakech",
+      "Handwoven Atlas kilim wool panels",
+      "Solid brass hardware",
+      "Hand-finished in Marrakech"
     ],
-    dimensions: { size: "tall duffle silhouette · single shoulder strap" },
-    description:
-      "Tall cognac drawstring rucksack with a single front buckled pocket and adjustable shoulder strap. A sailor's silhouette translated to luxury full-grain Moroccan leather. Patinas richer with each season.",
-    available_quantity: 20,
-    weight_lbs: 2,
-    craftsman_id: null,
-    created_at: "",
-    updated_at: "",
+    "dimensions": {
+      "size": "See product page for current dimensions"
+    },
+    "description": "Rucksack rendered in saddle cognac leather framing handwoven kilim wool panels from Atlas weavers. The sister silhouette to the Kilim Duffle, shoulder-carry register.",
+    "available_quantity": 10,
+    "weight_lbs": null,
+    "craftsman_id": null,
+    "created_at": "",
+    "updated_at": ""
   },
-  // ─── Drop 02 expansion (Maison Tanneurs naming — Moroccan with French flavor) ───
   {
-    id: "12",
-    title: "Saharienne Saddle · Cognac",
-    slug: "saharienne-saddle-cognac",
-    price: 24500,
-    images: [
-      "/products/saharienne-saddle-cognac/saharienne-saddle-cognac-pdp-white.webp",
-      "/products/saharienne-saddle-cognac/saharienne-saddle-cognac-archive-1.webp",
-      "/products/saharienne-saddle-cognac/saharienne-saddle-cognac-archive-2.webp",
-      "/products/saharienne-saddle-cognac/saharienne-saddle-cognac-archive-3.webp",
-      "/products/saharienne-saddle-cognac/saharienne-saddle-cognac-archive-4.webp",
-      "/products/saharienne-saddle-cognac/saharienne-saddle-cognac-archive-5.webp",
-      "/products/saharienne-saddle-cognac/saharienne-saddle-cognac-archive-6.webp",
-      "/products/saharienne-saddle-cognac/saharienne-saddle-cognac-archive-7.webp",
-      "/products/saharienne-saddle-cognac/saharienne-saddle-cognac-archive-8.webp",
+    "id": "static-04-atlas-messenger-laptop",
+    "title": "Atlas Messenger · Laptop",
+    "slug": "atlas-messenger-laptop",
+    "price": 32500,
+    "images": [
+      "https://xbtabpurfavngwmwtawc.supabase.co/storage/v1/object/public/products/drop-02/atlas-messenger-laptop-pdp-white.webp",
+      "https://xbtabpurfavngwmwtawc.supabase.co/storage/v1/object/public/products/drop-02/atlas-messenger-laptop-scale.webp",
+      "https://xbtabpurfavngwmwtawc.supabase.co/storage/v1/object/public/products/drop-02/atlas-messenger-laptop-pdp-04.webp",
+      "https://xbtabpurfavngwmwtawc.supabase.co/storage/v1/object/public/products/drop-02/atlas-messenger-laptop-pdp-05.webp",
+      "https://xbtabpurfavngwmwtawc.supabase.co/storage/v1/object/public/products/drop-02/atlas-messenger-laptop-pdp-06.webp",
+      "https://xbtabpurfavngwmwtawc.supabase.co/storage/v1/object/public/products/drop-02/atlas-messenger-laptop-pdp-07.webp",
+      "https://xbtabpurfavngwmwtawc.supabase.co/storage/v1/object/public/products/drop-02/atlas-messenger-laptop-pdp-08.webp",
+      "https://xbtabpurfavngwmwtawc.supabase.co/storage/v1/object/public/products/drop-02/atlas-messenger-laptop-pdp-01.webp",
+      "https://xbtabpurfavngwmwtawc.supabase.co/storage/v1/object/public/products/drop-02/atlas-messenger-laptop-pdp-02.webp"
     ],
-    category: "Crossbody",
-    status: "available",
-    featured: true,
-    materials: [
+    "category": "Messenger",
+    "status": "available",
+    "featured": true,
+    "materials": [
       "Full-grain Moroccan leather",
-      "Solid brass push-lock catch",
-      "Structured saddle silhouette",
-      "Hand saddle-stitched in Marrakech",
+      "Solid brass hardware",
+      "Hand-finished in Marrakech"
     ],
-    dimensions: { size: "22cm × 18cm × 10cm · single flap closure" },
-    description:
-      "Small structured saddle bag in cognac full-grain leather, finished with a single brass push-lock catch and clean centerline seam. Day-to-evening crossbody scale. Patinas warm with wear.",
-    available_quantity: 18,
-    weight_lbs: 1.2,
-    craftsman_id: null,
-    created_at: "",
-    updated_at: "",
+    "dimensions": {
+      "size": "See product page for current dimensions"
+    },
+    "description": "Modern messenger in burnished cognac leather. Padded 14\" laptop sleeve, brass-finished hardware, flap closure with internal magnetic snaps. Daily commute, decade of patina.",
+    "available_quantity": 10,
+    "weight_lbs": null,
+    "craftsman_id": null,
+    "created_at": "",
+    "updated_at": ""
   },
   {
-    id: "13",
-    title: "Médersa Rucksack · Cognac",
-    slug: "medersa-rucksack-cognac",
-    price: 32500,
-    images: [
-      "/products/medersa-rucksack-cognac/medersa-rucksack-cognac-pdp-white.webp",
-      "/products/medersa-rucksack-cognac/medersa-rucksack-cognac-archive-1.webp",
-      "/products/medersa-rucksack-cognac/medersa-rucksack-cognac-archive-2.webp",
-      "/products/medersa-rucksack-cognac/medersa-rucksack-cognac-archive-3.webp",
-      "/products/medersa-rucksack-cognac/medersa-rucksack-cognac-archive-4.webp",
-      "/products/medersa-rucksack-cognac/medersa-rucksack-cognac-archive-5.webp",
-      "/products/medersa-rucksack-cognac/medersa-rucksack-cognac-archive-6.webp",
-      "/products/medersa-rucksack-cognac/medersa-rucksack-cognac-archive-7.webp",
-      "/products/medersa-rucksack-cognac/medersa-rucksack-cognac-archive-8.webp",
+    "id": "static-05-atlas-weekender-cognac",
+    "title": "Atlas Weekender · Cognac",
+    "slug": "atlas-weekender-cognac",
+    "price": 32500,
+    "images": [
+      "https://xbtabpurfavngwmwtawc.supabase.co/storage/v1/object/public/products/drop-02/atlas-weekender-cognac-pdp-white.webp",
+      "https://xbtabpurfavngwmwtawc.supabase.co/storage/v1/object/public/products/drop-02/atlas-weekender-cognac-pdp-04.webp",
+      "https://xbtabpurfavngwmwtawc.supabase.co/storage/v1/object/public/products/drop-02/atlas-weekender-cognac-pdp-05.webp",
+      "https://xbtabpurfavngwmwtawc.supabase.co/storage/v1/object/public/products/drop-02/atlas-weekender-cognac-pdp-06.webp",
+      "https://xbtabpurfavngwmwtawc.supabase.co/storage/v1/object/public/products/drop-02/atlas-weekender-cognac-pdp-07.webp",
+      "https://xbtabpurfavngwmwtawc.supabase.co/storage/v1/object/public/products/drop-02/atlas-weekender-cognac-pdp-08.webp",
+      "https://xbtabpurfavngwmwtawc.supabase.co/storage/v1/object/public/products/drop-02/atlas-weekender-cognac-pdp-01.webp",
+      "https://xbtabpurfavngwmwtawc.supabase.co/storage/v1/object/public/products/drop-02/atlas-weekender-cognac-pdp-02.webp",
+      "https://xbtabpurfavngwmwtawc.supabase.co/storage/v1/object/public/products/drop-02/atlas-weekender-cognac-pdp-03.webp"
     ],
-    category: "Backpack",
-    status: "available",
-    featured: true,
-    materials: [
+    "category": "Weekender",
+    "status": "available",
+    "featured": true,
+    "materials": [
       "Full-grain Moroccan leather",
-      "Solid brass YKK zippers (×4)",
-      "Leather tassel zipper pulls",
-      "Padded laptop sleeve interior",
-      "Hand saddle-stitched in Marrakech",
-    ],
-    dimensions: { size: "42cm × 30cm × 16cm · multi-compartment utility" },
-    description:
-      "Travel-grade utility rucksack in cognac full-grain leather. Four brass zippers with leather tassel pulls open onto a padded main, a top-zip dopp compartment, and a side flap pocket. Built for long carry days, softens with wear.",
-    available_quantity: 14,
-    weight_lbs: 3.2,
-    craftsman_id: null,
-    created_at: "",
-    updated_at: "",
-  },
-  {
-    id: "14",
-    title: "Babouche Crossbody · Cognac",
-    slug: "babouche-crossbody-cognac",
-    price: 18500,
-    images: [
-      "/products/babouche-crossbody-cognac/babouche-crossbody-cognac-pdp-white.webp",
-      "/products/babouche-crossbody-cognac/babouche-crossbody-cognac-archive-1.webp",
-      "/products/babouche-crossbody-cognac/babouche-crossbody-cognac-archive-2.webp",
-      "/products/babouche-crossbody-cognac/babouche-crossbody-cognac-archive-3.webp",
-      "/products/babouche-crossbody-cognac/babouche-crossbody-cognac-archive-4.webp",
-      "/products/babouche-crossbody-cognac/babouche-crossbody-cognac-archive-5.webp",
-      "/products/babouche-crossbody-cognac/babouche-crossbody-cognac-archive-6.webp",
-      "/products/babouche-crossbody-cognac/babouche-crossbody-cognac-archive-7.webp",
-      "/products/babouche-crossbody-cognac/babouche-crossbody-cognac-archive-8.webp",
-    ],
-    category: "Crossbody",
-    status: "available",
-    featured: true,
-    materials: [
-      "Pebbled-grain Moroccan leather",
-      "Solid brass twin-stud closure",
-      "Adjustable shoulder strap",
-      "Hand saddle-stitched in Marrakech",
-    ],
-    dimensions: { size: "20cm × 16cm × 7cm · soft crossbody" },
-    description:
-      "Soft pebbled-grain crossbody in cognac, with a quiet twin-stud brass closure. Day daily-carry scale — phone, wallet, keys. The smallest piece in the maison, the most personal.",
-    available_quantity: 24,
-    weight_lbs: 0.9,
-    craftsman_id: null,
-    created_at: "",
-    updated_at: "",
-  },
-  {
-    id: "15",
-    title: "Kilim Duffle · Polychrome",
-    slug: "kilim-duffle-polychrome",
-    price: 46500,
-    images: [
-      "/products/kilim-duffle-polychrome/kilim-duffle-polychrome-pdp-white.webp",
-      "/products/kilim-duffle-polychrome/kilim-duffle-polychrome-archive-1.webp",
-      "/products/kilim-duffle-polychrome/kilim-duffle-polychrome-archive-2.webp",
-      "/products/kilim-duffle-polychrome/kilim-duffle-polychrome-archive-3.webp",
-      "/products/kilim-duffle-polychrome/kilim-duffle-polychrome-archive-4.webp",
-      "/products/kilim-duffle-polychrome/kilim-duffle-polychrome-archive-5.webp",
-      "/products/kilim-duffle-polychrome/kilim-duffle-polychrome-archive-6.webp",
-      "/products/kilim-duffle-polychrome/kilim-duffle-polychrome-archive-7.webp",
-      "/products/kilim-duffle-polychrome/kilim-duffle-polychrome-archive-8.webp",
-    ],
-    category: "Weekender",
-    status: "available",
-    featured: true,
-    materials: [
-      "Full-grain cognac leather frame",
-      "Handwoven polychrome kilim wool panels",
-      "Solid brass end fittings",
+      "Solid brass zipper and hardware",
       "Dual rolled leather handles",
-      "Hand saddle-stitched in Marrakech",
+      "Hand-finished in Marrakech"
     ],
-    dimensions: { size: "48cm × 26cm × 24cm · barrel duffle" },
-    description:
-      "Statement barrel duffle in cognac leather framing handwoven polychrome kilim panels — red, green, ochre and cream stripes with woven diamond accents. Every piece is unique to its panel. The kilim register of the maison.",
-    available_quantity: 8,
-    weight_lbs: 3.4,
-    craftsman_id: null,
-    created_at: "",
-    updated_at: "",
+    "dimensions": {
+      "size": "See product page for current dimensions"
+    },
+    "description": "Soft slouchy cognac leather weekender with double rolled handles and side slip pocket. Patinas warmer with every trip. Brass zip, lined interior.",
+    "available_quantity": 10,
+    "weight_lbs": null,
+    "craftsman_id": null,
+    "created_at": "",
+    "updated_at": ""
   },
   {
-    id: "16",
-    title: "Kilim Duffle · Amber",
-    slug: "kilim-duffle-amber",
-    price: 46500,
-    images: [
-      "/products/kilim-duffle-amber/kilim-duffle-amber-pdp-white.webp",
-      "/products/kilim-duffle-amber/kilim-duffle-amber-archive-1.webp",
-      "/products/kilim-duffle-amber/kilim-duffle-amber-archive-2.webp",
-      "/products/kilim-duffle-amber/kilim-duffle-amber-archive-3.webp",
-      "/products/kilim-duffle-amber/kilim-duffle-amber-archive-4.webp",
-      "/products/kilim-duffle-amber/kilim-duffle-amber-archive-5.webp",
-      "/products/kilim-duffle-amber/kilim-duffle-amber-archive-6.webp",
-      "/products/kilim-duffle-amber/kilim-duffle-amber-archive-7.webp",
-      "/products/kilim-duffle-amber/kilim-duffle-amber-archive-8.webp",
+    "id": "static-06-black-stitched-backpack",
+    "title": "Black Stitched Backpack",
+    "slug": "black-stitched-backpack",
+    "price": 24500,
+    "images": [
+      "https://xbtabpurfavngwmwtawc.supabase.co/storage/v1/object/public/products/drop-01/black-stitched-backpack-pdp-white.webp",
+      "https://xbtabpurfavngwmwtawc.supabase.co/storage/v1/object/public/products/drop-01/black-stitched-backpack-archive-1.webp",
+      "https://xbtabpurfavngwmwtawc.supabase.co/storage/v1/object/public/products/drop-01/black-stitched-backpack-archive-2.webp",
+      "https://xbtabpurfavngwmwtawc.supabase.co/storage/v1/object/public/products/drop-01/black-stitched-backpack-archive-3.webp",
+      "https://xbtabpurfavngwmwtawc.supabase.co/storage/v1/object/public/products/drop-01/black-stitched-backpack-archive-4.webp"
     ],
-    category: "Weekender",
-    status: "available",
-    featured: true,
-    materials: [
-      "Full-grain cognac leather frame",
-      "Handwoven amber kilim wool panels",
-      "Solid brass end fittings",
+    "category": "Backpack",
+    "status": "available",
+    "featured": true,
+    "materials": [
+      "Full-grain Moroccan leather",
+      "Solid brass hardware",
+      "Hand-finished in Marrakech"
+    ],
+    "dimensions": {
+      "size": "See product page for current dimensions"
+    },
+    "description": "Boxy square-cut backpack in deep black full-grain leather, framed by a cream zigzag stitch border. Single brass buckle closure, internal zip pocket, dual adjustable shoulder straps. Editorial silhouette, daily-carry size.",
+    "available_quantity": 10,
+    "weight_lbs": null,
+    "craftsman_id": null,
+    "created_at": "",
+    "updated_at": ""
+  },
+  {
+    "id": "static-07-classic-cognac-satchel",
+    "title": "Classic Cognac Satchel",
+    "slug": "classic-cognac-satchel",
+    "price": 28500,
+    "images": [
+      "https://xbtabpurfavngwmwtawc.supabase.co/storage/v1/object/public/products/drop-01/classic-cognac-satchel-pdp-white.webp",
+      "https://xbtabpurfavngwmwtawc.supabase.co/storage/v1/object/public/products/drop-01/classic-cognac-satchel-archive-1.webp",
+      "https://xbtabpurfavngwmwtawc.supabase.co/storage/v1/object/public/products/drop-01/classic-cognac-satchel-archive-2.webp",
+      "https://xbtabpurfavngwmwtawc.supabase.co/storage/v1/object/public/products/drop-01/classic-cognac-satchel-archive-3.webp"
+    ],
+    "category": "Satchel",
+    "status": "available",
+    "featured": true,
+    "materials": [
+      "Full-grain Moroccan leather",
+      "Solid brass hardware",
+      "Hand-finished in Marrakech"
+    ],
+    "dimensions": {
+      "size": "See product page for current dimensions"
+    },
+    "description": "Classic briefcase satchel in rich cognac full-grain leather. Dual brass buckle closures, sturdy top handle plus removable crossbody strap. Cream saddle-stitch edges throughout. Carries a 14\" laptop. Heirloom-grade.",
+    "available_quantity": 10,
+    "weight_lbs": null,
+    "craftsman_id": null,
+    "created_at": "",
+    "updated_at": ""
+  },
+  {
+    "id": "static-08-cognac-brogue-backpack",
+    "title": "Cognac Brogue Backpack",
+    "slug": "cognac-brogue-backpack",
+    "price": 26500,
+    "images": [
+      "https://xbtabpurfavngwmwtawc.supabase.co/storage/v1/object/public/products/drop-02/cognac-brogue-backpack-pdp-white.webp",
+      "https://xbtabpurfavngwmwtawc.supabase.co/storage/v1/object/public/products/drop-02/cognac-brogue-backpack-pdp-02.webp",
+      "https://xbtabpurfavngwmwtawc.supabase.co/storage/v1/object/public/products/drop-02/cognac-brogue-backpack-pdp-03.webp",
+      "https://xbtabpurfavngwmwtawc.supabase.co/storage/v1/object/public/products/drop-02/cognac-brogue-backpack-pdp-04.webp",
+      "https://xbtabpurfavngwmwtawc.supabase.co/storage/v1/object/public/products/drop-02/cognac-brogue-backpack-pdp-05.webp",
+      "https://xbtabpurfavngwmwtawc.supabase.co/storage/v1/object/public/products/drop-02/cognac-brogue-backpack-pdp-06.webp",
+      "https://xbtabpurfavngwmwtawc.supabase.co/storage/v1/object/public/products/drop-02/cognac-brogue-backpack-pdp-07.webp",
+      "https://xbtabpurfavngwmwtawc.supabase.co/storage/v1/object/public/products/drop-02/cognac-brogue-backpack-pdp-08.webp",
+      "https://xbtabpurfavngwmwtawc.supabase.co/storage/v1/object/public/products/drop-02/cognac-brogue-backpack-pdp-09.webp"
+    ],
+    "category": "Backpack",
+    "status": "available",
+    "featured": true,
+    "materials": [
+      "Full-grain Moroccan leather",
+      "Solid brass hardware",
+      "Hand-finished in Marrakech"
+    ],
+    "dimensions": {
+      "size": "See product page for current dimensions"
+    },
+    "description": "Structured cognac full-grain leather backpack with dual zip compartments, compact front pocket, leather pullers, and adjustable shoulder straps. A practical city piece with warm pull-up character and hand-finished edges.",
+    "available_quantity": 10,
+    "weight_lbs": null,
+    "craftsman_id": null,
+    "created_at": "",
+    "updated_at": ""
+  },
+  {
+    "id": "static-09-expedition-rolltop-cognac",
+    "title": "Expedition Rolltop · Cognac",
+    "slug": "expedition-rolltop-cognac",
+    "price": 29500,
+    "images": [
+      "https://xbtabpurfavngwmwtawc.supabase.co/storage/v1/object/public/products/drop-02/expedition-rolltop-cognac-pdp-white.webp",
+      "https://xbtabpurfavngwmwtawc.supabase.co/storage/v1/object/public/products/drop-02/expedition-rolltop-cognac-pdp-04.webp",
+      "https://xbtabpurfavngwmwtawc.supabase.co/storage/v1/object/public/products/drop-02/expedition-rolltop-cognac-pdp-05.webp",
+      "https://xbtabpurfavngwmwtawc.supabase.co/storage/v1/object/public/products/drop-02/expedition-rolltop-cognac-pdp-06.webp",
+      "https://xbtabpurfavngwmwtawc.supabase.co/storage/v1/object/public/products/drop-02/expedition-rolltop-cognac-pdp-07.webp",
+      "https://xbtabpurfavngwmwtawc.supabase.co/storage/v1/object/public/products/drop-02/expedition-rolltop-cognac-pdp-08.webp",
+      "https://xbtabpurfavngwmwtawc.supabase.co/storage/v1/object/public/products/drop-02/expedition-rolltop-cognac-pdp-01.webp",
+      "https://xbtabpurfavngwmwtawc.supabase.co/storage/v1/object/public/products/drop-02/expedition-rolltop-cognac-pdp-02.webp",
+      "https://xbtabpurfavngwmwtawc.supabase.co/storage/v1/object/public/products/drop-02/expedition-rolltop-cognac-pdp-03.webp"
+    ],
+    "category": "Rolltop",
+    "status": "available",
+    "featured": true,
+    "materials": [
+      "Full-grain Moroccan leather",
+      "Solid brass hardware",
+      "Hand-finished in Marrakech"
+    ],
+    "dimensions": {
+      "size": "See product page for current dimensions"
+    },
+    "description": "Cognac full-grain leather rolltop expedition pack with vertical X-strap closure. Vegetable-tanned in Marrakech, brass tri-glide buckles, internal padded sleeve. Built for daily carry and long miles.",
+    "available_quantity": 10,
+    "weight_lbs": null,
+    "craftsman_id": null,
+    "created_at": "",
+    "updated_at": ""
+  },
+  {
+    "id": "static-10-expedition-rolltop-noir",
+    "title": "Expedition Rolltop · Noir",
+    "slug": "expedition-rolltop-noir",
+    "price": 29500,
+    "images": [
+      "https://xbtabpurfavngwmwtawc.supabase.co/storage/v1/object/public/products/drop-02/expedition-rolltop-noir-pdp-white.webp",
+      "https://xbtabpurfavngwmwtawc.supabase.co/storage/v1/object/public/products/drop-02/expedition-rolltop-noir-pdp-04.webp",
+      "https://xbtabpurfavngwmwtawc.supabase.co/storage/v1/object/public/products/drop-02/expedition-rolltop-noir-pdp-05.webp",
+      "https://xbtabpurfavngwmwtawc.supabase.co/storage/v1/object/public/products/drop-02/expedition-rolltop-noir-pdp-06.webp",
+      "https://xbtabpurfavngwmwtawc.supabase.co/storage/v1/object/public/products/drop-02/expedition-rolltop-noir-pdp-07.webp",
+      "https://xbtabpurfavngwmwtawc.supabase.co/storage/v1/object/public/products/drop-02/expedition-rolltop-noir-pdp-08.webp",
+      "https://xbtabpurfavngwmwtawc.supabase.co/storage/v1/object/public/products/drop-02/expedition-rolltop-noir-pdp-01.webp",
+      "https://xbtabpurfavngwmwtawc.supabase.co/storage/v1/object/public/products/drop-02/expedition-rolltop-noir-pdp-02.webp",
+      "https://xbtabpurfavngwmwtawc.supabase.co/storage/v1/object/public/products/drop-02/expedition-rolltop-noir-pdp-03.webp"
+    ],
+    "category": "Rolltop",
+    "status": "available",
+    "featured": true,
+    "materials": [
+      "Full-grain Moroccan leather",
+      "Solid brass hardware",
+      "Hand-finished in Marrakech"
+    ],
+    "dimensions": {
+      "size": "See product page for current dimensions"
+    },
+    "description": "Same expedition silhouette in deep noir leather. Vegetable-tanned, X-strap closure, brass tri-glides, internal padded sleeve. A quieter cut of the cognac.",
+    "available_quantity": 10,
+    "weight_lbs": null,
+    "craftsman_id": null,
+    "created_at": "",
+    "updated_at": ""
+  },
+  {
+    "id": "static-11-explorer-rolltop-cognac",
+    "title": "Explorer Rolltop · Cognac",
+    "slug": "explorer-rolltop-cognac",
+    "price": 28500,
+    "images": [
+      "https://xbtabpurfavngwmwtawc.supabase.co/storage/v1/object/public/products/drop-02/explorer-rolltop-cognac-pdp-white.webp",
+      "https://xbtabpurfavngwmwtawc.supabase.co/storage/v1/object/public/products/drop-02/explorer-rolltop-cognac-scale.webp",
+      "https://xbtabpurfavngwmwtawc.supabase.co/storage/v1/object/public/products/drop-02/explorer-rolltop-cognac-pdp-04.webp",
+      "https://xbtabpurfavngwmwtawc.supabase.co/storage/v1/object/public/products/drop-02/explorer-rolltop-cognac-pdp-05.webp",
+      "https://xbtabpurfavngwmwtawc.supabase.co/storage/v1/object/public/products/drop-02/explorer-rolltop-cognac-pdp-06.webp",
+      "https://xbtabpurfavngwmwtawc.supabase.co/storage/v1/object/public/products/drop-02/explorer-rolltop-cognac-pdp-07.webp",
+      "https://xbtabpurfavngwmwtawc.supabase.co/storage/v1/object/public/products/drop-02/explorer-rolltop-cognac-pdp-08.webp",
+      "https://xbtabpurfavngwmwtawc.supabase.co/storage/v1/object/public/products/drop-02/explorer-rolltop-cognac-pdp-09.webp",
+      "https://xbtabpurfavngwmwtawc.supabase.co/storage/v1/object/public/products/drop-02/explorer-rolltop-cognac-pdp-01.webp"
+    ],
+    "category": "Rolltop",
+    "status": "available",
+    "featured": true,
+    "materials": [
+      "Full-grain Moroccan leather",
+      "Solid brass hardware",
+      "Hand-finished in Marrakech"
+    ],
+    "dimensions": {
+      "size": "See product page for current dimensions"
+    },
+    "description": "Modern rolltop rucksack in deep saddle cognac. Brass center buckle closes a full-bleed roll-down panel; a brass zip pocket runs the vertical centerline. Patinas warm and softens at the corners with daily carry.",
+    "available_quantity": 10,
+    "weight_lbs": null,
+    "craftsman_id": null,
+    "created_at": "",
+    "updated_at": ""
+  },
+  {
+    "id": "static-12-heritage-rucksack",
+    "title": "Heritage Rucksack",
+    "slug": "heritage-rucksack",
+    "price": 32500,
+    "images": [
+      "https://xbtabpurfavngwmwtawc.supabase.co/storage/v1/object/public/products/drop-02/heritage-rucksack-pdp-white.webp",
+      "https://xbtabpurfavngwmwtawc.supabase.co/storage/v1/object/public/products/drop-01/heritage-rucksack-scale.webp",
+      "https://xbtabpurfavngwmwtawc.supabase.co/storage/v1/object/public/products/drop-02/heritage-rucksack-pdp-04.webp",
+      "https://xbtabpurfavngwmwtawc.supabase.co/storage/v1/object/public/products/drop-02/heritage-rucksack-pdp-05.webp",
+      "https://xbtabpurfavngwmwtawc.supabase.co/storage/v1/object/public/products/drop-02/heritage-rucksack-pdp-06.webp",
+      "https://xbtabpurfavngwmwtawc.supabase.co/storage/v1/object/public/products/drop-02/heritage-rucksack-pdp-07.webp",
+      "https://xbtabpurfavngwmwtawc.supabase.co/storage/v1/object/public/products/drop-02/heritage-rucksack-pdp-08.webp",
+      "https://xbtabpurfavngwmwtawc.supabase.co/storage/v1/object/public/products/drop-02/heritage-rucksack-pdp-09.webp",
+      "https://xbtabpurfavngwmwtawc.supabase.co/storage/v1/object/public/products/drop-02/heritage-rucksack-pdp-01.webp"
+    ],
+    "category": "Backpack",
+    "status": "available",
+    "featured": true,
+    "materials": [
+      "Full-grain Moroccan leather",
+      "Solid brass hardware",
+      "Hand-finished in Marrakech"
+    ],
+    "dimensions": {
+      "size": "See product page for current dimensions"
+    },
+    "description": "Full-grain cognac leather rucksack with three buckled exterior pockets and a roll-top main compartment. Hand-stitched and brass-fitted by Marrakech leather artisans. Patinas with wear.",
+    "available_quantity": 10,
+    "weight_lbs": null,
+    "craftsman_id": null,
+    "created_at": "",
+    "updated_at": ""
+  },
+  {
+    "id": "static-13-marrakech-tote-cognac",
+    "title": "Marrakech Tote · Cognac",
+    "slug": "marrakech-tote-cognac",
+    "price": 29500,
+    "images": [
+      "https://xbtabpurfavngwmwtawc.supabase.co/storage/v1/object/public/products/drop-02/marrakech-tote-cognac-pdp-white.webp",
+      "https://xbtabpurfavngwmwtawc.supabase.co/storage/v1/object/public/products/drop-02/marrakech-tote-cognac-scale.webp",
+      "https://xbtabpurfavngwmwtawc.supabase.co/storage/v1/object/public/products/drop-02/marrakech-tote-cognac-pdp-04.webp",
+      "https://xbtabpurfavngwmwtawc.supabase.co/storage/v1/object/public/products/drop-02/marrakech-tote-cognac-pdp-05.webp",
+      "https://xbtabpurfavngwmwtawc.supabase.co/storage/v1/object/public/products/drop-02/marrakech-tote-cognac-pdp-06.webp",
+      "https://xbtabpurfavngwmwtawc.supabase.co/storage/v1/object/public/products/drop-02/marrakech-tote-cognac-pdp-07.webp",
+      "https://xbtabpurfavngwmwtawc.supabase.co/storage/v1/object/public/products/drop-02/marrakech-tote-cognac-pdp-08.webp",
+      "https://xbtabpurfavngwmwtawc.supabase.co/storage/v1/object/public/products/drop-02/marrakech-tote-cognac-pdp-01.webp",
+      "https://xbtabpurfavngwmwtawc.supabase.co/storage/v1/object/public/products/drop-02/marrakech-tote-cognac-pdp-02.webp"
+    ],
+    "category": "Tote",
+    "status": "available",
+    "featured": true,
+    "materials": [
+      "Full-grain Moroccan leather",
+      "Solid brass hardware",
+      "Hand-finished in Marrakech"
+    ],
+    "dimensions": {
+      "size": "See product page for current dimensions"
+    },
+    "description": "Structured open-top tote in deep cognac full-grain leather. Tall handles for shoulder carry, magnetic snap interior, brass-finished hardware. Patinas warmer with every season.",
+    "available_quantity": 10,
+    "weight_lbs": null,
+    "craftsman_id": null,
+    "created_at": "",
+    "updated_at": ""
+  },
+  {
+    "id": "static-14-medina-crossbody-cognac",
+    "title": "Medina Crossbody · Cognac",
+    "slug": "medina-crossbody-cognac",
+    "price": 19500,
+    "images": [
+      "https://xbtabpurfavngwmwtawc.supabase.co/storage/v1/object/public/products/drop-02/medina-crossbody-cognac-pdp-white.webp",
+      "https://xbtabpurfavngwmwtawc.supabase.co/storage/v1/object/public/products/drop-02/medina-crossbody-cognac-scale.webp"
+    ],
+    "category": "Crossbody",
+    "status": "available",
+    "featured": true,
+    "materials": [
+      "Full-grain Moroccan leather",
+      "Solid brass hardware",
+      "Hand-finished in Marrakech"
+    ],
+    "dimensions": {
+      "size": "See product page for current dimensions"
+    },
+    "description": "Clean flap crossbody in saddle cognac leather. Single brass turn-lock, adjustable shoulder strap, off-white contrast stitching. The medina line's daily silhouette.",
+    "available_quantity": 10,
+    "weight_lbs": null,
+    "craftsman_id": null,
+    "created_at": "",
+    "updated_at": ""
+  },
+  {
+    "id": "static-15-medina-crossbody-envelope",
+    "title": "Medina Envelope Crossbody",
+    "slug": "medina-crossbody-envelope",
+    "price": 18500,
+    "images": [
+      "https://xbtabpurfavngwmwtawc.supabase.co/storage/v1/object/public/products/drop-02/medina-crossbody-envelope-pdp-white.webp",
+      "https://xbtabpurfavngwmwtawc.supabase.co/storage/v1/object/public/products/drop-02/medina-crossbody-envelope-pdp-04.webp",
+      "https://xbtabpurfavngwmwtawc.supabase.co/storage/v1/object/public/products/drop-02/medina-crossbody-envelope-pdp-05.webp",
+      "https://xbtabpurfavngwmwtawc.supabase.co/storage/v1/object/public/products/drop-02/medina-crossbody-envelope-pdp-06.webp",
+      "https://xbtabpurfavngwmwtawc.supabase.co/storage/v1/object/public/products/drop-02/medina-crossbody-envelope-pdp-07.webp",
+      "https://xbtabpurfavngwmwtawc.supabase.co/storage/v1/object/public/products/drop-02/medina-crossbody-envelope-pdp-08.webp",
+      "https://xbtabpurfavngwmwtawc.supabase.co/storage/v1/object/public/products/drop-02/medina-crossbody-envelope-pdp-09.webp",
+      "https://xbtabpurfavngwmwtawc.supabase.co/storage/v1/object/public/products/drop-02/medina-crossbody-envelope-pdp-01.webp",
+      "https://xbtabpurfavngwmwtawc.supabase.co/storage/v1/object/public/products/drop-02/medina-crossbody-envelope-pdp-02.webp"
+    ],
+    "category": "Crossbody",
+    "status": "available",
+    "featured": true,
+    "materials": [
+      "Full-grain Moroccan leather",
+      "Solid brass hardware",
+      "Hand-finished in Marrakech"
+    ],
+    "dimensions": {
+      "size": "See product page for current dimensions"
+    },
+    "description": "Compact envelope crossbody in deep walnut leather, finished with a single brass turn-lock and an adjustable saddle strap. Quiet enough for evening, structured enough for daily carry.",
+    "available_quantity": 10,
+    "weight_lbs": null,
+    "craftsman_id": null,
+    "created_at": "",
+    "updated_at": ""
+  },
+  {
+    "id": "static-16-medina-crossbody-tooled-walnut",
+    "title": "Medina Crossbody · Tooled Walnut",
+    "slug": "medina-crossbody-tooled-walnut",
+    "price": 24500,
+    "images": [
+      "https://xbtabpurfavngwmwtawc.supabase.co/storage/v1/object/public/products/drop-02/medina-crossbody-tooled-walnut-pdp-white.webp",
+      "https://xbtabpurfavngwmwtawc.supabase.co/storage/v1/object/public/products/drop-02/medina-crossbody-tooled-walnut-scale.webp",
+      "https://xbtabpurfavngwmwtawc.supabase.co/storage/v1/object/public/products/drop-02/medina-crossbody-tooled-walnut-macro-01.webp",
+      "https://xbtabpurfavngwmwtawc.supabase.co/storage/v1/object/public/products/drop-02/medina-crossbody-tooled-walnut-macro-02.webp",
+      "https://xbtabpurfavngwmwtawc.supabase.co/storage/v1/object/public/products/drop-02/medina-crossbody-tooled-walnut-macro-03.webp"
+    ],
+    "category": "Crossbody",
+    "status": "available",
+    "featured": true,
+    "materials": [
+      "Full-grain Moroccan leather",
+      "Hand-tooled leather flap",
+      "Solid brass hardware",
+      "Hand-finished in Marrakech"
+    ],
+    "dimensions": {
+      "size": "See product page for current dimensions"
+    },
+    "description": "Hand-tooled saddle crossbody in deep walnut leather. The diamond-and-floral motif is carved by hand into the flap — every piece slightly different. Brass turn-lock, off-white contrast stitching.",
+    "available_quantity": 10,
+    "weight_lbs": null,
+    "craftsman_id": null,
+    "created_at": "",
+    "updated_at": ""
+  },
+  {
+    "id": "static-17-medina-duffle",
+    "title": "Medina Duffle",
+    "slug": "medina-duffle",
+    "price": 36500,
+    "images": [
+      "https://xbtabpurfavngwmwtawc.supabase.co/storage/v1/object/public/products/drop-02/medina-duffle-pdp-white.webp",
+      "https://xbtabpurfavngwmwtawc.supabase.co/storage/v1/object/public/products/drop-02/medina-duffle-scale.webp",
+      "https://xbtabpurfavngwmwtawc.supabase.co/storage/v1/object/public/products/drop-02/medina-duffle-pdp-04.webp",
+      "https://xbtabpurfavngwmwtawc.supabase.co/storage/v1/object/public/products/drop-02/medina-duffle-pdp-05.webp",
+      "https://xbtabpurfavngwmwtawc.supabase.co/storage/v1/object/public/products/drop-02/medina-duffle-pdp-06.webp",
+      "https://xbtabpurfavngwmwtawc.supabase.co/storage/v1/object/public/products/drop-02/medina-duffle-pdp-07.webp",
+      "https://xbtabpurfavngwmwtawc.supabase.co/storage/v1/object/public/products/drop-02/medina-duffle-pdp-08.webp",
+      "https://xbtabpurfavngwmwtawc.supabase.co/storage/v1/object/public/products/drop-02/medina-duffle-pdp-01.webp",
+      "https://xbtabpurfavngwmwtawc.supabase.co/storage/v1/object/public/products/drop-02/medina-duffle-pdp-02.webp"
+    ],
+    "category": "Duffle",
+    "status": "available",
+    "featured": true,
+    "materials": [
+      "Full-grain Moroccan leather",
+      "Solid brass zipper and hardware",
       "Dual rolled leather handles",
-      "Hand saddle-stitched in Marrakech",
+      "Hand-finished in Marrakech"
     ],
-    dimensions: { size: "48cm × 26cm × 24cm · barrel duffle" },
-    description:
-      "Sister piece to the Polychrome — same barrel duffle silhouette with handwoven kilim panels in an amber palette: orange, terracotta, cream and chocolate diamond motifs. Berber geometric tradition, French maison register.",
-    available_quantity: 8,
-    weight_lbs: 3.4,
-    craftsman_id: null,
-    created_at: "",
-    updated_at: "",
+    "dimensions": {
+      "size": "See product page for current dimensions"
+    },
+    "description": "Travel weekender in burnished cognac leather. Brass middle strap buckle, dual rolled handles, removable saddle shoulder strap. A weekend bag the next generation inherits.",
+    "available_quantity": 10,
+    "weight_lbs": null,
+    "craftsman_id": null,
+    "created_at": "",
+    "updated_at": ""
   },
   {
-    id: "17",
-    title: "Cèdre Crossbody · Chocolate",
-    slug: "cedre-crossbody-chocolate",
-    price: 21500,
-    images: [
-      "/products/cedre-crossbody-chocolate/cedre-crossbody-chocolate-pdp-white.webp",
-      "/products/cedre-crossbody-chocolate/cedre-crossbody-chocolate-archive-1.webp",
-      "/products/cedre-crossbody-chocolate/cedre-crossbody-chocolate-archive-2.webp",
-      "/products/cedre-crossbody-chocolate/cedre-crossbody-chocolate-archive-3.webp",
-      "/products/cedre-crossbody-chocolate/cedre-crossbody-chocolate-archive-4.webp",
-      "/products/cedre-crossbody-chocolate/cedre-crossbody-chocolate-archive-5.webp",
-      "/products/cedre-crossbody-chocolate/cedre-crossbody-chocolate-archive-6.webp",
-      "/products/cedre-crossbody-chocolate/cedre-crossbody-chocolate-archive-7.webp",
-      "/products/cedre-crossbody-chocolate/cedre-crossbody-chocolate-archive-8.webp",
+    "id": "static-18-medina-rucksack-drawstring",
+    "title": "Medina Drawstring Rucksack",
+    "slug": "medina-rucksack-drawstring",
+    "price": 25500,
+    "images": [
+      "https://xbtabpurfavngwmwtawc.supabase.co/storage/v1/object/public/products/drop-02/medina-rucksack-drawstring-pdp-white.webp",
+      "https://xbtabpurfavngwmwtawc.supabase.co/storage/v1/object/public/products/drop-02/medina-rucksack-drawstring-scale.webp",
+      "https://xbtabpurfavngwmwtawc.supabase.co/storage/v1/object/public/products/drop-02/medina-rucksack-drawstring-pdp-04.webp",
+      "https://xbtabpurfavngwmwtawc.supabase.co/storage/v1/object/public/products/drop-02/medina-rucksack-drawstring-pdp-05.webp",
+      "https://xbtabpurfavngwmwtawc.supabase.co/storage/v1/object/public/products/drop-02/medina-rucksack-drawstring-pdp-06.webp",
+      "https://xbtabpurfavngwmwtawc.supabase.co/storage/v1/object/public/products/drop-02/medina-rucksack-drawstring-pdp-07.webp",
+      "https://xbtabpurfavngwmwtawc.supabase.co/storage/v1/object/public/products/drop-02/medina-rucksack-drawstring-pdp-08.webp",
+      "https://xbtabpurfavngwmwtawc.supabase.co/storage/v1/object/public/products/drop-02/medina-rucksack-drawstring-pdp-09.webp",
+      "https://xbtabpurfavngwmwtawc.supabase.co/storage/v1/object/public/products/drop-02/medina-rucksack-drawstring-pdp-01.webp"
     ],
-    category: "Crossbody",
-    status: "available",
-    featured: true,
-    materials: [
-      "Distressed-finish chocolate Moroccan leather",
-      "Solid brass push-lock catch",
-      "Cream contrast saddle-stitching",
-      "Adjustable shoulder strap",
-      "Hand saddle-stitched in Marrakech",
-    ],
-    dimensions: { size: "26cm × 22cm × 8cm · flap crossbody" },
-    description:
-      "Medium-weight crossbody in deep chocolate distressed leather with cream contrast saddle-stitch and a brass push-lock. The most worn-in colorway in the drop. Cedar-wood tonality.",
-    available_quantity: 16,
-    weight_lbs: 1.3,
-    craftsman_id: null,
-    created_at: "",
-    updated_at: "",
-  },
-  {
-    id: "18",
-    title: "Tadelakt Rucksack · Cognac",
-    slug: "tadelakt-rucksack-cognac",
-    price: 29500,
-    images: [
-      "/products/tadelakt-rucksack-cognac/tadelakt-rucksack-cognac-pdp-white.webp",
-      "/products/tadelakt-rucksack-cognac/tadelakt-rucksack-cognac-archive-1.webp",
-      "/products/tadelakt-rucksack-cognac/tadelakt-rucksack-cognac-archive-2.webp",
-      "/products/tadelakt-rucksack-cognac/tadelakt-rucksack-cognac-archive-3.webp",
-      "/products/tadelakt-rucksack-cognac/tadelakt-rucksack-cognac-archive-4.webp",
-      "/products/tadelakt-rucksack-cognac/tadelakt-rucksack-cognac-archive-5.webp",
-      "/products/tadelakt-rucksack-cognac/tadelakt-rucksack-cognac-archive-6.webp",
-      "/products/tadelakt-rucksack-cognac/tadelakt-rucksack-cognac-archive-7.webp",
-      "/products/tadelakt-rucksack-cognac/tadelakt-rucksack-cognac-archive-8.webp",
-    ],
-    category: "Backpack",
-    status: "available",
-    featured: true,
-    materials: [
+    "category": "Backpack",
+    "status": "available",
+    "featured": true,
+    "materials": [
       "Full-grain Moroccan leather",
-      "Solid brass front zipper",
-      "Leather tassel pull",
-      "Cream contrast saddle-stitching",
-      "Hand saddle-stitched in Marrakech",
+      "Solid brass hardware",
+      "Hand-finished in Marrakech"
     ],
-    dimensions: { size: "38cm × 32cm × 14cm · vertical-zip rucksack" },
-    description:
-      "Refined commuter rucksack in cognac full-grain leather with a vertical brass front zipper, leather tassel pull, and cream saddle-stitched edge. Tadelakt-smooth surface, finished by hand.",
-    available_quantity: 14,
-    weight_lbs: 2.4,
-    craftsman_id: null,
-    created_at: "",
-    updated_at: "",
+    "dimensions": {
+      "size": "See product page for current dimensions"
+    },
+    "description": "Tall cognac drawstring rucksack with a single front buckled pocket and adjustable shoulder strap. A sailor's silhouette translated to luxury full-grain Moroccan leather. Patinas richer with each season.",
+    "available_quantity": 10,
+    "weight_lbs": null,
+    "craftsman_id": null,
+    "created_at": "",
+    "updated_at": ""
   },
   {
-    id: "19",
-    title: "Safran Tote · Cognac",
-    slug: "safran-tote-cognac",
-    price: 24500,
-    images: [
-      "/products/safran-tote-cognac/safran-tote-cognac-pdp-white.webp",
-      "/products/safran-tote-cognac/safran-tote-cognac-archive-1.webp",
-      "/products/safran-tote-cognac/safran-tote-cognac-archive-2.webp",
-      "/products/safran-tote-cognac/safran-tote-cognac-archive-3.webp",
-      "/products/safran-tote-cognac/safran-tote-cognac-archive-4.webp",
-      "/products/safran-tote-cognac/safran-tote-cognac-archive-5.webp",
-      "/products/safran-tote-cognac/safran-tote-cognac-archive-6.webp",
-      "/products/safran-tote-cognac/safran-tote-cognac-archive-7.webp",
-      "/products/safran-tote-cognac/safran-tote-cognac-archive-8.webp",
+    "id": "static-19-medina-rucksack-flap-chocolate",
+    "title": "Medina Rucksack · Flap Chocolate",
+    "slug": "medina-rucksack-flap-chocolate",
+    "price": 28500,
+    "images": [
+      "https://xbtabpurfavngwmwtawc.supabase.co/storage/v1/object/public/products/drop-02/medina-rucksack-flap-chocolate-pdp-white.webp",
+      "https://xbtabpurfavngwmwtawc.supabase.co/storage/v1/object/public/products/drop-02/medina-rucksack-flap-chocolate-pdp-04.webp",
+      "https://xbtabpurfavngwmwtawc.supabase.co/storage/v1/object/public/products/drop-02/medina-rucksack-flap-chocolate-pdp-05.webp",
+      "https://xbtabpurfavngwmwtawc.supabase.co/storage/v1/object/public/products/drop-02/medina-rucksack-flap-chocolate-pdp-06.webp",
+      "https://xbtabpurfavngwmwtawc.supabase.co/storage/v1/object/public/products/drop-02/medina-rucksack-flap-chocolate-pdp-07.webp",
+      "https://xbtabpurfavngwmwtawc.supabase.co/storage/v1/object/public/products/drop-02/medina-rucksack-flap-chocolate-pdp-08.webp",
+      "https://xbtabpurfavngwmwtawc.supabase.co/storage/v1/object/public/products/drop-02/medina-rucksack-flap-chocolate-pdp-01.webp",
+      "https://xbtabpurfavngwmwtawc.supabase.co/storage/v1/object/public/products/drop-02/medina-rucksack-flap-chocolate-pdp-02.webp",
+      "https://xbtabpurfavngwmwtawc.supabase.co/storage/v1/object/public/products/drop-02/medina-rucksack-flap-chocolate-pdp-03.webp"
     ],
-    category: "Tote",
-    status: "available",
-    featured: true,
-    materials: [
+    "category": "Backpack",
+    "status": "available",
+    "featured": true,
+    "materials": [
       "Full-grain Moroccan leather",
-      "Dual parallel rolled handles",
-      "Center spine seam (front + back)",
-      "Hand saddle-stitched in Marrakech",
+      "Solid brass hardware",
+      "Hand-finished in Marrakech"
     ],
-    dimensions: { size: "38cm × 32cm × 12cm · east-west tote" },
-    description:
-      "East-west day tote in saffron-warm cognac leather. Two parallel rolled handles, a single center spine seam, open top. Carries a 13\" laptop and a slim book. Softens into the body over months of carry.",
-    available_quantity: 20,
-    weight_lbs: 1.8,
-    craftsman_id: null,
-    created_at: "",
-    updated_at: "",
+    "dimensions": {
+      "size": "See product page for current dimensions"
+    },
+    "description": "Chocolate full-grain leather drawstring rucksack with overflap and two front buckled pockets. Brass tri-glides, hand-burnished edges. The everyday quietly-luxurious carry.",
+    "available_quantity": 10,
+    "weight_lbs": null,
+    "craftsman_id": null,
+    "created_at": "",
+    "updated_at": ""
   },
   {
-    id: "20",
-    title: "Rif Heritage Rucksack · Tan",
-    slug: "rif-rucksack-tan",
-    price: 28500,
-    images: [
-      "/products/rif-rucksack-tan/rif-rucksack-tan-pdp-white.webp",
-      "/products/rif-rucksack-tan/rif-rucksack-tan-archive-1.webp",
-      "/products/rif-rucksack-tan/rif-rucksack-tan-archive-2.webp",
-      "/products/rif-rucksack-tan/rif-rucksack-tan-archive-3.webp",
-      "/products/rif-rucksack-tan/rif-rucksack-tan-archive-4.webp",
-      "/products/rif-rucksack-tan/rif-rucksack-tan-archive-5.webp",
-      "/products/rif-rucksack-tan/rif-rucksack-tan-archive-6.webp",
-      "/products/rif-rucksack-tan/rif-rucksack-tan-archive-7.webp",
-      "/products/rif-rucksack-tan/rif-rucksack-tan-archive-8.webp",
+    "id": "static-20-medina-saddlebag-tooled-cognac",
+    "title": "Medina Saddlebag · Tooled Cognac",
+    "slug": "medina-saddlebag-tooled-cognac",
+    "price": 26500,
+    "images": [
+      "https://xbtabpurfavngwmwtawc.supabase.co/storage/v1/object/public/products/drop-02/medina-saddlebag-tooled-cognac-pdp-white.webp",
+      "https://xbtabpurfavngwmwtawc.supabase.co/storage/v1/object/public/products/drop-02/medina-saddlebag-tooled-cognac-pdp-04.webp",
+      "https://xbtabpurfavngwmwtawc.supabase.co/storage/v1/object/public/products/drop-02/medina-saddlebag-tooled-cognac-pdp-05.webp",
+      "https://xbtabpurfavngwmwtawc.supabase.co/storage/v1/object/public/products/drop-02/medina-saddlebag-tooled-cognac-pdp-06.webp",
+      "https://xbtabpurfavngwmwtawc.supabase.co/storage/v1/object/public/products/drop-02/medina-saddlebag-tooled-cognac-pdp-07.webp",
+      "https://xbtabpurfavngwmwtawc.supabase.co/storage/v1/object/public/products/drop-02/medina-saddlebag-tooled-cognac-pdp-08.webp",
+      "https://xbtabpurfavngwmwtawc.supabase.co/storage/v1/object/public/products/drop-02/medina-saddlebag-tooled-cognac-pdp-01.webp",
+      "https://xbtabpurfavngwmwtawc.supabase.co/storage/v1/object/public/products/drop-02/medina-saddlebag-tooled-cognac-pdp-02.webp",
+      "https://xbtabpurfavngwmwtawc.supabase.co/storage/v1/object/public/products/drop-02/medina-saddlebag-tooled-cognac-pdp-03.webp"
     ],
-    category: "Backpack",
-    status: "available",
-    featured: true,
-    materials: [
-      "Full-grain tan Moroccan leather",
-      "Twin front buckled pockets",
-      "Drawstring closure under flap",
-      "Cream contrast saddle-stitch",
-      "Hand saddle-stitched in Marrakech",
+    "category": "Saddlebag",
+    "status": "available",
+    "featured": true,
+    "materials": [
+      "Full-grain Moroccan leather",
+      "Hand-tooled leather flap",
+      "Solid brass hardware",
+      "Hand-finished in Marrakech"
     ],
-    dimensions: { size: "40cm × 32cm × 16cm · classic flap rucksack" },
-    description:
-      "Heritage classic rucksack in soft tan full-grain leather. Twin buckled front pockets, drawstring inner closure under a flap, cream contrast saddle-stitch throughout. Built like field gear, finished like maison goods.",
-    available_quantity: 16,
-    weight_lbs: 2.8,
-    craftsman_id: null,
-    created_at: "",
-    updated_at: "",
+    "dimensions": {
+      "size": "See product page for current dimensions"
+    },
+    "description": "Cognac full-grain saddle bag with hand-tooled diamond and rosette flap. Brass turn-lock closure, adjustable shoulder strap. Each flap is carved by hand — every piece is one of one.",
+    "available_quantity": 10,
+    "weight_lbs": null,
+    "craftsman_id": null,
+    "created_at": "",
+    "updated_at": ""
   },
+  {
+    "id": "static-21-oasis-weekender-oxblood",
+    "title": "Oasis Weekender · Oxblood",
+    "slug": "oasis-weekender-oxblood",
+    "price": 34500,
+    "images": [
+      "https://xbtabpurfavngwmwtawc.supabase.co/storage/v1/object/public/products/drop-02/oasis-weekender-oxblood-pdp-white.webp",
+      "https://xbtabpurfavngwmwtawc.supabase.co/storage/v1/object/public/products/drop-02/oasis-weekender-oxblood-pdp-04.webp",
+      "https://xbtabpurfavngwmwtawc.supabase.co/storage/v1/object/public/products/drop-02/oasis-weekender-oxblood-pdp-05.webp",
+      "https://xbtabpurfavngwmwtawc.supabase.co/storage/v1/object/public/products/drop-02/oasis-weekender-oxblood-pdp-06.webp",
+      "https://xbtabpurfavngwmwtawc.supabase.co/storage/v1/object/public/products/drop-02/oasis-weekender-oxblood-pdp-07.webp",
+      "https://xbtabpurfavngwmwtawc.supabase.co/storage/v1/object/public/products/drop-02/oasis-weekender-oxblood-pdp-08.webp",
+      "https://xbtabpurfavngwmwtawc.supabase.co/storage/v1/object/public/products/drop-02/oasis-weekender-oxblood-pdp-01.webp",
+      "https://xbtabpurfavngwmwtawc.supabase.co/storage/v1/object/public/products/drop-02/oasis-weekender-oxblood-pdp-02.webp",
+      "https://xbtabpurfavngwmwtawc.supabase.co/storage/v1/object/public/products/drop-02/oasis-weekender-oxblood-pdp-03.webp"
+    ],
+    "category": "Weekender",
+    "status": "available",
+    "featured": true,
+    "materials": [
+      "Full-grain Moroccan leather",
+      "Solid brass zipper and hardware",
+      "Dual rolled leather handles",
+      "Hand-finished in Marrakech"
+    ],
+    "dimensions": {
+      "size": "See product page for current dimensions"
+    },
+    "description": "Structured deep-oxblood leather weekender with contrast hide side panel and double rolled handles. Brass hardware, hand-stitched gusset, slip pocket interior. Made for a long Friday night.",
+    "available_quantity": 10,
+    "weight_lbs": null,
+    "craftsman_id": null,
+    "created_at": "",
+    "updated_at": ""
+  },
+  {
+    "id": "static-22-vintage-buckle-backpack",
+    "title": "Vintage Buckle Backpack",
+    "slug": "vintage-buckle-backpack",
+    "price": 22500,
+    "images": [
+      "https://xbtabpurfavngwmwtawc.supabase.co/storage/v1/object/public/products/drop-02/vintage-buckle-backpack-pdp-white.webp",
+      "https://xbtabpurfavngwmwtawc.supabase.co/storage/v1/object/public/products/drop-02/vintage-buckle-backpack-scale.webp",
+      "https://xbtabpurfavngwmwtawc.supabase.co/storage/v1/object/public/products/drop-02/vintage-buckle-backpack-pdp-04.webp",
+      "https://xbtabpurfavngwmwtawc.supabase.co/storage/v1/object/public/products/drop-02/vintage-buckle-backpack-pdp-05.webp",
+      "https://xbtabpurfavngwmwtawc.supabase.co/storage/v1/object/public/products/drop-02/vintage-buckle-backpack-pdp-06.webp",
+      "https://xbtabpurfavngwmwtawc.supabase.co/storage/v1/object/public/products/drop-02/vintage-buckle-backpack-pdp-07.webp",
+      "https://xbtabpurfavngwmwtawc.supabase.co/storage/v1/object/public/products/drop-02/vintage-buckle-backpack-pdp-08.webp",
+      "https://xbtabpurfavngwmwtawc.supabase.co/storage/v1/object/public/products/drop-02/vintage-buckle-backpack-pdp-09.webp",
+      "https://xbtabpurfavngwmwtawc.supabase.co/storage/v1/object/public/products/drop-02/vintage-buckle-backpack-pdp-01.webp"
+    ],
+    "category": "Backpack",
+    "status": "available",
+    "featured": true,
+    "materials": [
+      "Full-grain Moroccan leather",
+      "Solid brass hardware",
+      "Hand-finished in Marrakech"
+    ],
+    "dimensions": {
+      "size": "See product page for current dimensions"
+    },
+    "description": "Safari-classic silhouette in cognac full-grain leather. Buckled flap over a drawstring inner closure, plus three exterior buckled pockets (one front, two side). Patinas to a deep tobacco with daily wear.",
+    "available_quantity": 10,
+    "weight_lbs": null,
+    "craftsman_id": null,
+    "created_at": "",
+    "updated_at": ""
+  },
+  {
+    "id": "static-23-vintage-satchel-light-brown",
+    "title": "Vintage Satchel · Light Brown",
+    "slug": "vintage-satchel-light-brown",
+    "price": 21500,
+    "images": [
+      "https://xbtabpurfavngwmwtawc.supabase.co/storage/v1/object/public/products/drop-02/vintage-satchel-light-brown-pdp-white.webp",
+      "https://xbtabpurfavngwmwtawc.supabase.co/storage/v1/object/public/products/drop-02/vintage-satchel-light-brown-scale.webp"
+    ],
+    "category": "Satchel",
+    "status": "available",
+    "featured": true,
+    "materials": [
+      "Full-grain Moroccan leather",
+      "Solid brass hardware",
+      "Hand-finished in Marrakech"
+    ],
+    "dimensions": {
+      "size": "See product page for current dimensions"
+    },
+    "description": "Compact satchel in soft light-brown full-grain leather. Buckled flap closure, brass-finished hardware, adjustable crossbody strap. The everyday companion that patinas warm with use.",
+    "available_quantity": 10,
+    "weight_lbs": null,
+    "craftsman_id": null,
+    "created_at": "",
+    "updated_at": ""
+  },
+  {
+    "id": "static-24-woven-leather-backpack",
+    "title": "Woven Leather Backpack",
+    "slug": "woven-leather-backpack",
+    "price": 29500,
+    "images": [
+      "https://xbtabpurfavngwmwtawc.supabase.co/storage/v1/object/public/products/drop-02/woven-leather-backpack-pdp-white.webp",
+      "https://xbtabpurfavngwmwtawc.supabase.co/storage/v1/object/public/products/drop-02/woven-leather-backpack-pdp-02.webp",
+      "https://xbtabpurfavngwmwtawc.supabase.co/storage/v1/object/public/products/drop-02/woven-leather-backpack-pdp-03.webp",
+      "https://xbtabpurfavngwmwtawc.supabase.co/storage/v1/object/public/products/drop-02/woven-leather-backpack-pdp-04.webp",
+      "https://xbtabpurfavngwmwtawc.supabase.co/storage/v1/object/public/products/drop-02/woven-leather-backpack-pdp-05.webp",
+      "https://xbtabpurfavngwmwtawc.supabase.co/storage/v1/object/public/products/drop-02/woven-leather-backpack-pdp-06.webp",
+      "https://xbtabpurfavngwmwtawc.supabase.co/storage/v1/object/public/products/drop-02/woven-leather-backpack-pdp-07.webp",
+      "https://xbtabpurfavngwmwtawc.supabase.co/storage/v1/object/public/products/drop-02/woven-leather-backpack-pdp-08.webp",
+      "https://xbtabpurfavngwmwtawc.supabase.co/storage/v1/object/public/products/drop-02/woven-leather-backpack-pdp-09.webp"
+    ],
+    "category": "Backpack",
+    "status": "available",
+    "featured": true,
+    "materials": [
+      "Full-grain Moroccan leather",
+      "Hand-woven leather panels",
+      "Solid brass hardware",
+      "Hand-finished in Marrakech"
+    ],
+    "dimensions": {
+      "size": "See product page for current dimensions"
+    },
+    "description": "Dark-chocolate full-grain leather woven by hand into a diamond lattice across the body and flap. Drawstring inner closure under the buckled flap. Smooth saddle leather base and shoulder straps. The most labour-intensive bag in the drop.",
+    "available_quantity": 10,
+    "weight_lbs": null,
+    "craftsman_id": null,
+    "created_at": "",
+    "updated_at": ""
+  }
 ];
 
 // Merge a Supabase product list with STATIC_PRODUCTS:
@@ -615,7 +855,19 @@ export function mergeWithStatic(supabaseProducts: Product[]): Product[] {
   return overlaid;
 }
 
-export const CATEGORIES = ["All", "Backpack", "Crossbody", "Tote", "Weekender", "Satchel"] as const;
+export const CATEGORIES = [
+  "All",
+  "Backpack",
+  "Briefcase",
+  "Crossbody",
+  "Duffle",
+  "Messenger",
+  "Rolltop",
+  "Saddlebag",
+  "Satchel",
+  "Tote",
+  "Weekender",
+] as const;
 
 export type Category = (typeof CATEGORIES)[number];
 

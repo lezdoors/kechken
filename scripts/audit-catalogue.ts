@@ -57,6 +57,7 @@ const BANNED_PATH_PARTS = [
 // Remove a slug from this set the moment its <slug>-scale.webp lands.
 const AWAITING_SCALE_SHOTS = new Set<string>([
   "black-stitched-backpack",
+  "atlas-field-briefcase",
   "cognac-brogue-backpack",
   "classic-cognac-satchel",
   "woven-leather-backpack",

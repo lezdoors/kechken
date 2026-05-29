@@ -1,5 +1,14 @@
 # Missing assets — Maison Tanneurs
 
+> **2026-05-28 launch note:** this file is historical and not the active
+> Maison Tanneurs product-media source of truth. Use
+> `docs/HF-9SHOT-REQUESTS-2026-05-28.md`,
+> `docs/PRODUCT-MEDIA-AUDIT-2026-05-28.md`, and
+> `docs/ROCCO-PRODUCT-MEDIA-HANDOFF-2026-05-28.md` for current launch work.
+> The launch scope is bags and small leather goods only. Finished HF/Drive
+> product sets in `Maison Tanneurs/usable product pics` are canonical; raw
+> screenshots, Oussam uploads, and supplier/source folders are references only.
+
 The HF work list. Every asset referenced by the site but not yet generated lives here. One row per shot to fire.
 
 ## Brand imagery slots — `public/brand/`
@@ -62,13 +71,32 @@ Featured SKUs SHOULD have a `-scale.webp` lifestyle shot. Grandfathered list (wa
 
 Run the audit before every deploy: `pnpm audit:catalogue` (also auto-runs as `prebuild`).
 
-### Production catalogue — 6 visible + 1 draft
+### Historical note
+
+This file predates the May 28 launch media audit. Current Maison Tanneurs
+launch scope is bags and small leather goods only. Do not treat clothing,
+jackets, outerwear, or apparel copy as part of the launch catalogue.
+
+Ryan flagged a possible Drive folder for `cognac-brogue-backpack` at:
+
+`/Users/ryanz/Library/CloudStorage/GoogleDrive-ryanaoufal@gmail.com/My Drive/Maison Tanneurs/usable product pics/cognac-brogue-backpack`
+
+The 9 PNGs have been encoded and staged at:
+
+`/Users/ryanz/brand-assets/maison-tanneurs/_upload-ready/2026-05-28-cognac-brogue-backpack`
+
+2026-05-28 correction: Ryan confirmed the finished Drive folder
+`usable product pics/cognac-brogue-backpack` as the correct product source for
+the launch row. The current active audit treats that SKU as resolved. Do not
+revive older raw/supplier mismatch notes from this historical section.
+
+### Legacy production catalogue — 6 visible + 1 draft
 
 | Slug | hero | scale exists? | price | status |
 |---|---|---|---|---|
 | `heritage-rucksack` | scale (lifestyle, man in alley) | ✓ | $325 | live |
 | `black-stitched-backpack` | pdp-white | grandfathered | $245 | live, awaiting scale |
-| `cognac-brogue-backpack` | pdp-white | grandfathered | $265 | live, awaiting scale |
+| `cognac-brogue-backpack` | pdp-white | resolved by 2026-05-28 audit | $265 | live, finished Drive 9-shot set wired |
 | `classic-cognac-satchel` | pdp-white | grandfathered | $285 | live, awaiting scale |
 | `woven-leather-backpack` | pdp-white | grandfathered | $295 | live, awaiting scale |
 | `vintage-buckle-backpack` | pdp-white | grandfathered | $225 | live, awaiting scale |
@@ -97,7 +125,7 @@ Per-SKU silhouette context (append to intent if the reference image alone needs 
 | Slug | Silhouette context |
 |---|---|
 | `black-stitched-backpack` | black full-grain leather backpack, cream contrast zigzag stitching |
-| `cognac-brogue-backpack` | cognac full-grain backpack, brogue-style scallop stitching, single buckled flap |
+| `cognac-brogue-backpack` | live product is buckled flap backpack; staged Drive folder currently shows different zip backpack |
 | `classic-cognac-satchel` | cognac briefcase satchel, dual brass buckles, top handle |
 | `woven-leather-backpack` | dark-chocolate hand-woven leather backpack, diamond lattice |
 | `vintage-buckle-backpack` | cognac safari-classic backpack, three buckled exterior pockets |
@@ -218,7 +246,7 @@ Already covered by `hero-leather-campaign.webp` + `leather-goods-tile.webp` for 
 
 ## Drop 02 SKU roadmap (planning)
 
-Tentative wearables to add post-launch. Need Oussama's inventory list + photo upload before any of these can ship.
+Tentative leather goods to add post-launch. Need Oussama's inventory list + photo upload before any of these can ship.
 
 | Tentative slug | Category | Shots needed |
 |---|---|---|

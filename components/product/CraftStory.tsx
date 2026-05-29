@@ -9,7 +9,7 @@ export default function CraftStory({ craftsman, materials }: CraftStoryProps) {
   const artisanName = craftsman?.name || "Master Artisans of Marrakech";
   const materialsText =
     materials.length > 0
-      ? materials.join(", ").toLowerCase()
+      ? materials.join(", ")
       : "traditional materials";
 
   return (
@@ -30,14 +30,12 @@ export default function CraftStory({ craftsman, materials }: CraftStoryProps) {
               Every piece in our collection is the product of generations of
               accumulated knowledge, passed from master to apprentice in the
               workshops of Marrakech. Working with {materialsText}, our artisans
-              employ techniques that have remained unchanged for centuries --
-              hand-hammering, hand-carving, and hand-setting each element with
-              extraordinary precision.
+              cut, skive, saddle-stitch, edge-burnish, line, and fit each object
+              by hand before final inspection.
             </p>
             <p className="body-copy max-w-[52ch]">
-              The result is a piece that carries the warmth and imperfection of
-              the human hand -- subtle variations that no machine could replicate
-              and that make each creation genuinely one of a kind.
+              The result is a bag that holds its structure, softens with use,
+              and develops a patina specific to the person carrying it.
             </p>
 
             {craftsman?.bio && (

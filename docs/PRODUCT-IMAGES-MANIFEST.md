@@ -4,6 +4,10 @@ _Generated: 2026-05-25 16:57 by `scripts/build-images-manifest.py`_
 
 Single source of truth for **every Maison Tanneurs product image**: what's in Supabase Storage, what's on Drive, what's wired to `products.images[]` on the live site, and what state each SKU is in.
 
+> 2026-05-28 update: this manifest is historical unless regenerated. For the
+> current launch audit, use `docs/PRODUCT-MEDIA-AUDIT-2026-05-28.md`,
+> `docs/ROCCO-PRODUCT-MEDIA-HANDOFF-2026-05-28.md`, and the live audit scripts.
+
 **Stop hunting.** When you need to add, replace, or audit a product photo, start here.
 
 ---
@@ -47,8 +51,8 @@ Hero priority order applied by the manifest builder:
 | Status | Count | Meaning |
 |---|---|---|
 | READY | 18 | Live on site, canonical hero + ≥3 gallery shots |
-| PARTIAL | 1 | Live but thin gallery (≤3 shots) — generate more HF shots |
-| NO-HERO | 9 | Hidden by `lib/hidden-skus.ts` — only supplier raws, needs HF run |
+| PARTIAL | 1 | Live but thin gallery (≤3 shots) — find/download the finished HF/Drive set before generating |
+| NO-HERO | 9 | Hidden by `lib/hidden-skus.ts` — source refs only or no canonical hero; find finished HF/Drive output first |
 
 ---
 
@@ -134,14 +138,23 @@ Wired to `products.images[]`:
 
 ### `cognac-brogue-backpack`
 
-- **Storage files:** 3 (3 usable, 0 supplier-raw / banned)
+- **Storage files:** 9 currently live (9 usable, 0 supplier-raw / banned)
 - **Hero:** `cognac-brogue-backpack-pdp-white.webp`
+- **Drive candidate:** `usable product pics/cognac-brogue-backpack/`
+- **Staged QA folder:** `/Users/ryanz/brand-assets/maison-tanneurs/_upload-ready/2026-05-28-cognac-brogue-backpack/`
+- **Status:** Wired. Ryan confirmed this Drive folder is the product source.
 
 Wired to `products.images[]`:
 
-0. `drop-01/cognac-brogue-backpack-pdp-white.webp`
-1. `drop-01/cognac-brogue-backpack-archive-1.webp`
-2. `drop-01/cognac-brogue-backpack-archive-2.webp`
+0. `drop-02/cognac-brogue-backpack-pdp-white.webp`
+1. `drop-02/cognac-brogue-backpack-pdp-02.webp`
+2. `drop-02/cognac-brogue-backpack-pdp-03.webp`
+3. `drop-02/cognac-brogue-backpack-pdp-04.webp`
+4. `drop-02/cognac-brogue-backpack-pdp-05.webp`
+5. `drop-02/cognac-brogue-backpack-pdp-06.webp`
+6. `drop-02/cognac-brogue-backpack-pdp-07.webp`
+7. `drop-02/cognac-brogue-backpack-pdp-08.webp`
+8. `drop-02/cognac-brogue-backpack-pdp-09.webp`
 
 ### `expedition-rolltop-cognac`
 
@@ -363,62 +376,107 @@ Wired to `products.images[]`:
 
 ### `woven-leather-backpack`
 
-- **Storage files:** 2 (2 usable, 0 supplier-raw / banned)
+- **Storage files:** 9 (9 usable, 0 supplier-raw / banned)
 - **Hero:** `woven-leather-backpack-pdp-white.webp`
+- **Drive source:** `usable product pics/woven-leather-backpack/`
+- **Staged QA folder:** `/Users/ryanz/brand-assets/maison-tanneurs/_upload-ready/2026-05-28-woven-leather-backpack/`
 
 Wired to `products.images[]`:
 
-0. `drop-01/woven-leather-backpack-pdp-white.webp`
-1. `drop-01/woven-leather-backpack-archive-1.webp`
+0. `drop-02/woven-leather-backpack-pdp-white.webp`
+1. `drop-02/woven-leather-backpack-pdp-02.webp`
+2. `drop-02/woven-leather-backpack-pdp-03.webp`
+3. `drop-02/woven-leather-backpack-pdp-04.webp`
+4. `drop-02/woven-leather-backpack-pdp-05.webp`
+5. `drop-02/woven-leather-backpack-pdp-06.webp`
+6. `drop-02/woven-leather-backpack-pdp-07.webp`
+7. `drop-02/woven-leather-backpack-pdp-08.webp`
+8. `drop-02/woven-leather-backpack-pdp-09.webp`
 
-## NO-HERO (hidden, needs HF shots)
+## NO-HERO (hidden until finished HF/Drive hero is found)
 
 ### `atlas-briefcase-vintage`
 
 - **Storage files:** 3 (0 usable, 3 supplier-raw / banned)
-- **Hero:** _none — needs HF generation_
+- **Hero:** _none — find/download finished HF/Drive hero first; generate only after visual search fails_
+
+### `atlas-field-briefcase`
+
+- **Storage files:** 9 currently live (9 usable, 0 supplier-raw / banned)
+- **Hero:** `atlas-field-briefcase-pdp-white.webp`
+- **Drive source:** `usable product pics/atlas-field-briefcase/`
+- **Staged QA folder:** `/Users/ryanz/brand-assets/maison-tanneurs/_upload-ready/2026-05-28-atlas-field-briefcase/`
+- **Status:** Wired as a separate product from `atlas-briefcase-vintage`.
+
+Wired to `products.images[]`:
+
+0. `drop-02/atlas-field-briefcase-pdp-white.webp`
+1. `drop-02/atlas-field-briefcase-pdp-01.webp`
+2. `drop-02/atlas-field-briefcase-pdp-02.webp`
+3. `drop-02/atlas-field-briefcase-pdp-03.webp`
+4. `drop-02/atlas-field-briefcase-pdp-05.webp`
+5. `drop-02/atlas-field-briefcase-pdp-06.webp`
+6. `drop-02/atlas-field-briefcase-pdp-07.webp`
+7. `drop-02/atlas-field-briefcase-pdp-08.webp`
+8. `drop-02/atlas-field-briefcase-pdp-09.webp`
 
 ### `atlas-kilim-rucksack`
 
-- **Storage files:** 1 (0 usable, 1 supplier-raw / banned)
-- **Hero:** _none — needs HF generation_
+- **Storage files:** 9 currently live (9 usable, 0 supplier-raw / banned)
+- **Hero:** `atlas-kilim-rucksack-pdp-white.webp`
+- **Drive source:** `usable product pics/atlas-kilim-rucksack/`
+- **Staged QA folder:** `/Users/ryanz/brand-assets/maison-tanneurs/_upload-ready/2026-05-28-atlas-kilim-rucksack-full/`
+- **Status:** Wired. Ryan confirmed this Drive folder is the product source.
+
+Wired to `products.images[]`:
+
+0. `drop-02/atlas-kilim-rucksack-pdp-white.webp`
+1. `drop-02/atlas-kilim-rucksack-scale.webp`
+2. `drop-02/atlas-kilim-rucksack-pdp-01.webp`
+3. `drop-02/atlas-kilim-rucksack-pdp-02.webp`
+4. `drop-02/atlas-kilim-rucksack-pdp-04.webp`
+5. `drop-02/atlas-kilim-rucksack-pdp-05.webp`
+6. `drop-02/atlas-kilim-rucksack-pdp-06.webp`
+7. `drop-02/atlas-kilim-rucksack-pdp-07.webp`
+8. `drop-02/atlas-kilim-rucksack-pdp-08.webp`
+9. `drop-02/atlas-kilim-rucksack-pdp-09.webp`
 
 ### `explorer-rolltop-noir`
 
 - **Storage files:** 13 (11 usable, 2 supplier-raw / banned)
-- **Hero:** _none — needs HF generation_
+- **Hero:** _none — find/download finished HF/Drive hero first; generate only after visual search fails_
 - **Drive source:** `usable product pics/explorer-rolltop-noir-macro/`
 
 ### `marrakech-tote-bordeaux`
 
 - **Storage files:** 2 (0 usable, 2 supplier-raw / banned)
-- **Hero:** _none — needs HF generation_
+- **Hero:** _none — find/download finished HF/Drive hero first; generate only after visual search fails_
 
 ### `marrakech-tote-noir`
 
 - **Storage files:** 1 (0 usable, 1 supplier-raw / banned)
-- **Hero:** _none — needs HF generation_
+- **Hero:** _none — find/download finished HF/Drive hero first; generate only after visual search fails_
 
 ### `medina-crossbody-cognac`
 
 - **Storage files:** 5 (0 usable, 5 supplier-raw / banned)
-- **Hero:** _none — needs HF generation_
+- **Hero:** _none — find/download finished HF/Drive hero first; generate only after visual search fails_
 
 ### `medina-crossbody-tassel`
 
 - **Storage files:** 1 (0 usable, 1 supplier-raw / banned)
-- **Hero:** _none — needs HF generation_
+- **Hero:** _none — find/download finished HF/Drive hero first; generate only after visual search fails_
 
 ### `medina-crossbody-tooled-walnut`
 
 - **Storage files:** 25 (22 usable, 3 supplier-raw / banned)
-- **Hero:** _none — needs HF generation_
+- **Hero:** _none — find/download finished HF/Drive hero first; generate only after visual search fails_
 - **Drive source:** `usable product pics/medina-crossbody-tooled-walnut-macro/`
 
 ### `vintage-satchel-light-brown`
 
 - **Storage files:** 1 (0 usable, 1 supplier-raw / banned)
-- **Hero:** _none — needs HF generation_
+- **Hero:** _none — find/download finished HF/Drive hero first; generate only after visual search fails_
 
 ---
 
@@ -468,4 +526,3 @@ SRK=$SRK python3 scripts/write-images-manifest-md.py
 | `scripts/write-images-manifest-md.py` | `/tmp/manifest.json` + Drive folder | `docs/PRODUCT-IMAGES-MANIFEST.md` (this file) |
 
 All three are idempotent. Run them in order any time you add or change Storage files.
-

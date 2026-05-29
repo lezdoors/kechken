@@ -8,6 +8,9 @@ export const metadata: Metadata = {
   title: "About Maison Tanneurs",
   description:
     "A small leather house working out of a Marrakech atelier. Full-grain leather, hand-stitched, solid brass hardware. Shipped direct in three to five days.",
+  alternates: {
+    canonical: "/about",
+  },
 };
 
 export default function AboutPage() {

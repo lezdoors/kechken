@@ -1,18 +1,12 @@
 import type { Metadata } from "next";
 import Script from "next/script";
-import { Inter, JetBrains_Mono, Noto_Naskh_Arabic, Playfair_Display } from "next/font/google";
+import { JetBrains_Mono, Noto_Naskh_Arabic, Playfair_Display } from "next/font/google";
 import "./globals.css";
 import CookieBanner from "@/components/store/CookieBanner";
 import ConsentedClarity from "@/components/store/ConsentedClarity";
 import MetaPixel from "@/components/store/MetaPixel";
 import GA4 from "@/components/store/GA4";
 import { getRequestDir, getRequestLocale } from "@/lib/i18n-server";
-
-const inter = Inter({
-  subsets: ["latin"],
-  variable: "--font-sans",
-  display: "swap",
-});
 
 const mono = JetBrains_Mono({
   subsets: ["latin"],
@@ -42,7 +36,7 @@ export const metadata: Metadata = {
     template: "%s | Maison Tanneurs",
   },
   description:
-    "Hand-stitched leather wearables, sourced direct from a Marrakech atelier. Full-grain leather, editorial silhouettes, shipped worldwide in 3–5 days.",
+    "Hand-stitched leather goods, sourced direct from a Marrakech atelier. Full-grain leather, editorial silhouettes, shipped worldwide in 3–5 days.",
   metadataBase: new URL(
     process.env.NEXT_PUBLIC_SITE_URL || "https://www.maisontanneurs.com",
   ),
@@ -52,7 +46,7 @@ export const metadata: Metadata = {
     siteName: "Maison Tanneurs",
     title: "Maison Tanneurs — Hand-stitched leather from Marrakech",
     description:
-      "Hand-stitched leather wearables, sourced direct from a Marrakech atelier. Full-grain leather, editorial silhouettes, shipped worldwide in 3–5 days.",
+      "Hand-stitched leather goods, sourced direct from a Marrakech atelier. Full-grain leather, editorial silhouettes, shipped worldwide in 3–5 days.",
     images: [
       {
         url: "/hero/hero-leather-campaign.webp",
@@ -66,7 +60,7 @@ export const metadata: Metadata = {
     card: "summary_large_image",
     title: "Maison Tanneurs",
     description:
-      "Hand-stitched leather wearables, sourced direct from a Marrakech atelier. Full-grain leather, editorial silhouettes, shipped worldwide in 3–5 days.",
+      "Hand-stitched leather goods, sourced direct from a Marrakech atelier. Full-grain leather, editorial silhouettes, shipped worldwide in 3–5 days.",
     images: ["/hero/hero-leather-campaign.webp"],
   },
   alternates: {
@@ -87,7 +81,7 @@ const ORGANIZATION_LD = {
   url: "https://www.maisontanneurs.com",
   logo: "https://www.maisontanneurs.com/brand/logos/mt-arched-badge.png",
   description:
-    "Hand-stitched leather wearables sourced direct from a Marrakech atelier. Full-grain leather, editorial silhouettes.",
+    "Hand-stitched leather goods sourced direct from a Marrakech atelier. Full-grain leather, editorial silhouettes.",
   email: "hello@maisontanneurs.com",
 };
 
@@ -102,7 +96,7 @@ export default async function RootLayout({
   const locale = await getRequestLocale();
   const dir = await getRequestDir();
   return (
-    <html lang={locale} dir={dir} className={`${inter.variable} ${mono.variable} ${playfair.variable} ${arabic.variable}`}>
+    <html lang={locale} dir={dir} className={`${mono.variable} ${playfair.variable} ${arabic.variable}`}>
       <body>
         <Script
           id="organization-ld"

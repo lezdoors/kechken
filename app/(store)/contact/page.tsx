@@ -5,6 +5,9 @@ export const metadata: Metadata = {
   title: "Contact",
   description:
     "Write to the Maison Tanneurs atelier. We answer within one working day.",
+  alternates: {
+    canonical: "/contact",
+  },
 };
 
 export default function ContactPage() {

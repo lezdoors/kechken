@@ -5,16 +5,14 @@ type Tile = {
   label: string;
   href: string;
   caption: string;
-  /** When real campaign imagery lands, set image. Null → gradient placeholder. */
   image: string | null;
-  /** Gradient placeholder so each tile has a distinct mood. */
   gradient: string;
 };
 
 const TILES: Tile[] = [
   {
-    label: "Leather Goods",
-    href: "/products?category=Leather%20Goods",
+    label: "Bags",
+    href: "/products",
     caption: "Hand-stitched in Marrakech",
     image: "https://xbtabpurfavngwmwtawc.supabase.co/storage/v1/object/public/products/drop-01/leather-goods-tile.webp",
     gradient: "linear-gradient(180deg, #d8a47a 0%, #8c4d2e 100%)",

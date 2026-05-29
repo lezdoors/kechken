@@ -12,7 +12,13 @@ const COLUMNS: ColumnDef[] = [
     links: [
       { labelKey: "footer.allObjects", href: "/products" },
       { labelKey: "footer.backpacks", href: "/products?category=Backpack" },
+      { labelKey: "footer.briefcases", href: "/products?category=Briefcase" },
       { labelKey: "footer.crossbody", href: "/products?category=Crossbody" },
+      { labelKey: "footer.duffles", href: "/products?category=Duffle" },
+      { labelKey: "footer.messengers", href: "/products?category=Messenger" },
+      { labelKey: "footer.rolltops", href: "/products?category=Rolltop" },
+      { labelKey: "footer.saddlebags", href: "/products?category=Saddlebag" },
+      { labelKey: "footer.satchels", href: "/products?category=Satchel" },
       { labelKey: "footer.totes", href: "/products?category=Tote" },
       { labelKey: "footer.weekenders", href: "/products?category=Weekender" },
     ],

@@ -4,6 +4,7 @@ import Image from "next/image";
 import Link from "next/link";
 import { formatPrice } from "@/lib/utils";
 import { bust } from "@/lib/image-url";
+import { productImageClass } from "@/lib/product-image-presentation";
 import { useLocalizedHref, useT } from "@/lib/i18n-client";
 
 interface ProductCardProps {
@@ -14,6 +15,7 @@ interface ProductCardProps {
   category?: string;
   origin?: string;
   badge?: string;
+  eager?: boolean;
 }
 
 // Categories where price IS shown on the grid (gateway products).
@@ -74,6 +76,7 @@ export default function ProductCard({
   image,
   slug,
   category,
+  eager = false,
 }: ProductCardProps) {
   const t = useT();
   const href = useLocalizedHref();
@@ -83,26 +86,23 @@ export default function ProductCard({
   return (
     <Link
       href={href(`/products/${slug}`)}
-      className="group block border border-[color:var(--color-rule)] bg-[color:var(--color-paper)] transition-colors hover:border-[color:var(--color-ink)]/35"
+      className="group block bg-[color:var(--color-paper)]"
     >
-      {/* Image plate — pure-white studio surface */}
-      <div className="relative aspect-[4/5] overflow-hidden bg-[color:var(--color-plate)]">
+      <div className="mt-product-frame relative aspect-[4/5]">
         <Image
           src={bust(image)}
           alt={title}
           fill
           sizes="(max-width: 768px) 100vw, 33vw"
-          className="object-contain p-0 mt-product-img-trim transition-transform duration-[1200ms] ease-out group-hover:scale-[1.01]"
+          loading={eager ? "eager" : "lazy"}
+          className={productImageClass(image)}
         />
-        <div className="pointer-events-none absolute inset-0 ring-1 ring-[color:var(--color-plate)]" />
       </div>
 
-      {/* Admin / dossier register info block */}
       <div
-        className="border-t border-[color:var(--color-rule)] px-5 py-4 flex flex-col gap-2"
+        className="px-0 pt-5 flex flex-col gap-2"
         style={{ background: "var(--color-paper)" }}
       >
-        {/* Top row: SKU mono line */}
         <div
           className="flex items-center gap-3 text-[10.5px] tracking-[0.14em] uppercase"
           style={{
@@ -112,10 +112,9 @@ export default function ProductCard({
         >
           <span>{family}</span>
           <span aria-hidden className="text-[color:var(--color-rule-strong)]">/</span>
-          <span className="truncate">{slug}</span>
+          <span>Marrakech atelier</span>
         </div>
 
-        {/* Product title */}
         <h3
           className="text-[15px] leading-tight"
           style={{
@@ -128,9 +127,8 @@ export default function ProductCard({
           {title}
         </h3>
 
-        {/* Price OR "View details" — depends on category */}
         <div
-          className="text-[11px] tracking-[0.16em] uppercase mt-1"
+          className="text-[10.5px] tracking-[0.16em] uppercase mt-1"
           style={{
             fontFamily: "var(--font-mono)",
             color: "var(--color-ink)",

@@ -5,6 +5,9 @@ export const metadata: Metadata = {
   title: "Terms of Sale — Maison Tanneurs",
   description:
     "The terms under which Maison Tanneurs sells hand-stitched leather goods, shipped direct from a Marrakech atelier.",
+  alternates: {
+    canonical: "/legal/terms",
+  },
 };
 
 export default function TermsPage() {

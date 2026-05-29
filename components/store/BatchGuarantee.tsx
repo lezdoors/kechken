@@ -43,10 +43,10 @@ export default function BatchGuarantee() {
             style={{ fontSize: "14px", letterSpacing: "-0.01em", maxWidth: "52ch" }}
           >
             The Atelier runs on a single closed circuit of seven master artisans
-            in the Marrakech Medina — cutter, skiver, two stitchers, edge-coater,
-            finisher, dispatcher. Every object is hand-assembled, edge-burnished
-            and saddle-stitched at the same workbench, in the same fourteen-day
-            cycle. We do not subcontract. We do not season.
+            in Marrakech — cutter, skiver, two stitchers, edge-coater, finisher,
+            dispatcher. Every object is hand-assembled, edge-burnished and
+            saddle-stitched at the same workbench, in the same fourteen-day
+            cycle. We do not subcontract the finish. We do not inflate the run.
           </p>
           <ul className="mt-10 divide-y divide-[#e5e5e5] border-y border-[#e5e5e5]">
             <Row k="Run Size" v="≤ 200 / Edition" />

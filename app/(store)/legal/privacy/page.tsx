@@ -5,6 +5,9 @@ export const metadata: Metadata = {
   title: "Privacy — Maison Tanneurs",
   description:
     "How Maison Tanneurs collects, uses, and protects the personal information of customers.",
+  alternates: {
+    canonical: "/legal/privacy",
+  },
 };
 
 export default function PrivacyPage() {

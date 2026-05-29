@@ -1,66 +1,55 @@
-# Kechken · Fulfillment Architecture
+# Maison Tanneurs Fulfillment Architecture
 
-## Model: Print-to-Order
+This file replaces the historical Kechken/Printful apparel plan. Maison
+Tanneurs launch scope is bags and small leather goods only.
 
-Every Kechken piece is printed **when** the order arrives. No advance inventory. No overstock destroyed. The dropshipper (Printful, locked) holds:
+## Model
 
-- The blank garments (Bella+Canvas 3001 heavyweight tee, Lane Seven LS14001 hoodie, AS Colour 1124 cap)
-- Our brand assets (wordmark for packing slip + care label)
-- Our artwork files (each Drop 01 SKU's painterly graphic, print-ready)
-- Our product descriptions, care instructions, returns address
-- Our packing slip template + thank-you card
+Maison Tanneurs sells finished leather goods sourced direct from the Marrakech
+atelier. No Printful, no blank garments, no apparel SKUs, no print-on-demand
+workflow.
 
-When a customer places an order on kechken.com:
-1. Stripe captures payment via the on-domain Payment Element
-2. The Stripe webhook fires `payment_intent.succeeded`
-3. Webhook handler calls Printful API to create the order with the customer's shipping address + SKU + variant
-4. Printful prints, finishes, and ships within 3–5 business days
-5. Tracking link emails to the customer automatically (Resend)
+Customer flow:
 
-## Brand promise on the storefront
+1. Customer places an order on `maisontanneurs.com`.
+2. Revolut creates and captures the payment.
+3. The checkout API rebuilds the order from server-side product truth.
+4. Ops receives the order notification and coordinates atelier dispatch.
+5. The parcel ships direct from Marrakech by DHL or FedEx.
+6. Customer receives tracking by email.
 
-| Where shown | Copy |
-|---|---|
-| Homepage hero subtitle | "Print-to-order · Ships in 3–5 days · No overstock" |
-| Products page meta | "Hand-painted figurative graphics on heavyweight cotton. Each drop is a small run, printed when you order." |
-| PDP next to price | "Made when you order. Ships in 3–5 days." |
-| Footer hairline strip | "Rooted in the Maghreb · Made for now · Print-to-order" |
-| Cart drawer / checkout | "Your piece is printed when you order. Ships in 3–5 business days." |
-| Post-purchase email | "Your piece enters production today. Tracking arrives by email in 3–5 business days." |
+## Storefront Promise
 
-## What the dropshipper handles vs what we hold
+| Surface | Current promise |
+| --- | --- |
+| Product details | Hand-stitched in Marrakech. Ships in 3–5 days via DHL or FedEx. |
+| Legal shipping page | EU / UK: 2–4 business days. United States: 3–5 business days. |
+| Checkout success | Marrakech atelier, shipped direct via DHL or FedEx, 3–5 business days. |
+| Order confirmation email | Most orders arrive in 3 to 5 business days. |
 
-| Held by Printful | Held by us |
-|---|---|
-| Garment blanks (inventory of un-printed cotton) | Customer relationships |
-| Print equipment + ink + labor | Brand identity + artwork |
-| Shipping warehouses (US + EU) | Storefront + payments |
-| Returns intake address | Returns approval + customer service |
-| Generic packing materials | Custom packing slip template (rendered with our wordmark) |
+Keep these surfaces aligned before launch. Do not reintroduce 2–4 week
+production copy unless the operating model changes.
 
-## Printful setup checklist (Phase 1, when account opens)
+## Ops Responsibilities
 
-- [ ] Account created under Akal Ltd entity (or whichever entity locks)
-- [ ] Brand logo uploaded — render from `/brand/wordmark?w=600&h=200&subtitle=true` or upload PNG
-- [ ] Custom packing slip template configured with Kechken wordmark + thank-you message
-- [ ] Returns address registered (current placeholder: needs decision in Phase 0)
-- [ ] Drop 01 artwork files uploaded as print-ready 300 DPI PNGs:
-  - `atlas-caravan-tee` graphic (chest, full-front)
-  - `onyx-caravan-hoodie` graphic (back panel, full-bleed)
-  - `atlas-lion-cap` embroidery (front panel, brass-gold thread)
-- [ ] SKU variants configured (size S–XXL for tee + hoodie, one-size cap)
-- [ ] Pricing set with our margin baked in (target: 40% gross margin after Printful fulfillment + shipping)
-- [ ] US warehouse selected as primary (closest fulfillment to NY/NJ/MA diaspora cluster)
-- [ ] Stripe webhook → Printful API integration wired in `app/api/webhooks/stripe/route.ts`
-- [ ] Customer email templates synced (Resend ↔ Printful tracking events)
+- Confirm product availability in Supabase before promoting a SKU.
+- Use only HF-improved or confirmed Drive multishot product images.
+- Do not use raw screenshots, Oussam uploads, or supplier originals as PDP
+  assets.
+- Confirm customer name, email, shipping address, product title, quantity, and
+  total from the order notification.
+- Dispatch with DHL or FedEx and add tracking as soon as the parcel leaves the
+  atelier.
 
-## Returns policy (drafted)
+## Returns
 
-- Standard 30-day returns for unworn pieces
-- Customer pays return shipping (industry standard)
-- Refund processed when Printful confirms receipt
-- Custom-graphic SKUs are still returnable (every Drop 01 piece is the same standard SKU regardless of who ordered it — not a one-off bespoke)
+- 30-day returns for unused bags and small leather goods.
+- Items must return undamaged, with dust bag and original packaging.
+- Refund after inspection to the original payment method.
 
-## What this means for the storefront copy
+## Explicitly Not In Scope
 
-**No more atelier theater.** Kechken is not a Marrakech workshop with maâlems. Kechken is a US-anchored brand whose visual register is rooted in Morocco, printed on-demand by Printful's US/EU warehouses. The legal pages, About page, and PDPs need rewrites to reflect this reality — drafted in Phase 1 by Ryan.
+- Clothing, jackets, outerwear, apparel campaign imagery.
+- Printful, Stripe print-on-demand webhooks, garment blanks, size variants.
+- Kechken graphic-art product copy.
+

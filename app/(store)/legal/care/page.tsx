@@ -5,6 +5,9 @@ export const metadata: Metadata = {
   title: "Care — Maison Tanneurs",
   description:
     "How to care for your Maison Tanneurs full-grain leather bag so it patinas well and lasts a decade.",
+  alternates: {
+    canonical: "/legal/care",
+  },
 };
 
 export default function CarePage() {

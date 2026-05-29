@@ -11,13 +11,14 @@ export default function FieldLoop() {
   useEffect(() => {
     const el = ref.current;
     if (!el) return;
+    const mediaQuery = window.matchMedia("(prefers-reduced-motion: reduce)");
     el.muted = true;
     el.playsInline = true;
     el.loop = true;
     const tryPlay = () => {
+      if (mediaQuery.matches) return;
       el.play().catch(() => undefined);
     };
-    tryPlay();
     const io = new IntersectionObserver(
       (entries) => {
         for (const e of entries) {
@@ -28,7 +29,15 @@ export default function FieldLoop() {
       { threshold: 0.25 },
     );
     io.observe(el);
-    return () => io.disconnect();
+    const onMotionChange = () => {
+      if (mediaQuery.matches) el.pause();
+      else if (el.getBoundingClientRect().top < window.innerHeight) tryPlay();
+    };
+    mediaQuery.addEventListener("change", onMotionChange);
+    return () => {
+      io.disconnect();
+      mediaQuery.removeEventListener("change", onMotionChange);
+    };
   }, []);
 
   return (
@@ -39,7 +48,7 @@ export default function FieldLoop() {
       <div className="flex items-center justify-between px-6 py-4 border-b border-white/15 text-white/70">
         <span className="tech-meta">§05 — Field Loop</span>
         <span className="tech-meta hidden md:inline">
-          PLATE 02 — TANNERIE CHOUARA · 14-DAY CYCLE
+          PLATE 02 — MARRAKECH ATELIER · 14-DAY CYCLE
         </span>
         <span className="tech-meta">MUTED · LOOPED</span>
       </div>
@@ -55,7 +64,7 @@ export default function FieldLoop() {
           <video
             ref={ref}
             className="absolute inset-0 w-full h-full object-cover"
-            preload="metadata"
+            preload="none"
             poster="/brand/editorial/model-white-suit-salon.webp"
             aria-hidden
           >
@@ -67,7 +76,7 @@ export default function FieldLoop() {
 
       <div className="grid grid-cols-12 px-6 py-5 border-t border-white/15 text-white/70 gap-y-2">
         <span className="col-span-12 md:col-span-6 tech-meta">
-          Filmed Marrakech Medina · 04.2026
+          Filmed Marrakech · Atelier Cut
         </span>
         <span className="col-span-12 md:col-span-3 tech-meta md:text-center">
           1080p · 24fps · No Audio

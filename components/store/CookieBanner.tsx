@@ -30,19 +30,22 @@ export default function CookieBanner() {
   const pathname = usePathname();
   const t = useT();
   const href = useLocalizedHref();
-  const pinLeft = pathname.startsWith("/products/");
+  const isProductPage = pathname.startsWith("/products/");
 
   useEffect(() => {
-    // Defer to avoid SSR mismatch
-    const c = getConsent();
-    if (c === null) setVisible(true);
+    const showTimer = window.setTimeout(() => {
+      if (getConsent() === null) setVisible(true);
+    }, 0);
 
     // Hide if another tab accepts/rejects
     const onChange = () => {
       if (getConsent() !== null) setVisible(false);
     };
     window.addEventListener("storage", onChange);
-    return () => window.removeEventListener("storage", onChange);
+    return () => {
+      window.clearTimeout(showTimer);
+      window.removeEventListener("storage", onChange);
+    };
   }, []);
 
   if (!visible) return null;
@@ -61,19 +64,21 @@ export default function CookieBanner() {
     <div
       role="dialog"
       aria-label="Cookie consent"
-      className="cookie-banner"
+      className={`cookie-banner ${isProductPage ? "cookie-banner-pdp" : ""}`}
       style={{
         position: "fixed",
-        bottom: 24,
-        left: pinLeft ? 24 : "auto",
-        right: pinLeft ? "auto" : 24,
+        bottom: 0,
+        left: 0,
+        right: 0,
         zIndex: 100,
-        width: "min(420px, calc(100vw - 48px))",
+        width: "auto",
         background: "var(--color-near-black, #0a0a0a)",
         color: "var(--color-ivory, #f5efe6)",
         border: "1px solid rgba(245, 239, 230, 0.18)",
-        padding: "18px 20px",
-        boxShadow: "0 18px 48px rgba(0,0,0,0.28)",
+        borderLeft: 0,
+        borderRight: 0,
+        borderBottom: 0,
+        padding: "8px 24px",
       }}
     >
       <div
@@ -81,20 +86,21 @@ export default function CookieBanner() {
           maxWidth: 1280,
           margin: "0 auto",
           display: "flex",
-          flexDirection: "column",
+          flexDirection: "row",
           gap: 16,
-          alignItems: "flex-start",
+          alignItems: "center",
+          justifyContent: "space-between",
         }}
         className="cookie-banner-inner"
       >
         <p
           style={{
             fontFamily: "var(--font-sans, Inter)",
-            fontSize: 13,
-            lineHeight: 1.55,
+            fontSize: 11,
+            lineHeight: 1.35,
             color: "rgba(245, 239, 230, 0.85)",
             margin: 0,
-            maxWidth: 720,
+            maxWidth: 760,
           }}
         >
           {t("cookie.copy")}{" "}
@@ -110,7 +116,7 @@ export default function CookieBanner() {
           </a>
           .
         </p>
-        <div style={{ display: "flex", gap: 12, flexWrap: "wrap" }}>
+        <div className="cookie-banner-actions" style={{ display: "flex", gap: 12, flexWrap: "wrap" }}>
           <button
             onClick={reject}
             style={{
@@ -119,7 +125,7 @@ export default function CookieBanner() {
               fontSize: 11,
               letterSpacing: "0.18em",
               textTransform: "uppercase",
-              padding: "12px 24px",
+              padding: "8px 18px",
               background: "transparent",
               color: "var(--color-ivory, #f5efe6)",
               border: "1px solid rgba(245, 239, 230, 0.55)",
@@ -144,7 +150,7 @@ export default function CookieBanner() {
               fontSize: 11,
               letterSpacing: "0.18em",
               textTransform: "uppercase",
-              padding: "12px 24px",
+              padding: "8px 18px",
               background: "var(--color-ivory, #f5efe6)",
               color: "var(--color-warm-black, #141210)",
               border: "1px solid var(--color-ivory, #f5efe6)",
@@ -174,14 +180,45 @@ export default function CookieBanner() {
             border-left: 0 !important;
             border-right: 0 !important;
             border-bottom: 0 !important;
+            padding: 8px 14px !important;
+          }
+          .cookie-banner-inner {
+            flex-direction: column !important;
+            align-items: stretch !important;
+            gap: 8px !important;
+          }
+          .cookie-banner p {
+            font-size: 10.5px !important;
+            line-height: 1.3 !important;
+            max-width: 100% !important;
+          }
+          .cookie-banner-actions {
+            display: grid !important;
+            grid-template-columns: repeat(2, minmax(0, 1fr)) !important;
+            gap: 8px !important;
+            width: 100% !important;
+          }
+          .cookie-banner-actions button {
+            width: 100% !important;
+            min-height: 34px !important;
+            padding: 8px 8px !important;
+            font-size: 10px !important;
+            letter-spacing: 0.14em !important;
+          }
+          .cookie-banner-pdp {
+            bottom: 0 !important;
           }
         }
         @media (min-width: 768px) {
           .cookie-banner-inner {
-            flex-direction: column !important;
-            align-items: flex-start !important;
-            justify-content: flex-start !important;
-            gap: 14px !important;
+            flex-direction: row !important;
+            align-items: center !important;
+            justify-content: space-between !important;
+            gap: 18px !important;
+          }
+          .cookie-banner-actions {
+            flex: 0 0 auto !important;
+            flex-wrap: nowrap !important;
           }
         }
       `}</style>

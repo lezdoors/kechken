@@ -80,13 +80,13 @@ ready_n = sum(1 for _,v in m.items() if v['status']=='ready')
 partial_n = sum(1 for _,v in m.items() if v['status']=='partial')
 nohero_n = sum(1 for _,v in m.items() if v['status']=='no-hero')
 W(f'| READY | {ready_n} | Live on site, canonical hero + ≥3 gallery shots |')
-W(f'| PARTIAL | {partial_n} | Live but thin gallery (≤3 shots) — generate more HF shots |')
-W(f'| NO-HERO | {nohero_n} | Hidden by `lib/hidden-skus.ts` — only supplier raws, needs HF run |')
+W(f'| PARTIAL | {partial_n} | Live but thin gallery (≤3 shots) — find/download the finished HF/Drive set before generating |')
+W(f'| NO-HERO | {nohero_n} | Hidden by `lib/hidden-skus.ts` — source refs only or no canonical hero; find finished HF/Drive output first |')
 W('')
 W('---')
 W('')
 
-for status_label, status_key in [('READY (live on site)', 'ready'), ('PARTIAL (live but thin)', 'partial'), ('NO-HERO (hidden, needs HF shots)', 'no-hero')]:
+for status_label, status_key in [('READY (live on site)', 'ready'), ('PARTIAL (live but thin)', 'partial'), ('NO-HERO (hidden until finished HF/Drive hero is found)', 'no-hero')]:
     W(f'## {status_label}')
     W('')
     for slug, info in ordered:
@@ -98,7 +98,7 @@ for status_label, status_key in [('READY (live on site)', 'ready'), ('PARTIAL (l
         if info['hero_file']:
             W(f'- **Hero:** `{info["hero_file"]}`')
         else:
-            W('- **Hero:** _none — needs HF generation_')
+            W('- **Hero:** _none — find/download finished HF/Drive hero first; generate only after visual search fails_')
 
         drive = drive_folder_for(slug)
         if drive:

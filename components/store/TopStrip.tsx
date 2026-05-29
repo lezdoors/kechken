@@ -44,10 +44,10 @@ export default function TopStrip() {
       <div className="h-[44px] flex items-center justify-between gap-4 px-5 md:px-8">
         {/* LEFT — brand voice */}
         <span className="hidden sm:inline-block whitespace-nowrap" style={{ color: "#0F0F0F" }}>
-          Hand-cut in Fes
+          Hand-cut in Marrakech
         </span>
         <span className="sm:hidden whitespace-nowrap" style={{ color: "#0F0F0F" }}>
-          Fes
+          Marrakech
         </span>
 
         {/* CENTER — promo pill (Aether: solid black pill, white text) */}

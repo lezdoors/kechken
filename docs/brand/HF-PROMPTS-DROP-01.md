@@ -1,4 +1,13 @@
+# ARCHIVE ONLY — Do Not Use For Maison Tanneurs Launch
+
 # Higgsfield Prompts · Kechken Drop 01 + Homepage Imagery
+
+> Historical Kechken apparel prompt archive. Do not use this file as Maison
+> Tanneurs launch direction. Maison Tanneurs is bags and small leather goods
+> only; no clothing, jackets, outerwear, or apparel campaign generation.
+> Use `docs/brand/PHOTOGRAPHY-REFERENCE.md`,
+> `docs/HF-9SHOT-REQUESTS-2026-05-28.md`, and the finished HF/Drive product
+> folders instead.
 
 _Updated 2026-05-17 to the locked brief: Lemaire restraint × Jacquemus Mediterranean warmth × Fear of God scale × Aigle daylight clarity. Modern luxury fashion house · Moroccan identity, but subtle. NOT tourist, NOT souvenir, NOT bazaar._
 
@@ -10,7 +19,7 @@ _Updated 2026-05-17 to the locked brief: Lemaire restraint × Jacquemus Mediterr
 **Visual direction (from `Drive/art examples/` folder):**
 - Take BACKGROUNDS from: `blue-mediterranean-arch-canvas`, `mosque-arcade-pool-reflection`, `kasbah-mud-fortress`, `beige-nested-arches-potted-trees`, `blush-carved-arches-corridor`, `tableau-decoratif-la-porte-bleue-marocaine`
 - Take PALETTE / MOOD from: `chefchaouen-elder-yellow-djellaba` (the Chefchaouen blue-and-ochre Mediterranean register)
-- Do NOT borrow the figurative subjects (camels, Tuareg, Gnawa, fantasia horsemen) — those are wall-art language, wrong for apparel photography per brief
+- Do NOT borrow the figurative subjects (camels, Tuareg, Gnawa, fantasia horsemen) — those are wall-art language and wrong for Maison Tanneurs leather-goods imagery
 - AVOID: souk overload, lantern overload, generic desert, camels, tourist clichés
 
 **Universal style anchors to repeat in every prompt:**

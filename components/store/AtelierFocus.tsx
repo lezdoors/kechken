@@ -19,7 +19,7 @@ export default function AtelierFocus() {
           </p>
           <div className="mt-10">
             <Link
-              href="/products?category=Leather%20Goods"
+              href="/products"
               className="ed-cta"
             >
               See the leather

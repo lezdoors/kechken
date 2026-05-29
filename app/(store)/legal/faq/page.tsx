@@ -5,6 +5,9 @@ export const metadata: Metadata = {
   title: "FAQ — Maison Tanneurs",
   description:
     "Common questions about ordering, shipping, and caring for Maison Tanneurs leather goods.",
+  alternates: {
+    canonical: "/legal/faq",
+  },
 };
 
 const FAQ = [

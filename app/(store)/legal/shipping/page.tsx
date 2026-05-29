@@ -5,6 +5,9 @@ export const metadata: Metadata = {
   title: "Shipping — Maison Tanneurs",
   description:
     "How Maison Tanneurs ships leather goods worldwide. Three to five day delivery direct from Marrakech via DHL or FedEx.",
+  alternates: {
+    canonical: "/legal/shipping",
+  },
 };
 
 export default function ShippingPage() {

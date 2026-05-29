@@ -5,6 +5,9 @@ export const metadata: Metadata = {
   title: "Returns — Maison Tanneurs",
   description:
     "Returns and exchanges at Maison Tanneurs. Thirty days, unused and undamaged, with original packaging.",
+  alternates: {
+    canonical: "/legal/returns",
+  },
 };
 
 export default function ReturnsPage() {

@@ -4,10 +4,12 @@ import { createServerSupabase } from "@/lib/supabase/server";
 import { Product } from "@/lib/supabase/types";
 import { STATIC_PRODUCTS, LIGHTING_DB_CATEGORIES, mergeWithStatic } from "@/lib/products";
 import { HIDDEN_SKUS, HIDDEN_SKUS_ARRAY } from "@/lib/hidden-skus";
+import { normalizeProductFamilies } from "@/lib/product-taxonomy";
 import ProductCard from "@/components/store/ProductCard";
 import CategoryFilter from "@/components/store/CategoryFilter";
 import { getRequestLocale } from "@/lib/i18n-server";
 import { t } from "@/lib/i18n";
+import { productListImage } from "@/lib/landing-product-curation";
 
 // Normalize a URL category param into the stored DB category form. Handles:
 // - Decoded spaces (?category=Wall%20Plates → "Wall Plates")
@@ -26,9 +28,18 @@ function resolveCategoryFilter(raw: string): { in?: string[]; eq?: string } {
 }
 
 export const metadata: Metadata = {
-  title: "Drops",
+  title: "Collection",
   description:
-    "Hand-stitched leather wearables sourced direct from a Marrakech atelier. Shipped worldwide in 3–5 days via DHL/FedEx.",
+    "Hand-stitched leather goods sourced direct from a Marrakech atelier. Shipped worldwide in 3–5 days via DHL/FedEx.",
+  alternates: {
+    canonical: "/products",
+  },
+  openGraph: {
+    title: "Maison Tanneurs Collection",
+    description:
+      "Hand-stitched leather goods sourced direct from a Marrakech atelier. Shipped worldwide in 3–5 days via DHL/FedEx.",
+    url: "/products",
+  },
 };
 
 async function getProducts(category?: string, q?: string): Promise<Product[]> {
@@ -42,7 +53,7 @@ async function getProducts(category?: string, q?: string): Promise<Product[]> {
 
     // If Supabase not configured, use static products
     if (!supabase) {
-      let products = STATIC_PRODUCTS.filter(
+      let products = normalizeProductFamilies(STATIC_PRODUCTS as Product[]).filter(
         (p) => !HIDDEN_SKUS.has(p.slug) && p.status === "available" && p.featured,
       );
       if (category && category !== "all") {
@@ -73,7 +84,7 @@ async function getProducts(category?: string, q?: string): Promise<Product[]> {
 
     if (error || !data) {
       // Fall back to static products only if Supabase truly errored.
-      let products = STATIC_PRODUCTS.filter(
+      let products = normalizeProductFamilies(STATIC_PRODUCTS as Product[]).filter(
         (p) => !HIDDEN_SKUS.has(p.slug) && p.status === "available" && p.featured,
       );
       if (category && category !== "all") {
@@ -92,7 +103,7 @@ async function getProducts(category?: string, q?: string): Promise<Product[]> {
     // Merge Supabase results with STATIC supplement (Drop 02 SKUs not yet
     // in Supabase). Then re-apply category/query filters to the merged set
     // so STATIC entries with correct categories surface.
-    let products = mergeWithStatic(data as Product[]).filter(
+    let products = normalizeProductFamilies(mergeWithStatic(data as Product[])).filter(
       (p) => !HIDDEN_SKUS.has(p.slug) && p.status === "available" && p.featured,
     );
     if (category && category !== "all") {
@@ -107,7 +118,7 @@ async function getProducts(category?: string, q?: string): Promise<Product[]> {
     if (q) products = products.filter((p) => matchesQuery(p as Product, q));
     return products;
   } catch {
-    let products = STATIC_PRODUCTS.filter(
+    let products = normalizeProductFamilies(STATIC_PRODUCTS as Product[]).filter(
       (p) => !HIDDEN_SKUS.has(p.slug) && p.status === "available" && p.featured,
     );
     if (category && category !== "all") {
@@ -139,12 +150,12 @@ export default async function ProductsPage({
   return (
     <main>
       {/* Collection Header */}
-      <section className="pt-[180px] px-[clamp(24px,4vw,72px)] pb-0">
-        <div className="grid grid-cols-1 lg:grid-cols-[2fr_1fr] gap-8 lg:gap-16 items-end pb-10 border-b border-stone">
-          <h1 className="disp text-[clamp(56px,8vw,112px)] max-w-[14ch]">
+      <section className="pt-[clamp(112px,13vw,156px)] px-[clamp(24px,4vw,72px)] pb-0">
+        <div className="grid grid-cols-1 lg:grid-cols-[2fr_1fr] gap-8 lg:gap-16 items-end pb-10 border-b border-[color:var(--color-rule)]">
+          <h1 className="disp text-[clamp(48px,7vw,96px)] max-w-[14ch]">
             {t(locale, "products.title")}
           </h1>
-          <p className="font-serif italic text-[18px] leading-[1.55] text-graphite max-w-[44ch]">
+          <p className="font-serif italic text-[17px] leading-[1.6] text-[color:var(--color-ink-soft)] max-w-[44ch]">
             {t(locale, "products.copy")}
           </p>
         </div>
@@ -153,7 +164,7 @@ export default async function ProductsPage({
       {/* Filter Toolbar -- wrapped in Suspense for useSearchParams */}
       <Suspense
         fallback={
-          <div className="sticky top-[69px] z-30 bg-chalk border-b border-stone">
+          <div className="sticky top-[56px] md:top-[76px] z-30 bg-white/95 backdrop-blur border-b border-[color:var(--color-rule)]">
             <div className="flex items-center justify-between px-[clamp(24px,4vw,72px)] py-4">
               <div className="h-4 w-48 bg-pearl animate-pulse" />
               <div className="h-4 w-16 bg-pearl animate-pulse" />
@@ -165,18 +176,19 @@ export default async function ProductsPage({
       </Suspense>
 
       {/* Product Grid */}
-      <section className="px-[clamp(24px,4vw,72px)] py-[80px]">
+      <section className="px-[clamp(24px,4vw,72px)] py-[clamp(48px,7vw,84px)]">
         {products.length > 0 ? (
-          <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-x-9 gap-y-[72px]">
-            {products.map((product) => (
+          <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-x-[clamp(28px,4vw,56px)] gap-y-[clamp(54px,7vw,84px)]">
+            {products.map((product, index) => (
               <ProductCard
                 key={product.id}
                 title={product.title}
                 price={product.price}
-                image={product.images[0] || "/products/product-04.png"}
+                image={productListImage(product) || "/products/product-04.png"}
                 slug={product.slug}
                 category={product.category}
                 badge={product.featured ? "One of a Kind" : undefined}
+                eager={index === 0}
               />
             ))}
           </div>

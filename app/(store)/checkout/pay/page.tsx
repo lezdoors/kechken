@@ -4,6 +4,13 @@ export const metadata = {
   title: "Checkout — Maison Tanneurs",
   description:
     "Complete your Maison Tanneurs order. Hand-stitched in Marrakech and shipped within three to five business days.",
+  alternates: {
+    canonical: "/checkout/pay",
+  },
+  robots: {
+    index: false,
+    follow: false,
+  },
 };
 
 export default function CheckoutPayPage() {

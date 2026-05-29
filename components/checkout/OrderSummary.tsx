@@ -44,8 +44,8 @@ export default function OrderSummary() {
 
       <div className="space-y-3 pt-1 border-t border-stone/40">
         <Row label="Subtotal" value={formatPrice(subtotal)} />
-        <Row label="Shipping" value="Calculated separately" italic />
-        <Row label="Duties &amp; taxes" value="At delivery" italic />
+        <Row label="Shipping" value="DHL / FedEx" italic />
+        <Row label="Duties &amp; taxes" value="Shown where applicable" italic />
       </div>
 
       <div className="flex items-baseline justify-between mt-6 pt-5 border-t border-ink/15">
@@ -59,9 +59,8 @@ export default function OrderSummary() {
       </div>
 
       <p className="text-[11px] font-sans font-light text-mineral leading-relaxed mt-6">
-        White-glove delivery and customs duties calculated separately by the
-        atelier and confirmed by email after order. Lead time 2–4 weeks
-        crafting, plus 8–14 weeks shipping by sea.
+        Each piece is inspected at the atelier before dispatch. Tracking is
+        sent by email as soon as the parcel leaves Marrakech.
       </p>
     </aside>
   );
