@@ -61,7 +61,9 @@ async function main() {
 
   console.log("\n=== Remaining known non-blocking launch gaps ===");
   console.log("- Launch scope is bags and small leather goods only; no clothes/jackets.");
-  console.log("- Thin-gallery bag PDPs remain and need exact HF/Drive mapping before more uploads.");
+  console.log(
+    "- Media ops only: archive exact source folders for black-stitched-backpack and classic-cognac-satchel when found; no HF generation required for launch.",
+  );
 
   if (failures.length > 0) {
     console.error("\n=== Launch readiness audit failed ===");
