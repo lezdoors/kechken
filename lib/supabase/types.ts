@@ -1,3 +1,11 @@
+// Variant attribute — empty object means standalone product or family primary.
+// `type` is the attribute axis ("color", "finish", "size"); `value` is the
+// human-facing label rendered next to the swatch.
+export interface VariantAttribute {
+  type?: "color" | "finish" | "size";
+  value?: string;
+}
+
 export interface Product {
   id: string;
   title: string;
@@ -13,6 +21,10 @@ export interface Product {
   available_quantity: number;
   status: "available" | "sold" | "reserved" | "draft";
   featured: boolean;
+  // Variants — null family_slug means standalone product (no siblings).
+  // See lib/product-variants.ts for grouping + primary-selection helpers.
+  family_slug?: string | null;
+  variant_attribute?: VariantAttribute;
   created_at: string;
   updated_at: string;
   craftsmen?: Craftsman;
