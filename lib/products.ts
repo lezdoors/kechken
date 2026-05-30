@@ -211,36 +211,6 @@ export const STATIC_PRODUCTS: Product[] = [
     "updated_at": ""
   },
   {
-    "id": "static-06-black-stitched-backpack",
-    "title": "Black Stitched Backpack",
-    "slug": "black-stitched-backpack",
-    "price": 24500,
-    "images": [
-      "https://xbtabpurfavngwmwtawc.supabase.co/storage/v1/object/public/products/drop-01/black-stitched-backpack-pdp-white.webp",
-      "https://xbtabpurfavngwmwtawc.supabase.co/storage/v1/object/public/products/drop-01/black-stitched-backpack-archive-1.webp",
-      "https://xbtabpurfavngwmwtawc.supabase.co/storage/v1/object/public/products/drop-01/black-stitched-backpack-archive-2.webp",
-      "https://xbtabpurfavngwmwtawc.supabase.co/storage/v1/object/public/products/drop-01/black-stitched-backpack-archive-3.webp",
-      "https://xbtabpurfavngwmwtawc.supabase.co/storage/v1/object/public/products/drop-01/black-stitched-backpack-archive-4.webp"
-    ],
-    "category": "Backpack",
-    "status": "reserved",
-    "featured": false,
-    "materials": [
-      "Full-grain Moroccan leather",
-      "Solid brass hardware",
-      "Hand-finished in Marrakech"
-    ],
-    "dimensions": {
-      "size": "See product page for current dimensions"
-    },
-    "description": "Boxy square-cut backpack in deep black full-grain leather, framed by a cream zigzag stitch border. Single brass buckle closure, internal zip pocket, dual adjustable shoulder straps. Editorial silhouette, daily-carry size.",
-    "available_quantity": 10,
-    "weight_lbs": null,
-    "craftsman_id": null,
-    "created_at": "",
-    "updated_at": ""
-  },
-  {
     "id": "static-07-classic-cognac-satchel",
     "title": "Classic Cognac Satchel",
     "slug": "classic-cognac-satchel",
