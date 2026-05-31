@@ -16,23 +16,23 @@ interface ProductDetailsProps {
 
 export default function ProductDetails({ product }: ProductDetailsProps) {
   const { addItem, openCart } = useCart();
-  const { format } = useCurrency();
+  const { currency, convert, format } = useCurrency();
   const t = useT();
   const href = useLocalizedHref();
   const [justAdded, setJustAdded] = useState(false);
 
   // GA4 + Pixel: view_item / ViewContent on PDP mount
   useEffect(() => {
-    const price = product.price / 100;
+    const value = convert(product.price) / 100;
     trackGA4Event("view_item", {
-      currency: "USD",
-      value: price,
+      currency,
+      value,
       items: [
         {
           item_id: product.slug,
           item_name: product.title,
           item_category: product.category,
-          price,
+          price: value,
           quantity: 1,
         },
       ],
@@ -42,10 +42,10 @@ export default function ProductDetails({ product }: ProductDetailsProps) {
       content_name: product.title,
       content_type: "product",
       content_category: product.category,
-      currency: "USD",
-      value: price,
+      currency,
+      value,
     });
-  }, [product.slug, product.title, product.price, product.category]);
+  }, [currency, convert, product.slug, product.title, product.price, product.category]);
 
   useEffect(() => {
     if (!justAdded) return;
@@ -56,16 +56,16 @@ export default function ProductDetails({ product }: ProductDetailsProps) {
   function handleAddToCart() {
     addItem(productToCartItem(product));
     setJustAdded(true);
-    const price = product.price / 100;
+    const value = convert(product.price) / 100;
     trackGA4Event("add_to_cart", {
-      currency: "USD",
-      value: price,
+      currency,
+      value,
       items: [
         {
           item_id: product.slug,
           item_name: product.title,
           item_category: product.category,
-          price,
+          price: value,
           quantity: 1,
         },
       ],
@@ -75,8 +75,8 @@ export default function ProductDetails({ product }: ProductDetailsProps) {
       content_name: product.title,
       content_type: "product",
       content_category: product.category,
-      currency: "USD",
-      value: price,
+      currency,
+      value,
     });
   }
 

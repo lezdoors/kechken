@@ -115,6 +115,7 @@ export default async function CheckoutSuccessPage({
       <PurchaseTracking
         orderId={revolutOrderId}
         total={total}
+        currency={orderCurrency}
         items={items.map((i) => ({
           slug: i.slug || i.product_id,
           title: i.title,

@@ -51,6 +51,13 @@ export default function PurchaseTracking({
         currency,
         content_ids: items.filter((i) => i.slug).map((i) => i.slug),
         content_type: "product",
+        contents: items
+          .filter((i) => i.slug)
+          .map((i) => ({
+            id: i.slug,
+            quantity: i.quantity ?? 1,
+            item_price: (i.price ?? 0) / 100,
+          })),
         num_items: items.reduce((s, i) => s + (i.quantity ?? 1), 0),
       },
       { eventID: orderId },

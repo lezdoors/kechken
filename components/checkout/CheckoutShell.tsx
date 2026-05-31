@@ -4,6 +4,7 @@ import { useEffect, useMemo, useRef, useState } from "react";
 import Link from "next/link";
 import { useRouter } from "next/navigation";
 import { useCart } from "@/components/store/CartProvider";
+import { useCurrency } from "@/components/store/CurrencyProvider";
 import { trackGA4Event } from "@/components/store/GA4";
 import { trackPixelEvent } from "@/components/store/MetaPixel";
 import OrderSummary from "./OrderSummary";
@@ -96,6 +97,7 @@ function getMetaTrackingParams() {
 
 export default function CheckoutShell() {
   const { items, subtotal } = useCart();
+  const { currency, convert } = useCurrency();
   const router = useRouter();
   const [status, setStatus] = useState<Status>("loading");
   const [token, setToken] = useState<string | null>(null);
@@ -115,19 +117,19 @@ export default function CheckoutShell() {
       items.map((item) => ({
         item_id: item.slug,
         item_name: item.title,
-        price: item.price / 100,
+        price: convert(item.price) / 100,
         quantity: item.quantity,
       })),
-    [items],
+    [convert, items],
   );
   const pixelContents = useMemo(
     () =>
       items.map((item) => ({
         id: item.slug,
         quantity: item.quantity,
-        item_price: item.price / 100,
+        item_price: convert(item.price) / 100,
       })),
-    [items],
+    [convert, items],
   );
 
   useEffect(() => {
@@ -174,21 +176,21 @@ export default function CheckoutShell() {
     }
 
     initiatedCheckoutOrderRef.current = orderId;
-    const value = subtotal / 100;
+    const value = convert(subtotal) / 100;
     trackGA4Event("begin_checkout", {
-      currency: "USD",
+      currency,
       value,
       items: trackingItems,
     });
     trackPixelEvent("InitiateCheckout", {
       value,
-      currency: "USD",
+      currency,
       content_ids: items.map((item) => item.slug),
       content_type: "product",
       contents: pixelContents,
       num_items: items.reduce((sum, item) => sum + item.quantity, 0),
     });
-  }, [items, orderId, pixelContents, status, subtotal, trackingItems]);
+  }, [convert, currency, items, orderId, pixelContents, status, subtotal, trackingItems]);
 
   async function handleSubmit(e: React.FormEvent) {
     e.preventDefault();
@@ -198,16 +200,16 @@ export default function CheckoutShell() {
     try {
       if (addPaymentInfoOrderRef.current !== orderId) {
         addPaymentInfoOrderRef.current = orderId;
-        const value = subtotal / 100;
+        const value = convert(subtotal) / 100;
         trackGA4Event("add_payment_info", {
-          currency: "USD",
+          currency,
           value,
           payment_type: "Revolut",
           items: trackingItems,
         });
         trackPixelEvent("AddPaymentInfo", {
           value,
-          currency: "USD",
+          currency,
           content_ids: items.map((item) => item.slug),
           content_type: "product",
           contents: pixelContents,

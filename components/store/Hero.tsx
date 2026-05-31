@@ -14,6 +14,12 @@ type Slide = Photo | Video;
 
 const SLIDES: Slide[] = [
   {
+    kind: "photo",
+    src: "/brand/hero/home-hero-bright-atelier-plinth.webp",
+    alt: "Cognac leather bag on a pale stone plinth in a bright Marrakech atelier",
+    objectPos: "center center",
+  },
+  {
     kind: "video",
     src: "/videos/hero-cinematic-1-dunes.mp4",
     poster: "/brand/editorial/cinematic-bag-still.webp",
