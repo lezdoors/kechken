@@ -2,6 +2,7 @@ import Image from "next/image";
 import Link from "next/link";
 import type { Metadata } from "next";
 import ArtisanDossier from "@/components/store/ArtisanDossier";
+import AtelierGallery from "@/components/store/AtelierGallery";
 import InTheirHands from "@/components/store/InTheirHands";
 
 export const metadata: Metadata = {
@@ -141,6 +142,9 @@ export default function AboutPage() {
           ))}
         </div>
       </section>
+
+      {/* Atelier gallery — documentary + lifestyle interleave */}
+      <AtelierGallery />
 
       {/* Production Footprint dossier */}
       <ArtisanDossier />
