@@ -43,5 +43,8 @@ next-env.d.ts
 
 # image swap-chain backups (kept locally only)
 *.bak.webp
+
+# sync-airtable.ts JSONL audit log — local only
+scripts/.sync-airtable.jsonl
 .vercel/
 .env*.local
