@@ -1,6 +1,15 @@
 import type { Metadata } from "next";
 import Script from "next/script";
-import { JetBrains_Mono, Noto_Naskh_Arabic, Playfair_Display } from "next/font/google";
+import {
+  Cormorant_Garamond,
+  EB_Garamond,
+  Fraunces,
+  Inter,
+  Instrument_Serif,
+  Montserrat,
+  Newsreader,
+  Noto_Naskh_Arabic,
+} from "next/font/google";
 import "./globals.css";
 import CookieBanner from "@/components/store/CookieBanner";
 import ConsentedClarity from "@/components/store/ConsentedClarity";
@@ -10,19 +19,62 @@ import { getRequestCurrency, getRequestDir, getRequestLocale } from "@/lib/i18n-
 import { getRates } from "@/lib/fx";
 import { CurrencyProvider } from "@/components/store/CurrencyProvider";
 
-const mono = JetBrains_Mono({
+// === Type system — Ryan-selected 2026-05-31 ===
+// 5 serifs (Parisian editorial headlines) + 2 sans (clean micro-text/buttons).
+// Each gets its own CSS variable; pick the active pair in globals.css.
+
+const instrumentSerif = Instrument_Serif({
   subsets: ["latin"],
-  variable: "--font-mono",
+  variable: "--font-instrument",
   display: "swap",
+  weight: ["400"],
+  style: ["normal", "italic"],
 });
 
-// Kept for selective display use (section headings, Volume/Dossier framing)
-// even though the /luxury preview is gone — see Hero / ObjectOfTheEdition.
-const playfair = Playfair_Display({
+const newsreader = Newsreader({
   subsets: ["latin"],
-  variable: "--font-display",
+  variable: "--font-newsreader",
   display: "swap",
-  weight: ["400", "500"],
+  weight: ["400", "500", "600"],
+  style: ["normal", "italic"],
+});
+
+const ebGaramond = EB_Garamond({
+  subsets: ["latin"],
+  variable: "--font-eb-garamond",
+  display: "swap",
+  weight: ["400", "500", "600"],
+  style: ["normal", "italic"],
+});
+
+const fraunces = Fraunces({
+  subsets: ["latin"],
+  variable: "--font-fraunces",
+  display: "swap",
+  weight: ["400", "500", "600"],
+  style: ["normal", "italic"],
+});
+
+const cormorant = Cormorant_Garamond({
+  subsets: ["latin"],
+  variable: "--font-cormorant",
+  display: "swap",
+  weight: ["400", "500", "600"],
+  style: ["normal", "italic"],
+});
+
+const inter = Inter({
+  subsets: ["latin"],
+  variable: "--font-inter",
+  display: "swap",
+  weight: ["400", "500", "600", "700"],
+});
+
+const montserrat = Montserrat({
+  subsets: ["latin"],
+  variable: "--font-montserrat",
+  display: "swap",
+  weight: ["400", "500", "600", "700"],
 });
 
 const arabic = Noto_Naskh_Arabic({
@@ -103,7 +155,20 @@ export default async function RootLayout({
   const currency = await getRequestCurrency();
   const rates = await getRates();
   return (
-    <html lang={locale} dir={dir} className={`${mono.variable} ${playfair.variable} ${arabic.variable}`}>
+    <html
+      lang={locale}
+      dir={dir}
+      className={[
+        instrumentSerif.variable,
+        newsreader.variable,
+        ebGaramond.variable,
+        fraunces.variable,
+        cormorant.variable,
+        inter.variable,
+        montserrat.variable,
+        arabic.variable,
+      ].join(" ")}
+    >
       <body>
         <Script
           id="organization-ld"

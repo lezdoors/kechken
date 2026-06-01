@@ -105,11 +105,28 @@
   --color-line-soft: rgba(20, 20, 18, 0.06);
   --color-line-bone: rgba(20, 20, 18, 0.18);
 
-  /* Fonts — Switzer for display + body, system mono for SKU / spec lines */
-  --font-sans: "Switzer", "Helvetica Neue", Arial, sans-serif;
-  --font-serif: var(--font-sans);
-  --font-display: var(--font-sans);
-  --font-mono: "SF Mono", ui-monospace, "JetBrains Mono", "Menlo", "Consolas", monospace;
+  /* ===== Type system (Ryan-selected 2026-05-31) =====
+     Seven Google Fonts loaded in app/layout.tsx, each on its own CSS variable.
+     The active display + sans pair is set below — swap by changing two lines.
+
+     Display candidates (Parisian editorial headlines):
+       var(--font-instrument)     — Instrument Serif (single-weight, italic, sharp)
+       var(--font-newsreader)     — Newsreader (variable, magazine register)
+       var(--font-eb-garamond)    — EB Garamond (classical book)
+       var(--font-fraunces)       — Fraunces (sharp, character-rich)
+       var(--font-cormorant)      — Cormorant Garamond (delicate Garamond)
+
+     Sans candidates (micro-text, buttons):
+       var(--font-inter)          — Inter (neutral grotesque)
+       var(--font-montserrat)     — Montserrat (geometric)
+
+     Always available: var(--font-arabic) Noto Naskh Arabic (RTL).
+     ==================================================== */
+
+  --font-display: var(--font-instrument), "Times New Roman", serif;
+  --font-sans:    var(--font-inter), "Helvetica Neue", Arial, sans-serif;
+  --font-serif:   var(--font-display);
+  --font-mono:    "SF Mono", ui-monospace, "Menlo", "Consolas", monospace;
 
   --ease: cubic-bezier(0.16, 1, 0.3, 1);
   --ease-in-out: cubic-bezier(0.65, 0.05, 0.36, 1);
@@ -673,7 +690,7 @@ button { font: inherit; color: inherit; background: none; border: 0; cursor: poi
 .mt-product-frame {
   position: relative;
   overflow: hidden;
-  background: #ffffff;
+  background: #f8f8f6;
   border: 0;
 }
 
@@ -682,7 +699,7 @@ button { font: inherit; color: inherit; background: none; border: 0; cursor: poi
 }
 
 .mt-product-frame--hero {
-  background: #ffffff;
+  background: #f8f8f6;
 }
 
 .mt-product-img-standard {
