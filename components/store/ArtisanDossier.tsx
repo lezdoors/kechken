@@ -21,18 +21,20 @@ export default function ArtisanDossier() {
       className="w-full bg-[var(--color-paper)] text-[var(--color-ink)] py-[clamp(64px,10vw,140px)]"
       aria-label="Production specifications"
     >
-      <div className="border-y border-[#e5e5e5]">
+      <div className="border-y border-[color:var(--color-rule)]">
         <div className="px-6 py-5 flex items-end justify-between">
           <div className="flex items-end gap-6">
             <span className="tech-label opacity-60">§06</span>
             <h2
-              className="leading-none font-medium"
+              className="leading-none"
               style={{
-                fontSize: "clamp(28px, 3.6vw, 36px)",
-                letterSpacing: "-0.03em",
+                fontFamily: "var(--font-display)",
+                fontWeight: 400,
+                fontSize: "clamp(36px, 5.6vw, 72px)",
+                letterSpacing: "-0.025em",
               }}
             >
-              Production Specifications
+              Atelier dossier
             </h2>
           </div>
           <span className="tech-meta opacity-70 hidden md:inline">
@@ -42,7 +44,7 @@ export default function ArtisanDossier() {
       </div>
 
       <div className="grid grid-cols-12">
-        <div className="col-span-12 md:col-span-5 border-r border-[#e5e5e5] px-6 py-10 md:py-14">
+        <div className="col-span-12 md:col-span-5 border-r border-[color:var(--color-rule)] px-6 py-10 md:py-14">
           <div className="md:sticky md:top-24">
             <span className="tech-label opacity-60">Production Footprint</span>
             <h3
@@ -56,7 +58,7 @@ export default function ArtisanDossier() {
               stitch<span className="opacity-40">.</span>
             </h3>
             <p
-              className="mt-8 leading-relaxed text-[#0f0f0f]/75"
+              className="mt-8 leading-relaxed text-[color:rgba(44,42,40,0.75)]"
               style={{ fontSize: "14px", letterSpacing: "-0.01em", maxWidth: "62ch" }}
             >
               Every object is the cumulative record of fourteen days, seven hands,
@@ -64,9 +66,9 @@ export default function ArtisanDossier() {
               finish. We file the dossier, then we build.
             </p>
 
-            <div className="mt-10 border-t border-[#e5e5e5] pt-6">
+            <div className="mt-10 border-t border-[color:var(--color-rule)] pt-6">
               <div
-                className="relative bg-black overflow-hidden"
+                className="relative bg-[color:var(--color-plate)] overflow-hidden"
                 style={{ aspectRatio: "4 / 3" }}
               >
                 <Image
@@ -85,11 +87,11 @@ export default function ArtisanDossier() {
         </div>
 
         <div className="col-span-12 md:col-span-7">
-          <ul className="divide-y divide-[#e5e5e5] border-b border-[#e5e5e5]">
+          <ul className="divide-y divide-[color:var(--color-rule)] border-b border-[color:var(--color-rule)]">
             {SPECS.map((s, i) => (
               <li
                 key={s.k + s.v}
-                className="grid grid-cols-12 items-baseline gap-4 px-6 py-7 transition-colors hover:bg-[#f9f9f9]"
+                className="grid grid-cols-12 items-baseline gap-4 px-6 py-7 transition-colors hover:bg-[color:var(--color-paper-alt)]"
               >
                 <span className="col-span-1 tech-meta opacity-50">
                   {String(i + 1).padStart(2, "0")}
@@ -130,9 +132,9 @@ export default function ArtisanDossier() {
             <div className="col-span-12 md:col-span-7 flex md:justify-end items-end">
               <a
                 href="mailto:hello@maisontanneurs.com?subject=Dossier%20Request"
-                className="inline-flex h-12 items-center bg-[#0f0f0f] px-7 text-white hover:opacity-80"
-                style={{
-                  color: "#ffffff",
+              className="inline-flex h-12 items-center bg-[color:var(--color-warm-black)] px-7 text-[color:var(--color-ivory)] hover:opacity-80"
+              style={{
+                  color: "var(--color-ivory)",
                   fontSize: "12px",
                   fontWeight: 500,
                   letterSpacing: "0.22em",
