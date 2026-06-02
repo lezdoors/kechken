@@ -43,9 +43,9 @@ export default function FieldLoop() {
   return (
     <section
       aria-label="Field loop"
-      className="w-full bg-[#0f0f0f] text-white border-y border-[#e5e5e5]"
+      className="w-full bg-[color:var(--color-warm-black)] text-[color:var(--color-ivory)] border-y border-[color:var(--color-rule)]"
     >
-      <div className="flex items-center justify-between px-6 py-4 border-b border-white/15 text-white/70">
+      <div className="flex items-center justify-between px-6 py-4 border-b border-[color:rgba(244,240,232,0.15)] text-[color:rgba(244,240,232,0.7)]">
         <span className="tech-meta">§05 — Field Loop</span>
         <span className="tech-meta hidden md:inline">
           PLATE 02 — MARRAKECH ATELIER · 14-DAY CYCLE
@@ -56,9 +56,9 @@ export default function FieldLoop() {
       {/* Constrained on large screens — the current cut crops awkwardly when
           stretched to ultrawide. Cap at 1100px and center; replace with a
           higher-resolution wide cut later to go full-bleed again. */}
-      <div className="w-full bg-[#0f0f0f] py-10 lg:py-14">
+      <div className="w-full bg-[color:var(--color-warm-black)] py-10 lg:py-14">
         <div
-          className="relative mx-auto bg-[#0f0f0f] overflow-hidden"
+          className="relative mx-auto bg-[color:var(--color-warm-black)] overflow-hidden"
           style={{ aspectRatio: "16 / 9", maxWidth: "1100px" }}
         >
           <video
@@ -74,7 +74,7 @@ export default function FieldLoop() {
         </div>
       </div>
 
-      <div className="grid grid-cols-12 px-6 py-5 border-t border-white/15 text-white/70 gap-y-2">
+      <div className="grid grid-cols-12 px-6 py-5 border-t border-[color:rgba(244,240,232,0.15)] text-[color:rgba(244,240,232,0.7)] gap-y-2">
         <span className="col-span-12 md:col-span-6 tech-meta">
           Filmed Marrakech · Atelier Cut
         </span>

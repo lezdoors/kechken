@@ -75,7 +75,7 @@ export default function ProductCard({
   return (
     <Link
       href={href(`/products/${slug}`)}
-      className="group block bg-[color:var(--color-paper)]"
+      className="mt-editorial-cell group block"
     >
       <div className="mt-product-frame relative aspect-[4/5]">
         <Image
@@ -85,6 +85,9 @@ export default function ProductCard({
           sizes="(max-width: 768px) 100vw, 33vw"
           loading={eager ? "eager" : "lazy"}
           className={productImageClass(image)}
+          style={{
+            transitionTimingFunction: "var(--ease-luxury)",
+          }}
         />
       </div>
 
@@ -93,9 +96,9 @@ export default function ProductCard({
         style={{ background: "var(--color-paper)" }}
       >
         <div
-          className="flex items-center gap-3 text-[10.5px] tracking-[0.14em] uppercase"
+          className="flex items-center gap-3 text-[9px] tracking-[0.18em] uppercase"
           style={{
-            fontFamily: "var(--font-mono)",
+            fontFamily: "var(--font-sans)",
             color: "var(--color-ink-muted)",
           }}
         >
@@ -105,11 +108,11 @@ export default function ProductCard({
         </div>
 
         <h3
-          className="text-[15px] leading-tight"
+          className="text-[14px] leading-tight"
           style={{
             fontFamily: "var(--font-sans)",
             fontWeight: 500,
-            letterSpacing: "-0.005em",
+            letterSpacing: "0.005em",
             color: "var(--color-ink)",
           }}
         >
@@ -117,9 +120,9 @@ export default function ProductCard({
         </h3>
 
         <div
-          className="text-[10.5px] tracking-[0.16em] uppercase mt-1"
+          className="text-[10px] tracking-[0.2em] uppercase mt-1"
           style={{
-            fontFamily: "var(--font-mono)",
+            fontFamily: "var(--font-sans)",
             color: "var(--color-ink)",
           }}
         >

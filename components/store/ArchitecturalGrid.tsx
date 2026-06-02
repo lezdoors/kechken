@@ -8,10 +8,8 @@ import { productImageClass } from "@/lib/product-image-presentation";
 import { curateLandingProducts, productListImage } from "@/lib/landing-product-curation";
 import type { Product } from "@/lib/supabase/types";
 
-// Polène / Les-Tanneurs-v2 register: stripped product cells, no borders, no
-// chrome eyebrows, no SKU labels, no Specimen→ links. Just a tactile frame,
-// the name in serif, and the color in micro-sans. Massive breathing room
-// (120px row-gap), 4:5 portrait frames, F5F5F5 plate.
+// Editorial product register: gallery spacing, warm tactile product plates,
+// restrained sans metadata, and enough asymmetry to avoid catalogue sameness.
 
 const GRID_LIMIT = 6;
 const FETCH_LIMIT = 24;
@@ -78,12 +76,13 @@ export default async function ArchitecturalGrid() {
       aria-label="Current edition"
     >
       {/* LT2 .section-head — quiet eyebrow, large serif title, italic subhead */}
-      <div className="mx-auto max-w-[1400px] text-center pt-[clamp(80px,12vw,160px)] pb-[clamp(48px,7vw,96px)] px-[clamp(24px,6vw,80px)]">
+      <div className="mx-auto max-w-[1400px] text-center pt-[clamp(64px,9vw,112px)] pb-[clamp(32px,5vw,64px)] px-[clamp(24px,6vw,80px)]">
         <p
           style={{
             fontFamily: "var(--font-sans)",
-            fontSize: "12px",
-            letterSpacing: "0.02em",
+            fontSize: "10.5px",
+            letterSpacing: "0.2em",
+            textTransform: "uppercase",
             color: "var(--color-ink-soft)",
             marginBottom: "28px",
           }}
@@ -94,11 +93,11 @@ export default async function ArchitecturalGrid() {
           style={{
             fontFamily: "var(--font-display)",
             fontWeight: 400,
-            fontSize: "clamp(40px, 5vw, 80px)",
-            lineHeight: 1.04,
-            letterSpacing: "-0.005em",
+            fontSize: "clamp(56px, 8.2vw, 132px)",
+            lineHeight: 0.9,
+            letterSpacing: "-0.035em",
             margin: "0 auto",
-            maxWidth: "18ch",
+            maxWidth: "12ch",
             color: "var(--color-ink)",
           }}
         >
@@ -107,11 +106,10 @@ export default async function ArchitecturalGrid() {
         <p
           style={{
             margin: "28px auto 0",
-            maxWidth: "56ch",
-            fontFamily: "var(--font-display)",
-            fontStyle: "italic",
-            fontSize: "clamp(16px, 1.4vw, 19px)",
-            lineHeight: 1.6,
+            maxWidth: "44ch",
+            fontFamily: "var(--font-sans)",
+            fontSize: "clamp(13px, 1.1vw, 15px)",
+            lineHeight: 1.75,
             color: "var(--color-ink-soft)",
           }}
         >
@@ -123,9 +121,9 @@ export default async function ArchitecturalGrid() {
       <div
         className="mx-auto max-w-[1500px] grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3"
         style={{
-          padding: "40px clamp(24px,8vw,80px) clamp(120px,16vw,200px)",
-          columnGap: "clamp(40px, 6vw, 90px)",
-          rowGap: "clamp(58px, 8vw, 96px)",
+          padding: "clamp(20px,3vw,44px) clamp(24px,8vw,104px) clamp(110px,13vw,200px)",
+          columnGap: "clamp(48px, 7vw, 118px)",
+          rowGap: "clamp(72px, 10vw, 138px)",
         }}
       >
         {products.map((p, i) => (
@@ -134,13 +132,13 @@ export default async function ArchitecturalGrid() {
       </div>
 
       {/* Trailing CTA — quiet bottom rule + view-all link */}
-      <div className="mx-auto max-w-[1400px] px-[clamp(24px,6vw,80px)] text-center pb-[clamp(80px,10vw,140px)]">
+      <div className="mx-auto max-w-[1400px] px-[clamp(24px,6vw,80px)] text-center pb-[clamp(56px,7vw,96px)]">
         <Link
           href="/products"
           className="inline-flex items-center gap-3 hover:opacity-60 transition-opacity"
           style={{
             fontFamily: "var(--font-sans)",
-            fontSize: "12px",
+            fontSize: "10.5px",
             letterSpacing: "0.18em",
             textTransform: "uppercase",
             color: "var(--color-ink)",
@@ -162,9 +160,9 @@ function ProductCell({ product, index }: { product: Product; index: number }) {
   return (
     <Link
       href={`/products/${product.slug}`}
-      className="group block cursor-pointer"
+      className="mt-editorial-cell group block cursor-pointer"
     >
-      {/* Frame — consistent product plate, 4:5 portrait, sharp corners. */}
+      {/* Frame — consistent tactile plate, 4:5 portrait, sharp corners. */}
       <div
         className="mt-product-frame relative"
         style={{
@@ -204,22 +202,23 @@ function ProductCell({ product, index }: { product: Product; index: number }) {
             left: "22px",
             fontFamily: "var(--font-display)",
             fontStyle: "italic",
-            fontSize: "13px",
-            color: "var(--color-ink-soft)",
+            fontSize: "12px",
+            color: "var(--color-ink-muted)",
           }}
         >
           N° {String(index).padStart(2, "0")}
         </span>
       </div>
 
-      {/* Meta — no border, generous gap, LT2 serif name + sans color */}
-      <div className="mt-7 text-left">
+      {/* Meta — no border, generous gap, product-first sans details. */}
+      <div className="mt-6 text-left">
         <h3
           style={{
-            fontFamily: "var(--font-display)",
-            fontWeight: 400,
-            fontSize: "22px",
-            letterSpacing: 0,
+            fontFamily: "var(--font-sans)",
+            fontWeight: 500,
+            fontSize: "clamp(14px, 1.05vw, 17px)",
+            letterSpacing: "0.005em",
+            lineHeight: 1.3,
             color: "var(--color-ink)",
             margin: 0,
           }}
@@ -230,9 +229,10 @@ function ProductCell({ product, index }: { product: Product; index: number }) {
           style={{
             marginTop: "8px",
             fontFamily: "var(--font-sans)",
-            fontSize: "13px",
-            color: "var(--color-ink-soft)",
-            letterSpacing: "0.01em",
+            fontSize: "10px",
+            color: "var(--color-ink-muted)",
+            letterSpacing: "0.18em",
+            textTransform: "uppercase",
           }}
         >
           {color}

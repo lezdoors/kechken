@@ -8,9 +8,8 @@ import { productImageClass } from "@/lib/product-image-presentation";
 import { productListImage, selectObjectOfEdition } from "@/lib/landing-product-curation";
 import type { Product } from "@/lib/supabase/types";
 
-// LT2 register: F5F5F5 plate frame, no chrome borders, serif italic eyebrow,
-// massive serif title, italic poetic subhead, just 2 spec rows (no SKU
-// fingerprint, no §02 prefix, no full-width corner-to-corner lines).
+// Editorial object feature: large product plate, restrained copy, and one clear
+// commerce path without turning the section into a generic product module.
 
 function firstVisibleStatic(): Product | null {
   return selectObjectOfEdition(
@@ -58,8 +57,8 @@ export default async function ObjectOfTheEdition() {
       <div
         className="mx-auto max-w-[1480px] grid grid-cols-1 md:grid-cols-12 items-center"
         style={{
-          padding: "clamp(72px,10vw,136px) clamp(24px,6vw,80px)",
-          gap: "clamp(44px,6vw,88px)",
+          padding: "clamp(76px,10vw,144px) clamp(24px,6vw,86px)",
+          gap: "clamp(48px,7vw,104px)",
         }}
       >
         <Link
@@ -101,8 +100,9 @@ export default async function ObjectOfTheEdition() {
           <p
             style={{
               fontFamily: "var(--font-sans)",
-              fontSize: "12px",
-              letterSpacing: "0.02em",
+              fontSize: "10.5px",
+              letterSpacing: "0.18em",
+              textTransform: "uppercase",
               color: "var(--color-ink-soft)",
               marginBottom: "32px",
             }}
@@ -129,12 +129,11 @@ export default async function ObjectOfTheEdition() {
           <p
             style={{
               marginTop: "28px",
-              fontFamily: "var(--font-display)",
-              fontStyle: "italic",
-              fontSize: "clamp(16px, 1.4vw, 19px)",
-              lineHeight: 1.6,
+              fontFamily: "var(--font-sans)",
+              fontSize: "clamp(14px, 1.12vw, 16px)",
+              lineHeight: 1.85,
               color: "var(--color-ink-soft)",
-              maxWidth: "44ch",
+              maxWidth: "46ch",
             }}
           >
             {p.description ??
@@ -163,7 +162,7 @@ export default async function ObjectOfTheEdition() {
                 textTransform: "uppercase",
               }}
             >
-              See the piece →
+              Acquire →
             </Link>
             <Link
               href="/about"
